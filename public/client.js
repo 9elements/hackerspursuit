@@ -48,26 +48,26 @@
               for (answer = 1; answer <= 4; answer++) {
                 $('#a' + answer).fadeIn('fast');
               }
-              $('#question').html("" + question.category + ": " + question.text);
-              $('#a1').html(question.a1);
-              $('#a2').html(question.a2);
-              $('#a3').html(question.a3);
-              return $('#a4').html(question.a4);
+              $('#question').html("" + (question.text.toUpperCase()) + " (" + (question.category.toUpperCase()) + ")");
+              $('#a1').html(question.a1.toUpperCase());
+              $('#a2').html(question.a2.toUpperCase());
+              $('#a3').html(question.a3.toUpperCase());
+              return $('#a4').html(question.a4.toUpperCase());
             });
             socket.on("answer.locked", function(answer) {
               return $('#' + answer).addClass("selected");
             });
             socket.on("answer.twice", function() {
-              return addAlert("Already selected an answer.");
+              return addAlert("ALREADY SELECTED AN ANSWER.");
             });
             socket.on("answer.over", function() {
-              return addAlert("The time is over.");
+              return addAlert("TIME IS OVER.");
             });
             socket.on("question.countdown", function(seconds) {
               if (started) {
                 return $('#countdown').html(seconds);
               } else {
-                return $('#countwait').html("Joining in " + seconds + " seconds...");
+                return $('#countwait').html("JOINING IN " + seconds + " SECONDS...");
               }
             });
             return socket.on("question.wait", function(result) {
@@ -75,13 +75,13 @@
               scoreboard = result.scoreboard;
               correct = result.correct;
               if (!started) {
-                $('#countwait').html("Good luck!");
+                $('#countwait').html("GOOD LUCK!");
               }
-              $('#countdown').html('Over');
+              $('#countdown').html('OVER');
               $('#scoreboard li').remove();
               for (_i = 0, _len = scoreboard.length; _i < _len; _i++) {
                 entry = scoreboard[_i];
-                listEntry = $('<li>').html("" + entry.name + ": " + entry.points);
+                listEntry = $('<li>').html("" + entry.points + " " + (entry.name.toUpperCase()));
                 $('#scoreboard').append(listEntry);
               }
               _results = [];
@@ -108,7 +108,7 @@
     addAlert = function(msg) {
       var alertEntry;
       alertEntry = $('<li>').html("Alert: " + msg).fadeIn().delay(3000).fadeOut();
-      return $('#alert').append(alertEntry);
+      return $('#alert').append(alertEntry.toUpperCase());
     };
     /* Views */
     $('.view-content').hide();

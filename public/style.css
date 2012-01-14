@@ -1,4 +1,5 @@
-body{padding:0;margin:0;font:14px 'SilkscreenNormal',Arial,sans-serif;font:14px "VT323",Monaco,"Courier New",Courier,monospace;background-color:#dcdcdf;text-align:center;color:#a8a8a8}
+body{padding:0;margin:0;font:16px 'SilkscreenNormal',Arial,sans-serif;font:16px "VT323",Monaco,"Courier New",Courier,monospace;background-color:#dcdcdf;text-align:center;color:#566050}
+h1,h2,h3{font-weight:normal}
 .clearfix:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0}
 .clearfix{display:inline-block}
 #container{background-color:#444;margin:0;padding:0;margin-left:auto;margin-right:auto;width:796px}
@@ -11,10 +12,11 @@ body{padding:0;margin:0;font:14px 'SilkscreenNormal',Arial,sans-serif;font:14px 
 #left-pane h3{color:#e0f8d1}
 #left-pane ul{list-style:none;padding:0;margin:0;}
 #left-pane ul li{color:#566050}
-#right-pane{float:left;text-align:left;padding:20px;width:450px}
-ul#answers{list-style:none;}
-ul#answers li{min-height:26px}
+#right-pane{float:left;text-align:left;padding:20px;width:450px;}
+#right-pane h2{font-weight:normal}
+ul#answers{list-style:none;padding-left:20px;}
+ul#answers li{min-height:26px;padding-bottom:2px}
 a{color:#00b7ff;text-decoration:none}
 .tab_container{clear:both;float:left;width:100%}
-.clickable{padding:4px;display:inline-block;cursor:pointer;color:#00b7ff}
-.selected{background-color:#00b7ff;color:#fff}
+.clickable{padding:4px;width:400px;display:inline-block;cursor:pointer;color:#eff9d6;background-color:#9dad92}
+.selected{background-color:#6c7565;color:#fff}
