@@ -14,10 +14,12 @@ h1,h2,h3{font-weight:normal}
 #left-pane h3{color:#e0f8d1}
 #left-pane ul{list-style:none;padding:0;margin:0;}
 #left-pane ul li{color:#566050}
-#right-pane{float:left;text-align:left;padding:20px;padding-left:40px;width:450px;}
+#right-pane{float:left;text-align:left;padding:20px;padding-left:40px;width:430px;}
 #right-pane h2{font-weight:normal;font-size:16px;margin-top:0}
 .chat{margin-top:20px;-webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px;background-color:#e4f9d7;border:1px solid #000;min-height:20px;margin-left:13px;margin-right:13px;text-align:left;color:#e0f8d1;padding-left:11px;background-image:url("/img/chatbg.png");background-repeat:repeat-y;-moz-box-shadow:0 1px 0 0 rgba(255,255,255,0.50);-webkit-box-shadow:0 1px 0 0 rgba(255,255,255,0.50);box-shadow:0 1px 0 0 rgba(255,255,255,0.50);}
 .chat input{margin-left:20px;border:none;background-color:#e4f9d7;width:600px;outline:none;font:16px 'SilkscreenNormal',Arial,sans-serif;color:#566050}
+.slot{margin-top:20px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;height:6px;margin-left:13px;margin-right:13px;background-color:#181818;-moz-box-shadow:0 1px 0 0 rgba(255,255,255,0.50);-webkit-box-shadow:0 1px 0 0 rgba(255,255,255,0.50);box-shadow:0 1px 0 0 rgba(255,255,255,0.50)}
+.paper{margin-top:-3px;margin-left:18px;margin-right:18px;background-color:#fff;-moz-box-shadow:inset 0 3px 4px 0 rgba(0,0,0,0.80);-webkit-box-shadow:inset 0 3px 4px 0 rgba(0,0,0,0.80);box-shadow:inset 0 3px 4px 0 rgba(0,0,0,0.80);padding:6px;text-align:left}
 ul#answers{list-style:none;padding-left:0;}
 ul#answers li{min-height:26px;padding-bottom:2px}
 a{color:#00b7ff;text-decoration:none}
