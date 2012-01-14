@@ -1,0 +1,41 @@
+h1 Nerd Test
+.view-container
+  - if(!everyauth.loggedIn)
+    #view-login.view-content
+      h2 Login
+      .login-container
+        ul
+          li
+            a(href="/auth/twitter") Login with Twitter
+          li
+            a(href="/auth/facebook") Login with Facebook
+  - else
+    #view-wait.view-content
+      h2 Please wait for the next question...
+      #countwait
+    #view-game.view-content
+      h2#question Question
+      ul#answers
+        li
+          #a1.clickable Answer 1
+        li
+          #a2.clickable Answer 2
+        li
+          #a3.clickable Answer 3
+        li
+          #a4.clickable Answer 4  
+      h3 Countdown
+      #countdown
+      h3 Scoreboard
+      ul#scoreboard
+
+    h3 Messages
+    .notice-container
+    ul#alert
+    ul#notice
+
+    - if (everyauth.user)
+      #userid(style="display: none;") #{everyauth.user.id}
+
+    #server-host(style="display: none;")= host
+    #server-port(style="display: none;")= port
