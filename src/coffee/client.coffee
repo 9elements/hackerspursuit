@@ -58,17 +58,17 @@ $(document).ready ->
               $('#a' + answer).fadeIn('fast')
               
             $('#question').text("#{question.category}: #{question.text}")
-            $('#a1').removeClass("correct").removeClass("wrong").text(question.a1)
-            $('#a2').removeClass("correct").removeClass("wrong").text(question.a2)
-            $('#a3').removeClass("correct").removeClass("wrong").text(question.a3)
-            $('#a4').removeClass("correct").removeClass("wrong").text(question.a4)
+            $('#a1').removeClass("selected").text(question.a1)
+            $('#a2').removeClass("selected").text(question.a2)
+            $('#a3').removeClass("selected").text(question.a3)
+            $('#a4').removeClass("selected").text(question.a4)
           
           socket.on "answer.correct", (answer) ->
-            $('#' + answer).addClass("correct")
+            $('#' + answer).addClass("selected")
             soundManager.play "correct"
           
           socket.on "answer.wrong", (answer) ->
-            $('#' + answer).addClass("wrong")
+            $('#' + answer).addClass("selected")
             soundManager.play "wrong"
           
           socket.on "answer.twice", ->
