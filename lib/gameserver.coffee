@@ -11,18 +11,28 @@ module.exports = class
     @clients = {}
   
   getClientById: (id) ->
-    console.log "getClientById"
     if @clients.hasOwnProperty(id)
       return @clients[id]
     else
       return null
   
   joinPlayer: (player) ->
-    console.log "joinPlayer"
     @players.push player
 
+    player.client.on 'answer.set', (msg) =>
+      return unless player.client.authenticated
+      try 
+        if not @acceptingAnswers
+          player.client.emit 'answer.over', null
+        else
+          n = parseInt(msg.answer)
+          if n > 0 and n < 5
+            if player.setAnswer "a#{n}"
+              player.client.emit 'answer.locked', "a#{n}"
+            else
+              player.client.emit 'answer.twice', null
+
   loadQuestions: (path) ->
-    console.log "loadQuestions"
     files = fs.readdirSync(path)
     for name in files
       fileName = "#{path}/#{name}"
@@ -48,7 +58,6 @@ module.exports = class
         @loadQuestions fileName
   
   startGame: ->
-    console.log "startGame"
     @loadQuestions global.config.game.questionsPath
     
     @question        = null
@@ -59,24 +68,10 @@ module.exports = class
       # as soon as a client connects, let him authorize via a json url
 
       @clients[client.id] = client
-
-      client.on 'answer.set', (msg) =>
-        return unless client.authenticated
-        try 
-          if not @acceptingAnswers
-            client.emit 'answer.over', null
-          else
-            n = parseInt(msg.answer)
-            if n > 0 and n < 5
-              if player.setAnswer "a#{n}"
-                client.emit 'answer.locked', "a#{n}"
-              else
-                client.emit 'answer.twice', null
     
     @initCycle()
     
   endCycle: =>
-    console.log "endCycle"
     @acceptingAnswers = false
     scoreboard = []
     
@@ -95,17 +90,14 @@ module.exports = class
     setTimeout @initCycle, global.config.game.pauseMilliseconds
     
   countDown: (seconds) =>
-    console.log "countDown"
     @leftSeconds -= 1
     if @leftSeconds > 0
       @io.sockets.in("nerds").emit('question.countdown', @leftSeconds)
       setTimeout @countDown, 1000
     else
       @endCycle()
-        
+
   initCycle: =>
-    console.log "initCycle"
-    console.log @players
     for player in @players
       player.resetAnswer()
       
