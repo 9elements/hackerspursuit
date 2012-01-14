@@ -1,8 +1,10 @@
-body{padding:0;margin:0;font:16px 'SilkscreenNormal',Arial,sans-serif;font:16px "VT323",Monaco,"Courier New",Courier,monospace;background-color:#dcdcdf;text-align:center;color:#566050}
+html{height:100%}
+body{padding:0;margin:0;font:16px 'SilkscreenNormal',Arial,sans-serif;font:16px "VT323",Monaco,"Courier New",Courier,monospace;background-color:#dcdcdf;text-align:center;color:#566050;height:100%}
 h1,h2,h3{font-weight:normal}
+.view-container{height:100%}
 .clearfix:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0}
 .clearfix{display:inline-block}
-#container{background-color:#444;margin:0;padding:0;margin-left:auto;margin-right:auto;width:796px}
+#container{background-color:#444;margin:0;padding:0;margin-left:auto;margin-right:auto;width:796px;height:100%}
 #header{padding-top:30px}
 #wrapper{padding-top:20px;padding-bottom:20px;padding-left:44px;padding-right:44px}
 .display{-webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px;background-color:#e4f9d7;border:1px solid #000;padding-bottom:20px;min-height:350px}
@@ -13,7 +15,7 @@ h1,h2,h3{font-weight:normal}
 #left-pane ul{list-style:none;padding:0;margin:0;}
 #left-pane ul li{color:#566050}
 #right-pane{float:left;text-align:left;padding:20px;width:450px;}
-#right-pane h2{font-weight:normal}
+#right-pane h2{font-weight:normal;font-size:16px}
 ul#answers{list-style:none;padding-left:20px;}
 ul#answers li{min-height:26px;padding-bottom:2px}
 a{color:#00b7ff;text-decoration:none}
