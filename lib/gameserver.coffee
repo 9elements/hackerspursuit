@@ -11,15 +11,18 @@ module.exports = class
     @clients = {}
   
   getClientById: (id) ->
+    console.log "getClientById"
     if @clients.hasOwnProperty(id)
       return @clients[id]
     else
       return null
   
   joinPlayer: (player) ->
+    console.log "joinPlayer"
     @players.push player
 
   loadQuestions: (path) ->
+    console.log "loadQuestions"
     files = fs.readdirSync(path)
     for name in files
       fileName = "#{path}/#{name}"
@@ -45,6 +48,7 @@ module.exports = class
         @loadQuestions fileName
   
   startGame: ->
+    console.log "startGame"
     @loadQuestions global.config.game.questionsPath
     
     @question        = null
@@ -72,6 +76,7 @@ module.exports = class
     @initCycle()
     
   endCycle: =>
+    console.log "endCycle"
     @acceptingAnswers = false
     scoreboard = []
     
@@ -90,6 +95,7 @@ module.exports = class
     setTimeout @initCycle, global.config.game.pauseMilliseconds
     
   countDown: (seconds) =>
+    console.log "countDown"
     @leftSeconds -= 1
     if @leftSeconds > 0
       @io.sockets.in("nerds").emit('question.countdown', @leftSeconds)
@@ -97,7 +103,9 @@ module.exports = class
     else
       @endCycle()
         
-  initCycle: ->
+  initCycle: =>
+    console.log "initCycle"
+    console.log @players
     for player in @players
       player.resetAnswer()
       
