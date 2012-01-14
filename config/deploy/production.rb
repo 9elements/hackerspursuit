@@ -1,3 +1,3 @@
-set :rails_env, "production"
-set :branch, "production"
+set :node_env, "production"
+set :branch, "master"
 set :deploy_to,   "/home/hackerspursuit/production"

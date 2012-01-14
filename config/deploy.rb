@@ -22,6 +22,6 @@ namespace :deploy do
   task(:start,   :roles => :app) {}
   task(:stop,    :roles => :app) {}
   task(:restart, :roles => :app, :except => { :no_release => true }) {
-    run "cd #{current_path}; npm install; forever stopall; forever start -c coffee server.coffee"
+    run "NODE_ENV=#{node_env} cd #{current_path}; npm install; forever stopall; forever start -c coffee server.coffee"
   }
 end
