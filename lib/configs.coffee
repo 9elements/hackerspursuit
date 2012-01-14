@@ -18,7 +18,6 @@ module.exports =
       app.use express.methodOverride()
 
       app.use require("stylus").middleware
-        
         src: __dirname + '/../src/stylus/'
         dest: __dirname + '/../public'
         compress: true

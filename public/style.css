@@ -6,3 +6,5 @@ a{color:#00b7ff;text-decoration:none}
 .tab_container{clear:both;float:left;width:100%}
 .clickable{padding:4px;display:inline-block;cursor:pointer;color:#00b7ff}
 .selected{background-color:#00b7ff;color:#fff}
+.wrong{background-color:#8b0000;color:#fff}
+.correct{background-color:#006400;color:#fff}

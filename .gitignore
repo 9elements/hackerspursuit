@@ -1,3 +1,4 @@
 node_modules/
 config.coffee
 .DS_Store
+public/sounds/*.asd

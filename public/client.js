@@ -2,6 +2,19 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   $(document).ready(function() {
     var addAlert, connect, sendAnswer, socket, socket_host, socket_port, startGame, started;
+    soundManager.url = "/swfs/";
+    soundManager.onready(function() {
+      soundManager.createSound({
+        id: 'wrong',
+        url: ['/sounds/wrong.mp3', '/sounds/wrong.acc', '/sounds/wrong.ogg'],
+        autoLoad: true
+      });
+      return soundManager.createSound({
+        id: 'correct',
+        url: ['/sounds/correct.mp3', '/sounds/correct.acc', '/sounds/correct.ogg'],
+        autoLoad: true
+      });
+    });
     socket_host = $('#server-host').text();
     socket_port = $('#server-port').text();
     /* Communication */
@@ -55,10 +68,12 @@
               return $('#a4').removeClass("correct").removeClass("wrong").text(question.a4);
             });
             socket.on("answer.correct", function(answer) {
-              return $('#' + answer).addClass("correct");
+              $('#' + answer).addClass("correct");
+              return soundManager.play("correct");
             });
             socket.on("answer.wrong", function(answer) {
-              return $('#' + answer).addClass("wrong");
+              $('#' + answer).addClass("wrong");
+              return soundManager.play("wrong");
             });
             socket.on("answer.twice", function() {
               return addAlert("Already selected an answer.");

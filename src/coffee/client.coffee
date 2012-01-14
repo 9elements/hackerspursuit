@@ -1,4 +1,16 @@
 $(document).ready ->
+  soundManager.url = "/swfs/"
+
+  soundManager.onready ->
+    soundManager.createSound
+      id: 'wrong'
+      url: ['/sounds/wrong.mp3', '/sounds/wrong.acc', '/sounds/wrong.ogg']
+      autoLoad: true
+
+    soundManager.createSound
+      id: 'correct'
+      url: ['/sounds/correct.mp3', '/sounds/correct.acc', '/sounds/correct.ogg']
+      autoLoad: true
 
   socket_host = $('#server-host').text()
   socket_port = $('#server-port').text()
@@ -53,9 +65,11 @@ $(document).ready ->
           
           socket.on "answer.correct", (answer) ->
             $('#' + answer).addClass("correct")
+            soundManager.play "correct"
           
           socket.on "answer.wrong", (answer) ->
             $('#' + answer).addClass("wrong")
+            soundManager.play "wrong"
           
           socket.on "answer.twice", ->
             addAlert "Already selected an answer."
