@@ -1,3 +1,4 @@
+
 .view-container
   - if(!everyauth.loggedIn)
     #view-login.view-content
@@ -9,6 +10,10 @@
           li
             a(href="/auth/facebook") Login with Facebook
   - else
+    script(type="text/javascript")
+      var host = "#{host}";
+      var port = "#{port}";
+    script(type="text/javascript", src="/client.js")
     #view-wait.view-content
       .display
         .display-overlay
@@ -47,6 +52,3 @@
 
     - if (everyauth.user)
       #userid(style="display: none;") #{everyauth.user.id}
-
-  #server-host(style="display: none;")= host
-  #server-port(style="display: none;")= port

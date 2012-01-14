@@ -1,7 +1,7 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   $(document).ready(function() {
-    var addAlert, connect, sendAnswer, socket, socket_host, socket_port, startGame, started;
+    var addAlert, connect, sendAnswer, socket, startGame, started;
     soundManager.url = "/swfs/";
     soundManager.onready(function() {
       soundManager.createSound({
@@ -15,8 +15,6 @@
         autoLoad: true
       });
     });
-    socket_host = $('#server-host').text();
-    socket_port = $('#server-port').text();
     /* Communication */
     socket = null;
     started = false;
@@ -41,8 +39,8 @@
       });
     };
     connect = function() {
-      socket = io.connect(socket_host, {
-        'port': parseInt(socket_port)
+      socket = io.connect(host, {
+        'port': parseInt(port)
       });
       return socket.on("connect", function() {
         var id;

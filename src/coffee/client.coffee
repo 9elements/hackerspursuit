@@ -12,9 +12,6 @@ $(document).ready ->
       url: ['/sounds/correct.mp3', '/sounds/correct.acc', '/sounds/correct.ogg']
       autoLoad: true
 
-  socket_host = $('#server-host').text()
-  socket_port = $('#server-port').text()
-
   ### Communication ###
   
   socket   = null
@@ -40,7 +37,7 @@ $(document).ready ->
       sendAnswer(4)
   
   connect = ->
-    socket = io.connect(socket_host, { 'port': parseInt(socket_port) })
+    socket = io.connect(host, { 'port': parseInt(port) })
     socket.on "connect", ->
       id = socket.socket.sessionid
       $.getJSON "/user/auth-socket.json?id=#{id}", (data) =>
