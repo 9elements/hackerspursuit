@@ -76,16 +76,16 @@
               return soundManager.play("wrong");
             });
             socket.on("answer.twice", function() {
-              return addAlert("Already selected an answer.");
+              return addAlert("ALREADY SELECTED AN ANSWER.");
             });
             socket.on("answer.over", function() {
-              return addAlert("The time is over.");
+              return addAlert("TIME IS OVER.");
             });
             socket.on("question.countdown", function(seconds) {
               if (started) {
                 return $('#countdown').html(seconds);
               } else {
-                return $('#countwait').html("Joining in " + seconds + " seconds...");
+                return $('#countwait').html("JOINING IN " + seconds + " SECONDS...");
               }
             });
             socket.on("scoreboard", function(scoreboard) {
@@ -104,9 +104,15 @@
               scoreboard = result.scoreboard;
               correct = result.correct;
               if (!started) {
-                $('#countwait').html("Good luck!");
+                $('#countwait').html("GOOD LUCK!");
               }
-              $('#countdown').html('Over');
+              $('#countdown').html('OVER');
+              $('#scoreboard li').remove();
+              for (_i = 0, _len = scoreboard.length; _i < _len; _i++) {
+                entry = scoreboard[_i];
+                listEntry = $('<li>').html("" + entry.points + " " + (entry.name.toUpperCase()));
+                $('#scoreboard').append(listEntry);
+              }
               _results = [];
               for (answer = 1; answer <= 4; answer++) {
                 _results.push(correct !== ("a" + answer) ? $('#a' + answer).fadeOut() : void 0);
@@ -131,7 +137,7 @@
     addAlert = function(msg) {
       var alertEntry;
       alertEntry = $('<li>').html("Alert: " + msg).fadeIn().delay(3000).fadeOut();
-      return $('#alert').append(alertEntry);
+      return $('#alert').append(alertEntry.toUpperCase());
     };
     /* Views */
     $('.view-content').hide();

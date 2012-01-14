@@ -15,3 +15,9 @@
 * Node Env Zeug einbauen
   * Domain u. Port
   * OAuth Daten
+
+# TODO Daniel
+
+* .correct und .wrong Class für Antworten
+* Es gibt immer noch Fragen bei denen Antworten fehlen, und Fragen bei denen Nerd Level fehlt
+	* Kommando: find * | xargs grep -c nerd_level | grep 0

@@ -72,31 +72,34 @@ $(document).ready ->
             soundManager.play "wrong"
           
           socket.on "answer.twice", ->
-            addAlert "Already selected an answer."
+            addAlert "ALREADY SELECTED AN ANSWER."
           
           socket.on "answer.over", ->
-            addAlert "The time is over."    
+            addAlert "TIME IS OVER."    
             
           socket.on "question.countdown", (seconds) ->
             if started
               $('#countdown').html(seconds)
             else
-              $('#countwait').html("Joining in #{seconds} seconds...")
+              $('#countwait').html("JOINING IN #{seconds} SECONDS...")
           
           socket.on "scoreboard", (scoreboard) ->
             $('#scoreboard li').remove()
             for entry in scoreboard
               listEntry = $('<li>').html("#{entry.name}: #{entry.points}")
               $('#scoreboard').append listEntry
-            
+
           socket.on "question.wait", (result) ->
             scoreboard = result.scoreboard
             correct = result.correct
             
             if !started
-              $('#countwait').html("Good luck!")
-              
+              $('#countwait').html("GOOD LUCK!")
             $('#countdown').html('Over')
+            $('#scoreboard li').remove()
+            for entry in scoreboard
+              listEntry = $('<li>').html("#{entry.points} #{entry.name.toUpperCase()}")
+              $('#scoreboard').append listEntry
               
             for answer in [1..4]
               $('#a' + answer).fadeOut() unless correct is "a#{answer}"
@@ -112,7 +115,7 @@ $(document).ready ->
   
   addAlert = (msg) ->
     alertEntry = $('<li>').html("Alert: #{msg}").fadeIn().delay(3000).fadeOut()
-    $('#alert').append alertEntry
+    $('#alert').append alertEntry.toUpperCase()
       
   ### Views ###
   
