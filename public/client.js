@@ -48,14 +48,17 @@
               for (answer = 1; answer <= 4; answer++) {
                 $('#a' + answer).fadeIn('fast');
               }
-              $('#question').html("" + question.category + ": " + question.text);
-              $('#a1').html(question.a1);
-              $('#a2').html(question.a2);
-              $('#a3').html(question.a3);
-              return $('#a4').html(question.a4);
+              $('#question').text("" + question.category + ": " + question.text);
+              $('#a1').removeClass("correct").removeClass("wrong").text(question.a1);
+              $('#a2').removeClass("correct").removeClass("wrong").text(question.a2);
+              $('#a3').removeClass("correct").removeClass("wrong").text(question.a3);
+              return $('#a4').removeClass("correct").removeClass("wrong").text(question.a4);
             });
-            socket.on("answer.locked", function(answer) {
-              return $('#' + answer).addClass("selected");
+            socket.on("answer.correct", function(answer) {
+              return $('#' + answer).addClass("correct");
+            });
+            socket.on("answer.wrong", function(answer) {
+              return $('#' + answer).addClass("wrong");
             });
             socket.on("answer.twice", function() {
               return addAlert("Already selected an answer.");
@@ -70,20 +73,25 @@
                 return $('#countwait').html("Joining in " + seconds + " seconds...");
               }
             });
+            socket.on("scoreboard", function(scoreboard) {
+              var entry, listEntry, _i, _len, _results;
+              $('#scoreboard li').remove();
+              _results = [];
+              for (_i = 0, _len = scoreboard.length; _i < _len; _i++) {
+                entry = scoreboard[_i];
+                listEntry = $('<li>').html("" + entry.name + ": " + entry.points);
+                _results.push($('#scoreboard').append(listEntry));
+              }
+              return _results;
+            });
             return socket.on("question.wait", function(result) {
-              var answer, correct, entry, listEntry, scoreboard, _i, _len, _results;
+              var answer, correct, scoreboard, _results;
               scoreboard = result.scoreboard;
               correct = result.correct;
               if (!started) {
                 $('#countwait').html("Good luck!");
               }
               $('#countdown').html('Over');
-              $('#scoreboard li').remove();
-              for (_i = 0, _len = scoreboard.length; _i < _len; _i++) {
-                entry = scoreboard[_i];
-                listEntry = $('<li>').html("" + entry.name + ": " + entry.points);
-                $('#scoreboard').append(listEntry);
-              }
               _results = [];
               for (answer = 1; answer <= 4; answer++) {
                 _results.push(correct !== ("a" + answer) ? $('#a' + answer).fadeOut() : void 0);

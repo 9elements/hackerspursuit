@@ -45,14 +45,17 @@ $(document).ready ->
             for answer in [1..4]
               $('#a' + answer).fadeIn('fast')
               
-            $('#question').html("#{question.category}: #{question.text}")
-            $('#a1').html(question.a1)
-            $('#a2').html(question.a2)
-            $('#a3').html(question.a3)
-            $('#a4').html(question.a4)
+            $('#question').text("#{question.category}: #{question.text}")
+            $('#a1').removeClass("correct").removeClass("wrong").text(question.a1)
+            $('#a2').removeClass("correct").removeClass("wrong").text(question.a2)
+            $('#a3').removeClass("correct").removeClass("wrong").text(question.a3)
+            $('#a4').removeClass("correct").removeClass("wrong").text(question.a4)
           
-          socket.on "answer.locked", (answer) ->
-            $('#' + answer).addClass("selected")
+          socket.on "answer.correct", (answer) ->
+            $('#' + answer).addClass("correct")
+          
+          socket.on "answer.wrong", (answer) ->
+            $('#' + answer).addClass("wrong")
           
           socket.on "answer.twice", ->
             addAlert "Already selected an answer."
@@ -65,6 +68,12 @@ $(document).ready ->
               $('#countdown').html(seconds)
             else
               $('#countwait').html("Joining in #{seconds} seconds...")
+          
+          socket.on "scoreboard", (scoreboard) ->
+            $('#scoreboard li').remove()
+            for entry in scoreboard
+              listEntry = $('<li>').html("#{entry.name}: #{entry.points}")
+              $('#scoreboard').append listEntry
             
           socket.on "question.wait", (result) ->
             scoreboard = result.scoreboard
@@ -74,10 +83,6 @@ $(document).ready ->
               $('#countwait').html("Good luck!")
               
             $('#countdown').html('Over')
-            $('#scoreboard li').remove()
-            for entry in scoreboard
-              listEntry = $('<li>').html("#{entry.name}: #{entry.points}")
-              $('#scoreboard').append listEntry
               
             for answer in [1..4]
               $('#a' + answer).fadeOut() unless correct is "a#{answer}"

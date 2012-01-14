@@ -26,3 +26,6 @@ module.exports = class
     if n == @answer
       @points += 1
       @wasRight = true
+      return true
+    else
+      return false

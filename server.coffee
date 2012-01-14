@@ -18,6 +18,10 @@ store = global.store = new Database(config.database.host, config.database.port, 
 HOST = config.server.host
 PORT = config.server.port
 
+process.on "uncaughtException", (err) ->
+  console.log "\033[1;31mUNCAUGHT EXCEPTION:\033[m"
+  console.log err.stack
+
 ### Util ###
 
 Array::remove = (e) -> @[t..t] = [] if (t = @.indexOf(e)) > -1
@@ -70,7 +74,6 @@ app.get '/', (req, res) ->
 # make him join the "/nerds" room to join the game and receive
 # question events
 app.get '/user/auth-socket\.json', (req, res) ->
-  console.log "auth-socket.json"
   res.writeHead 200, { "Content-Type": "application/json" }
   if req.loggedIn
     if req.query and req.query.hasOwnProperty("id")

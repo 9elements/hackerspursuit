@@ -16,7 +16,7 @@ module.exports = class
     else
       return null
   
-  joinPlayer: (player) ->
+  joinPlayer: (player) =>
     @players.push player
 
     player.client.on 'answer.set', (msg) =>
@@ -28,7 +28,11 @@ module.exports = class
           n = parseInt(msg.answer)
           if n > 0 and n < 5
             if player.setAnswer "a#{n}"
-              player.client.emit 'answer.locked', "a#{n}"
+              if player.checkAnswer @question.correct
+                player.client.emit 'answer.correct', "a#{n}"
+              else
+                player.client.emit 'answer.wrong', "a#{n}"
+              @broadcastScoreboard()
             else
               player.client.emit 'answer.twice', null
 
@@ -68,24 +72,37 @@ module.exports = class
       # as soon as a client connects, let him authorize via a json url
 
       @clients[client.id] = client
+
+      client.on "disconnect", =>
+        i = 0
+        for player in @players
+          if player.client is client
+            @players.splice i, 1
+        i++
+
+        if @clients.hasOwnProperty client.id
+          delete @clients[client.id]
     
     @initCycle()
     
-  endCycle: =>
-    @acceptingAnswers = false
+  broadcastScoreboard: =>
     scoreboard = []
-    
     for player in @players
-      player.checkAnswer(@question.correct)
       scoreboard.push { name: player.user.name, points: player.points, wasRight: player.wasRight }
     
     scoreboard.sort (a, b) ->
       return b.points - a.points
+    
+    @io.sockets.in("nerds").emit('scoreboard', scoreboard)
+
+  endCycle: =>
+    @acceptingAnswers = false
       
     @io.sockets.in("nerds").emit('question.wait', {
-      scoreboard: scoreboard,
       correct: @question.correct
       })
+    
+    @broadcastScoreboard()
     
     setTimeout @initCycle, global.config.game.pauseMilliseconds
     
