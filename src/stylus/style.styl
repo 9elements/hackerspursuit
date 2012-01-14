@@ -1,3 +1,5 @@
+@import "_mixins.styl"
+
 body
   padding 0
   margin 0
@@ -7,14 +9,76 @@ body
   text-align: center
   color #a8a8a8
 
-#main-container
+.clearfix:after
+  content "."
+  display block
+  clear both
+  visibility hidden
+  line-height 0
+  height 0
+ 
+.clearfix 
+  display inline-block
+
+#container
   background-color #444
   margin 0
-  padding 18px
+  padding 0
   margin-left auto
   margin-right auto
-  width 800px
+  width 796px
 
+#header
+  padding-top 30px
+
+#wrapper
+  padding-top 20px
+  padding-bottom 20px
+  padding-left 44px
+  padding-right 44px
+
+.display
+  border-radius(15px)
+  background-color #e4f9d7
+  border 1px solid #000
+  padding-bottom: 20px
+  min-height 350px
+  
+.with-background
+  background-image url(/img/screenbg.png)
+  background-repeat repeat-y
+
+.display-overlay
+  position absolute
+  top 0
+  left 0
+  width 100%
+  height 100%
+  background-image url(/img/stripes.png)
+  border-radius(15px)
+  pointer-events none
+
+#left-pane
+  float left
+  width 170px
+  height 100%
+  text-align left
+  padding-left 20px
+  h3
+    color #e0f8d1
+
+  ul
+    list-style none
+    padding 0
+    margin 0
+    li
+      color #566050
+
+#right-pane
+  float left
+  text-align left
+  padding 20px
+  width 450px
 
 ul#answers
   list-style none

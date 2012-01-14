@@ -1,4 +1,3 @@
-h1 Nerd Test
 .view-container
   - if(!everyauth.loggedIn)
     #view-login.view-content
@@ -11,25 +10,33 @@ h1 Nerd Test
             a(href="/auth/facebook") Login with Facebook
   - else
     #view-wait.view-content
-      h2 Please wait for the next question...
-      #countwait
+      .display
+        .display-overlay
+        h2 PLEASE WAIT FOR THE NEXT QUESTION
+        #countwait
     #view-game.view-content
-      h2#question Question
-      ul#answers
-        li
-          #a1.clickable Answer 1
-        li
-          #a2.clickable Answer 2
-        li
-          #a3.clickable Answer 3
-        li
-          #a4.clickable Answer 4  
-      h3 Countdown
-      #countdown
-      h3 Scoreboard
-      ul#scoreboard
+      .display.with-background.clearfix
+        #left-pane
+          h3 SCOREBOARD
+          ul#scoreboard
 
-    h3 Messages
+        #right-pane
+          h2#question Question
+          ul#answers
+            li
+              #a1.clickable Answer 1
+            li
+              #a2.clickable Answer 2
+            li
+              #a3.clickable Answer 3
+            li
+              #a4.clickable Answer 4  
+          h3 Countdown
+          #countdown
+
+        .display-overlay
+
+    h3 MESSAGES
     .notice-container
     ul#alert
     ul#notice
