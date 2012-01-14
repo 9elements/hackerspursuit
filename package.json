@@ -15,6 +15,7 @@
     "oauth": "= 0.9.5",
     "restler": "= 0.2.4",
     "redis": "= 0.7.1",
-    "connect-redis": "= 1.2.0"
+    "connect-redis": "= 1.2.0",
+    "stylus": "= 0.22.4"
   }
 }

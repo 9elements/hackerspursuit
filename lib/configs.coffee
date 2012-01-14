@@ -16,7 +16,13 @@ module.exports =
       app.use express.cookieParser()
       app.use express.session { store: redisStore, secret: "asdfhgk37r9r809p23h2kg"}
       app.use express.methodOverride()
-      app.use express.compiler( src: "#{__dirname}/../src/sass/", dest: "#{__dirname}/../public", enable: ['sass'] )
+
+      app.use require("stylus").middleware
+        
+        src: __dirname + '/../src/stylus/'
+        dest: __dirname + '/../public'
+        compress: true
+
       app.use express.compiler( src: "#{__dirname}/../src/coffee/", dest: "#{__dirname}/../public", enable: ['coffeescript'] )
       app.use express.static(__dirname + '/../public')
       app.use express.logger()
