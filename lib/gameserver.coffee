@@ -4,6 +4,13 @@ sys = require("sys")
 
 Question = require('../classes/question')
 
+Array::shuffle = ->
+for i in [0..(@.length)]
+  rand = Math.floor(Math.random() * @.length)
+  tmp = @[i]
+  @[i] = @[rand]
+  @[rand] = @[tmp]
+
 module.exports = class
   constructor: (@io) ->
     @questions = []
@@ -63,6 +70,7 @@ module.exports = class
   
   startGame: ->
     @loadQuestions global.config.game.questionsPath
+    @questions.shuffle()
     
     @question        = null
     @leftSeconds     = 0

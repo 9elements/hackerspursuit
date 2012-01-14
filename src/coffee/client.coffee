@@ -90,16 +90,11 @@ $(document).ready ->
               $('#scoreboard').append listEntry
 
           socket.on "question.wait", (result) ->
-            scoreboard = result.scoreboard
             correct = result.correct
             
             if !started
               $('#countwait').html("GOOD LUCK!")
-            $('#countdown').html('Over')
-            $('#scoreboard li').remove()
-            for entry in scoreboard
-              listEntry = $('<li>').html("#{entry.points} #{entry.name.toUpperCase()}")
-              $('#scoreboard').append listEntry
+            $('#countdown').html("OVER")
               
             for answer in [1..4]
               $('#a' + answer).fadeOut() unless correct is "a#{answer}"

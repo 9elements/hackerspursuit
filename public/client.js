@@ -100,19 +100,12 @@
               return _results;
             });
             return socket.on("question.wait", function(result) {
-              var answer, correct, scoreboard, _results;
-              scoreboard = result.scoreboard;
+              var answer, correct, _results;
               correct = result.correct;
               if (!started) {
                 $('#countwait').html("GOOD LUCK!");
               }
-              $('#countdown').html('OVER');
-              $('#scoreboard li').remove();
-              for (_i = 0, _len = scoreboard.length; _i < _len; _i++) {
-                entry = scoreboard[_i];
-                listEntry = $('<li>').html("" + entry.points + " " + (entry.name.toUpperCase()));
-                $('#scoreboard').append(listEntry);
-              }
+              $('#countdown').html("OVER");
               _results = [];
               for (answer = 1; answer <= 4; answer++) {
                 _results.push(correct !== ("a" + answer) ? $('#a' + answer).fadeOut() : void 0);

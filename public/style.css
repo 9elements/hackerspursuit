@@ -20,12 +20,7 @@ ul#answers{list-style:none;padding-left:20px;}
 ul#answers li{min-height:26px;padding-bottom:2px}
 a{color:#00b7ff;text-decoration:none}
 .tab_container{clear:both;float:left;width:100%}
-<<<<<<< HEAD
-.clickable{padding:4px;display:inline-block;cursor:pointer;color:#00b7ff}
+.clickable{padding:4px;width:400px;display:inline-block;cursor:pointer;color:#eff9d6;background-color:#9dad92}
 .selected{background-color:#00b7ff;color:#fff}
 .wrong{background-color:#8b0000;color:#fff}
 .correct{background-color:#006400;color:#fff}
-=======
-.clickable{padding:4px;width:400px;display:inline-block;cursor:pointer;color:#eff9d6;background-color:#9dad92}
-.selected{background-color:#6c7565;color:#fff}
->>>>>>> 0637b62f8b769838f37ffb089f95f790f550c68e

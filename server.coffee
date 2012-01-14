@@ -26,13 +26,6 @@ process.on "uncaughtException", (err) ->
 
 Array::remove = (e) -> @[t..t] = [] if (t = @.indexOf(e)) > -1
 
-Array::shuffle = ->
-  for i in [0..(@.length)]
-    rand = Math.floor(Math.random() * @.length)
-    tmp = @[i]
-    @[i] = @[rand]
-    @[rand] = @[tmp]
-
 arrayContainerPlayer = (a, name) ->
   i = a.length
   while i--
