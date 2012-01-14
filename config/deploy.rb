@@ -21,7 +21,12 @@ role :db,  domain, :primary => true
 namespace :deploy do
   task(:start,   :roles => :app) {}
   task(:stop,    :roles => :app) {}
+  task :refresh_symlink do
+    run "rm -rf #{current_path}/config.coffee && ln -s #{shared_path}/config.coffee #{current_path}/config.coffee"
+  end
   task(:restart, :roles => :app, :except => { :no_release => true }) {
     run "NODE_ENV=#{node_env} cd #{current_path}; npm install; forever stopall; forever start -c coffee server.coffee"
   }
 end
+
+after "deploy:symlink", "deploy:refresh_symlink"
