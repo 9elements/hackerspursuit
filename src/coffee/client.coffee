@@ -1,3 +1,6 @@
+randOrd = ->
+  Math.round(Math.random())-0.5
+
 $(document).ready ->
   soundManager.url = "/swfs/"
 
@@ -24,17 +27,8 @@ $(document).ready ->
     $(document).keydown (event) ->
       key = if event.keyCode then event.keyCode else event.which
       
-    $('#a1').click ->
-      sendAnswer(1)
-    
-    $('#a2').click ->
-      sendAnswer(2)
-        
-    $('#a3').click ->
-      sendAnswer(3)
-          
-    $('#a4').click ->
-      sendAnswer(4)
+    $('#a1, #a2, #a3, #a4').click ->
+      sendAnswer($(this).attr("data-answer"))
   
   connect = ->
     socket = io.connect(host, { 'port': parseInt(port) })
@@ -55,17 +49,22 @@ $(document).ready ->
               $('#a' + answer).fadeIn('fast')
               
             $('#question').text("#{question.category}: #{question.text}")
-            $('#a1').removeClass("selected").text(question.a1)
-            $('#a2').removeClass("selected").text(question.a2)
-            $('#a3').removeClass("selected").text(question.a3)
-            $('#a4').removeClass("selected").text(question.a4)
+
+            keys = [1..4]
+            keys.sort randOrd
+
+            $('#a1').attr("data-answer", keys[0]).removeClass("selected").text(question['a' + keys[0]])
+            $('#a2').attr("data-answer", keys[1]).removeClass("selected").text(question['a' + keys[1]])
+            $('#a3').attr("data-answer", keys[2]).removeClass("selected").text(question['a' + keys[2]])
+            $('#a4').attr("data-answer", keys[3]).removeClass("selected").text(question['a' + keys[3]])
           
           socket.on "answer.correct", (answer) ->
-            $('#' + answer).addClass("selected")
+            console.log answer
+            $('ul#answers li div[data-answer=' + answer + ']').addClass("selected")
             soundManager.play "correct"
           
           socket.on "answer.wrong", (answer) ->
-            $('#' + answer).addClass("selected")
+            $('ul#answers li div[data-answer=' + answer + ']').addClass("selected")
             soundManager.play "wrong"
           
           socket.on "answer.twice", ->
@@ -94,7 +93,7 @@ $(document).ready ->
             $('#countdown').html("OVER")
               
             for answer in [1..4]
-              $('#a' + answer).fadeOut() unless correct is "a#{answer}"
+              $('ul#answers li div[data-answer=' + answer + ']').fadeOut() unless correct is "a#{answer}"
           
         else
           alert "Could not authenticate: #{data.error}"

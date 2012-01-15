@@ -23,6 +23,7 @@ module.exports = class
     @players.push player
 
     player.client.on 'answer.set', (msg) =>
+      console.log msg
       return unless player.client.authenticated
       try 
         if not @acceptingAnswers
@@ -32,9 +33,9 @@ module.exports = class
           if n > 0 and n < 5
             if player.setAnswer "a#{n}"
               if player.checkAnswer @question.correct
-                player.client.emit 'answer.correct', "a#{n}"
+                player.client.emit 'answer.correct', n
               else
-                player.client.emit 'answer.wrong', "a#{n}"
+                player.client.emit 'answer.wrong', n
               @broadcastScoreboard()
             else
               player.client.emit 'answer.twice', null

@@ -1,5 +1,9 @@
 (function() {
+  var randOrd;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  randOrd = function() {
+    return Math.round(Math.random()) - 0.5;
+  };
   $(document).ready(function() {
     var addAlert, connect, sendAnswer, socket, startGame, started;
     soundManager.url = "/swfs/";
@@ -25,17 +29,8 @@
         var key;
         return key = event.keyCode ? event.keyCode : event.which;
       });
-      $('#a1').click(function() {
-        return sendAnswer(1);
-      });
-      $('#a2').click(function() {
-        return sendAnswer(2);
-      });
-      $('#a3').click(function() {
-        return sendAnswer(3);
-      });
-      return $('#a4').click(function() {
-        return sendAnswer(4);
+      return $('#a1, #a2, #a3, #a4').click(function() {
+        return sendAnswer($(this).attr("data-answer"));
       });
     };
     connect = function() {
@@ -49,7 +44,7 @@
           startGame();
           if (data.success) {
             socket.on("question.new", function(question) {
-              var answer;
+              var answer, keys;
               if (!started) {
                 $('#view-wait').hide();
                 $('#view-game').fadeIn();
@@ -60,17 +55,20 @@
                 $('#a' + answer).fadeIn('fast');
               }
               $('#question').text("" + question.category + ": " + question.text);
-              $('#a1').removeClass("selected").text(question.a1);
-              $('#a2').removeClass("selected").text(question.a2);
-              $('#a3').removeClass("selected").text(question.a3);
-              return $('#a4').removeClass("selected").text(question.a4);
+              keys = [1, 2, 3, 4];
+              keys.sort(randOrd);
+              $('#a1').attr("data-answer", keys[0]).removeClass("selected").text(question['a' + keys[0]]);
+              $('#a2').attr("data-answer", keys[1]).removeClass("selected").text(question['a' + keys[1]]);
+              $('#a3').attr("data-answer", keys[2]).removeClass("selected").text(question['a' + keys[2]]);
+              return $('#a4').attr("data-answer", keys[3]).removeClass("selected").text(question['a' + keys[3]]);
             });
             socket.on("answer.correct", function(answer) {
-              $('#' + answer).addClass("selected");
+              console.log(answer);
+              $('ul#answers li div[data-answer=' + answer + ']').addClass("selected");
               return soundManager.play("correct");
             });
             socket.on("answer.wrong", function(answer) {
-              $('#' + answer).addClass("selected");
+              $('ul#answers li div[data-answer=' + answer + ']').addClass("selected");
               return soundManager.play("wrong");
             });
             socket.on("answer.twice", function() {
@@ -106,7 +104,7 @@
               $('#countdown').html("OVER");
               _results = [];
               for (answer = 1; answer <= 4; answer++) {
-                _results.push(correct !== ("a" + answer) ? $('#a' + answer).fadeOut() : void 0);
+                _results.push(correct !== ("a" + answer) ? $('ul#answers li div[data-answer=' + answer + ']').fadeOut() : void 0);
               }
               return _results;
             });
