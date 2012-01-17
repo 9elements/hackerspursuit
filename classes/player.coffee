@@ -1,15 +1,5 @@
-randomString = ->
-  chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz"
-  randomstring = ''
-  for i in [0..32]
-    rnum = Math.floor(Math.random() * chars.length)
-    randomstring = randomstring + "#{chars.substring(rnum,rnum+1)}"
-  
-  return randomstring
-
 module.exports = class
   constructor: (@client, @user) ->
-    @id = randomString()
     @resetAnswer()
     @points = 0
   

@@ -22,4 +22,4 @@ module.exports = class
         else
           if callback? then callback()
     
-    @users = new User @client, @rooms
+    @users = new User @client
