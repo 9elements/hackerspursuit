@@ -1,4 +1,3 @@
-
 .view-container
   - if(!everyauth.loggedIn)
     #view-login.view-content
@@ -43,17 +42,16 @@
         .display-overlay
 
       .chat CHAT
-        input(type='text', id='chat-msg')
+        form#chat-form
+          input(type='text', id='chat-msg')
+        .display-overlay
 
       .slot
-        
-      .paper
-        Well, the way they make shows is, they make one show. That show's called a pilot. Then they show that show to the people who make shows, and on the strength of that one show they decide if they're going to make more shows. Some pilots get picked and become television programs. Some don't, become nothing. She starred in one of the ones that became nothing.
 
-    h3 Messages
-    .notice-container
-    ul#alert
-    ul#notice
+      .paper
+        .slot-shadow
+        ul#messages
+        .paper-bottom
 
     - if (everyauth.user)
       #userid(style="display: none;") #{everyauth.user.id}

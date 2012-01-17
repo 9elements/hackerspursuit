@@ -23,7 +23,6 @@ module.exports = class
     @players.push player
 
     player.client.on 'answer.set', (msg) =>
-      console.log msg
       return unless player.client.authenticated
       try 
         if not @acceptingAnswers
@@ -39,6 +38,10 @@ module.exports = class
               @broadcastScoreboard()
             else
               player.client.emit 'answer.twice', null
+
+    player.client.on 'chat.msg', (msg) =>
+      return unless player.client.authenticated
+      @io.sockets.in("nerds").emit('chat.msg', {name: player.user.name, msg: msg.content})    
 
   loadQuestions: (path) ->
     files = fs.readdirSync(path)

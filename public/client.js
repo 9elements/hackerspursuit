@@ -5,7 +5,7 @@
     return Math.round(Math.random()) - 0.5;
   };
   $(document).ready(function() {
-    var addAlert, connect, sendAnswer, socket, startGame, started;
+    var addAlert, connect, listEntry, sendAnswer, socket, startGame, started;
     soundManager.url = "/swfs/";
     soundManager.onready(function() {
       soundManager.createSound({
@@ -90,10 +90,13 @@
               _results = [];
               for (_i = 0, _len = scoreboard.length; _i < _len; _i++) {
                 entry = scoreboard[_i];
-                listEntry = $('<li>').html("" + entry.name + ": " + entry.points);
+                listEntry = $('<li>').html("" + entry.points + " " + (entry.name.substring(0, 8)));
                 _results.push($('#scoreboard').append(listEntry));
               }
               return _results;
+            });
+            socket.on("chat.msg", function(result) {
+              return listEntry(result.name, result.msg);
             });
             return socket.on("question.wait", function(result) {
               var answer, correct, _results;
@@ -123,11 +126,30 @@
       });
     };
     /* Alerts and Notices */
-    addAlert = function(msg) {
-      var alertEntry;
-      alertEntry = $('<li>').html("Alert: " + msg).fadeIn().delay(3000).fadeOut();
-      return $('#alert').append(alertEntry.toUpperCase());
+    listEntry = function(name, msg) {
+      var message;
+      message = $('<li>').html("<div class='message-wrapper'><span class='name'>" + name + ":</span> " + msg + "</div>");
+      $('#messages').prepend(message);
+      return setTimeout(function() {
+        return message.css('height', '28px');
+      }, 1);
     };
+    addAlert = function(msg) {
+      return listEntry("System", msg);
+    };
+    /* Chat */
+    $('#chat-form').bind('submit', function(e) {
+      var message;
+      e.preventDefault();
+      if (socket == null) {
+        return;
+      }
+      message = $('#chat-msg').val();
+      $('#chat-msg').val("");
+      return socket.emit('chat.msg', {
+        content: message
+      });
+    });
     /* Views */
     $('.view-content').hide();
     return connect();

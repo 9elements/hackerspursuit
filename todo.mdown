@@ -23,3 +23,18 @@
 	* Kommando: find * | xargs grep -c nerd_level | grep 0
 * Line Overlay fixen
 * Statt JS upcase mit css transform arbeiten
+
+# Bugs
+
+## Server säuft nach einiger Zeit ab
+
+info  - transport end
+   debug - set close timeout for client 951614954806892701
+   debug - cleared close timeout for client 951614954806892701
+   debug - cleared heartbeat interval for client 951614954806892701
+   debug - discarding transport
+UNCAUGHT EXCEPTION:
+TypeError: Object [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object] has no method 'shuffle'
+    at _Class.<anonymous> (/Users/dhoelzgen/Develop/JavaScript/Node/Hackerspursuit/lib/gameserver.coffee:166:24)
+    at Object._onTimeout (/Users/dhoelzgen/Develop/JavaScript/Node/Hackerspursuit/lib/gameserver.coffee:3:61)
+    at Timer.ontimeout (timers.js:84:39)

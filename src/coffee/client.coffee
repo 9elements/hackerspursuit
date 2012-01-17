@@ -82,8 +82,11 @@ $(document).ready ->
           socket.on "scoreboard", (scoreboard) ->
             $('#scoreboard li').remove()
             for entry in scoreboard
-              listEntry = $('<li>').html("#{entry.name}: #{entry.points}")
+              listEntry = $('<li>').html("#{entry.points} #{entry.name.substring(0, 8)}")
               $('#scoreboard').append listEntry
+          
+          socket.on "chat.msg", (result) ->
+            listEntry result.name, result.msg
 
           socket.on "question.wait", (result) ->
             correct = result.correct
@@ -103,10 +106,25 @@ $(document).ready ->
     socket.emit('answer.set', { answer: n })
    
   ### Alerts and Notices ###
+
+  listEntry = (name, msg) ->
+    message = $('<li>').html("<div class='message-wrapper'><span class='name'>#{name}:</span> #{msg}</div>")
+    $('#messages').prepend(message)
+    setTimeout ->
+      message.css('height', '28px')
+    , 1
   
   addAlert = (msg) ->
-    alertEntry = $('<li>').html("Alert: #{msg}").fadeIn().delay(3000).fadeOut()
-    $('#alert').append alertEntry.toUpperCase()
+    listEntry "System", msg
+
+  ### Chat ###
+
+  $('#chat-form').bind 'submit', (e) ->
+    e.preventDefault()
+    return unless socket?
+    message = $('#chat-msg').val()
+    $('#chat-msg').val("")
+    socket.emit('chat.msg', { content: message })
       
   ### Views ###
   
