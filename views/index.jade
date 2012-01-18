@@ -1,13 +1,17 @@
 .view-container
   - if(!everyauth.loggedIn)
     #view-login.view-content
-      h2 Login
       .login-container
-        ul
-          li
-            a(href="/auth/twitter") Login with Twitter
-          li
-            a(href="/auth/facebook") Login with Facebook
+        .display.listcontainer.clearfix
+          h2 Welcome
+          ul
+            li
+              a.clickable(href="/auth/twitter") Login with Twitter
+            li
+              a.clickable(href="/auth/facebook") Login with Facebook
+
+          .display-overlay
+
   - else
     script(type="text/javascript")
       var host = "#{host}";
