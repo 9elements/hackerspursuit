@@ -42,6 +42,10 @@ $(document).ready ->
             if !started
               $('#view-wait').hide()
               $('#view-game').fadeIn()
+              setTimeout ->
+                listEntry "System", "Navigate to /highscore for overall score"
+              , 3000
+
               started = true
             
             $('.selected').removeClass('selected')
