@@ -12,10 +12,15 @@ module.exports = class
     @answer = 'a0'
     @wasRight = false
     
-  checkAnswer: (n) ->
-    if n == @answer
+  checkAnswer: (question) ->
+    if question.correct == @answer
       @points += 1
       @wasRight = true
+
+      # Save data to persistent store
+      global.store.scores.addOverall @user.id
+      global.store.scores.addReal @user.id, question.category, question.id
+
       return true
     else
       return false

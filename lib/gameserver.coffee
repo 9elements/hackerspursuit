@@ -31,7 +31,7 @@ module.exports = class
           n = parseInt(msg.answer)
           if n > 0 and n < 5
             if player.setAnswer "a#{n}"
-              if player.checkAnswer @question.correct
+              if player.checkAnswer @question
                 player.client.emit 'answer.correct', n
               else
                 player.client.emit 'answer.wrong', n
@@ -47,14 +47,20 @@ module.exports = class
     files = fs.readdirSync(path)
     for name in files
       fileName = "#{path}/#{name}"
+
+      # Use own catname and id
+      catName = path.match(/(\w*)$/)[0]
+      questionId = "question-#{catName}-#{name}"
+
       fileStats = fs.statSync(fileName)
       if fileStats.isFile()
         unless fileName.indexOf(".json") is -1
           try
             rawQuestion = JSON.parse(fs.readFileSync(fileName))
-            @questions.push ( new Question rawQuestion.question.nerdLevel,
+            @questions.push ( new Question questionId,
+              rawQuestion.question.nerdLevel,
               rawQuestion.question.text,
-              rawQuestion.question.category,
+              catName,
               rawQuestion.question.a1,
               rawQuestion.question.a2,
               rawQuestion.question.a3,
@@ -62,14 +68,13 @@ module.exports = class
               rawQuestion.question.right_answer,
               rawQuestion.question.created_at,
               rawQuestion.question.created_by )
-              
           catch error
             sys.puts "Warning: Could not parse question #{fileName}"
       else
         @loadQuestions fileName
   
   startGame: ->
-    @loadQuestions global.config.game.questionsPath
+    @loadQuestions( global.config.game.questionsPath + "/algorithms")
     @questions.sort randOrd
     
     @question        = null
@@ -129,7 +134,7 @@ module.exports = class
     @acceptingAnswers = true
     if @currentQuestion == @questions.length
       @currentQuestion = 0
-      @questions.shuffle()
+      @questions.sort randOrd
 
     @question = @questions[@currentQuestion]
 

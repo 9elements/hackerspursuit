@@ -63,6 +63,9 @@ gameserver.startGame()
 app.get '/', (req, res) ->
   res.render 'index', { host: config.server.host, port: config.server.port }
 
+app.get '/highscore', (req, res) ->
+  res.render 'highscore', { list: store.users.highscoreTable }
+
 # as soon as a user authenticates himself with a get request,
 # make him join the "/nerds" room to join the game and receive
 # question events
