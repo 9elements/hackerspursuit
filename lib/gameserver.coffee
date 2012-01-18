@@ -1,6 +1,7 @@
 fs = require("fs")
 path = require("path")
 sys = require("sys")
+util = require("util")
 
 Question = require('../classes/question')
 
@@ -12,6 +13,7 @@ module.exports = class
     @questions = []
     @players = []
     @clients = {}
+    @highscore = []
   
   getClientById: (id) ->
     if @clients.hasOwnProperty(id)
@@ -116,7 +118,8 @@ module.exports = class
       })
     
     @broadcastScoreboard()
-    
+    @rebuildScoreList()
+
     setTimeout @initCycle, global.config.game.pauseMilliseconds
     
   countDown: (seconds) =>
@@ -126,6 +129,30 @@ module.exports = class
       setTimeout @countDown, 1000
     else
       @endCycle()
+
+  rebuildScoreList: =>
+    finishedCount = 0
+    newHighscore = []
+
+    checkFinish = =>
+      finishedCount -= 1
+      if finishedCount == 0
+        @highscore = newHighscore
+
+    addEntryFor = (list_entry, i) =>
+      global.store.scores.highScoreById list_entry, (err, score) ->
+        newHighscore[i] = { score: score }
+        global.store.users.findById list_entry, (err, user) ->
+          newHighscore[i].username = user.name
+          checkFinish()
+
+    global.store.scores.highScoreIds (err, highest) ->
+      finishedCount = highest.length
+      i = 0
+      for list_entry in highest
+        addEntryFor(list_entry, i)
+        i += 1
+
 
   initCycle: =>
     for player in @players

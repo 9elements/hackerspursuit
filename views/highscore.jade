@@ -1,8 +1,11 @@
 .view-container
-  .display.with-background.clearfix
+  .display.scorecontainer.clearfix
     h2 Highscore
     ul
-      li test
-      li test
+      - each score in list
+        li #{score.score} - #{score.username}
+      
+      - if (list.length === 0)
+        li Game is currently inactive
 
     .display-overlay

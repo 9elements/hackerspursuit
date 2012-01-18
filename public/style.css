@@ -27,6 +27,9 @@ h1,h2,h3{font-weight:normal}
 .paper ul li .message-wrapper{font:14px 'MyUnderwoodRegular','SilkscreenNormal',Arial,sans-serif;overflow:hidden;white-space:nowrap;background-image:url("/img/paper.png");background-repeat:repeat-y;padding-left:27px;padding-right:27px;padding-top:8px;padding-bottom:7px;width:100%;position:absolute;bottom:0;}
 .paper ul li .message-wrapper .name{color:#000}
 .paper .paper-bottom{background-color:#444;background-image:url("/img/paper-bottom.png");background-repeat:repeat-x;height:17px;width:100%}
+.scorecontainer{width:660px;padding:20px;}
+.scorecontainer ul{list-style:none;padding:0;}
+.scorecontainer ul li{padding-top:10px}
 ul#answers{list-style:none;padding-left:0;}
 ul#answers li{min-height:24px;padding-bottom:2px}
 a{color:#00b7ff;text-decoration:none}
