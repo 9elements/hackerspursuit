@@ -1,10 +1,10 @@
 # Features
 
-* Highscorelise (Persistent, mit Fortschrittsbalken gemessen an allen vorhandenen Fragen)
-	* Evtl. Frage merken, so dass beste Kategorie oder so angezeigt werde kann
+* Highscorelise (Persistent, mit Fortschrittsbalken gemessen an allen vorhandenen Fragen) **DRIN**
+	* Evtl. Frage merken, so dass beste Kategorie oder so angezeigt werde kann **DRIN**
 * Anzeige, ob jemand schon geantwortet hat (evtl. auch Indikator, ob diese richtig war)
 * Badges (z.B. 5 richtige Antworten in einer Reihe)
-* Chat
+* Chat **DRIN**
 * Sounds
 
 # Todo
@@ -18,23 +18,8 @@
 
 # TODO Daniel
 
-* .correct und .wrong Class für Antworten
+* Hover für Antworten
+* Chat absichern
+* Detailiertere Highscoreliste und Profilansichten (mit Aufschlüsselung nach Kategorie, die Daten sind vorhanden)
 * Es gibt immer noch Fragen bei denen Antworten fehlen, und Fragen bei denen Nerd Level fehlt
 	* Kommando: find * | xargs grep -c nerd_level | grep 0
-* Line Overlay fixen
-* Statt JS upcase mit css transform arbeiten
-
-# Bugs
-
-## Server säuft nach einiger Zeit ab
-
-info  - transport end
-   debug - set close timeout for client 951614954806892701
-   debug - cleared close timeout for client 951614954806892701
-   debug - cleared heartbeat interval for client 951614954806892701
-   debug - discarding transport
-UNCAUGHT EXCEPTION:
-TypeError: Object [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object] has no method 'shuffle'
-    at _Class.<anonymous> (/Users/dhoelzgen/Develop/JavaScript/Node/Hackerspursuit/lib/gameserver.coffee:166:24)
-    at Object._onTimeout (/Users/dhoelzgen/Develop/JavaScript/Node/Hackerspursuit/lib/gameserver.coffee:3:61)
-    at Timer.ontimeout (timers.js:84:39)
