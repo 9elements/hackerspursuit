@@ -11,10 +11,11 @@
 
 * Jade durch haml-coffee ersetzen
 * Everyauth mit rein
-* Mini-Profile vorsehen (evtl. mongoose nutzen)
-* Node Env Zeug einbauen
+* Mini-Profile vorsehen
+* Node Env Zeug einbauen **Drin**
   * Domain u. Port
   * OAuth Daten
+* Prüfen: Wird evtl. der falsche User rausgeschmissen bei Disconnect (2 User, beide gleiche IP, Problem bei Refresh)
 
 # TODO Daniel
 
