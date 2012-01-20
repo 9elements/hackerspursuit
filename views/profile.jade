@@ -1,15 +1,18 @@
 .view-container
   .display.listcontainer.clearfix
-    h2 Profile #{profileName}
-    
-    h3 Right answers
-    ul
-      li Overall #{overallScore}
-      li Unique #{realScore}
+    - if (typeof error !== "undefined")
+      h2 Error #{error}
+    - else
+      h2 Profile #{profileName}
+      
+      h3 Right answers
+      ul
+        li Overall #{overallScore}
+        li Unique #{realScore}
 
-    h3 Unique by category
-    ul
-      - each category in categoryScore
-        li #{category.name}: #{category.score}
+      h3 Unique by category
+      ul
+        - each category in categoryScore
+          li #{category.name}: #{category.score}
 
     .display-overlay
