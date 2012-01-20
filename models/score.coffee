@@ -27,7 +27,7 @@ module.exports = class
       # Count by category
       @client.zscore "score:real:category:#{questionCategory}", userId, (err, currentRealCategory) =>
         if currentRealCategory?
-          newScore = currentRealCategory + 1
+          newScore = parseInt(currentRealCategory) + 1
           @client.zadd "score:real:category:#{questionCategory}", newScore, userId
         else
           @client.zadd "score:real:category:#{questionCategory}", 1, userId
@@ -36,6 +36,18 @@ module.exports = class
     @client.zrevrange "score:real:all", 0, 10, (err, highest) ->
       callback err, highest
 
-  highScoreById: (id, callback) ->
+  scoreById: (id, callback) ->
     @client.zscore "score:real:all", id, (err, score) ->
+      callback err, score
+
+  overallById: (id, callback) ->
+    @client.zscore "score:overall", id, (err, score) ->
+      callback err, score
+
+  categoryKeys: (callback) ->
+    @client.keys "score:real:category:*", (err, keys) ->
+      callback err, keys
+
+  scoreByCategory: (category, id, callback) ->
+    @client.zscore category, id, (err, score) ->
       callback err, score

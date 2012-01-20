@@ -66,6 +66,9 @@ app.get '/', (req, res) ->
 app.get '/highscore', (req, res) ->
   res.render 'highscore', { list: gameserver.highscore }
 
+app.get '/profile/:id', (req, res) ->
+  gameserver.renderProfile(req, res)
+
 # as soon as a user authenticates himself with a get request,
 # make him join the "/nerds" room to join the game and receive
 # question events

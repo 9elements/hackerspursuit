@@ -130,6 +130,50 @@ module.exports = class
     else
       @endCycle()
 
+  renderProfile: (req, res) ->
+    userId = req.params.id
+    currentUser = req.user
+
+    global.store.users.findById userId, (err, user) ->
+      finishedCount = 0
+      realScore = 0
+      overallScore = 0
+      categoryScore = []
+
+      checkFinish = =>
+        finishedCount -= 1
+        if finishedCount == 0
+          res.render 'profile', {
+            ownProfile: (req.user.id == userId)
+            profileName: user.name
+            realScore: realScore
+            overallScore: overallScore
+            categoryScore: categoryScore
+          }
+
+      addScoreForCategory = (category) ->
+        global.store.scores.scoreByCategory category, userId, (err, score) ->
+          categoryName = category.match(/(\w*)$/)[0].toUpperCase()
+          categoryScore.push {
+            name: categoryName
+            score: score
+          }
+          checkFinish()
+
+      global.store.scores.categoryKeys (err, categories) ->
+        finishedCount = categories.length + 2
+        addScoreForCategory category for category in categories
+        
+        global.store.scores.scoreById userId, (err, score) ->
+          realScore = score
+          checkFinish()
+
+        global.store.scores.overallById userId, (err, score) ->
+          overallScore = score
+          checkFinish()
+
+
+
   rebuildScoreList: =>
     finishedCount = 0
     newHighscore = []
@@ -140,10 +184,11 @@ module.exports = class
         @highscore = newHighscore
 
     addEntryFor = (list_entry, i) =>
-      global.store.scores.highScoreById list_entry, (err, score) ->
+      global.store.scores.scoreById list_entry, (err, score) ->
         newHighscore[i] = { score: score }
         global.store.users.findById list_entry, (err, user) ->
-          newHighscore[i].username = user.name
+          newHighscore[i].userName = user.name
+          newHighscore[i].userId = user.id
           checkFinish()
 
     global.store.scores.highScoreIds (err, highest) ->

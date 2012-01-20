@@ -37,3 +37,4 @@ a{color:#00b7ff;text-decoration:none}
 .clickable{padding:4px;width:400px;display:inline-block;cursor:pointer;color:#eff9d6;background-color:#9dad92}
 .clickable:hover{background-color:#6c7565;opacity:.7}
 .selected{background-color:#6c7565}
+.selected:hover{background-color:#6c7565;opacity:1}
