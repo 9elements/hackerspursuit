@@ -93,7 +93,7 @@ module.exports = class
         for player in @players
           if player.client is client
             @players.splice i, 1
-        i++
+          i++
 
         if @clients.hasOwnProperty client.id
           delete @clients[client.id]
