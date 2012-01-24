@@ -26,13 +26,14 @@ h1,h2,h3{font-weight:normal}
 .paper ul li{height:0;overflow:hidden;-webkit-transition:height .5s ease;-moz-transition:height .5s ease;-o-transition:height .5s ease;position:relative;}
 .paper ul li .message-wrapper{font:14px 'MyUnderwoodRegular','SilkscreenNormal',Arial,sans-serif;overflow:hidden;white-space:nowrap;background-image:url("/img/paper.png");background-repeat:repeat-y;padding-left:27px;padding-right:27px;padding-top:8px;padding-bottom:7px;width:100%;position:absolute;bottom:0;}
 .paper ul li .message-wrapper .name{color:#000}
+.paper ul li .message-wrapper .a{color:#000}
 .paper .paper-bottom{background-color:#444;background-image:url("/img/paper-bottom.png");background-repeat:repeat-x;height:17px;width:100%}
 .listcontainer{width:660px;padding:20px;}
 .listcontainer ul{list-style:none;padding:0;}
 .listcontainer ul li{padding-top:10px}
 ul#answers{list-style:none;padding-left:0;}
 ul#answers li{min-height:24px;padding-bottom:2px}
-a{color:#00b7ff;text-decoration:none}
+a{color:#566050;text-decoration:none}
 .tab_container{clear:both;float:left;width:100%}
 .clickable{padding:4px;width:400px;display:inline-block;cursor:pointer;color:#eff9d6;background-color:#9dad92}
 .clickable:hover{background-color:#6c7565;opacity:.7}

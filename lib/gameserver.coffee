@@ -76,7 +76,7 @@ module.exports = class
         @loadQuestions fileName
   
   startGame: ->
-    @loadQuestions( global.config.game.questionsPath )
+    @loadQuestions( global.config.game.questionsPath + "/flash" )
     @questions.sort randOrd
     
     @question        = null
@@ -103,7 +103,7 @@ module.exports = class
   broadcastScoreboard: =>
     scoreboard = []
     for player in @players
-      scoreboard.push { name: player.user.name, points: player.points, wasRight: player.wasRight }
+      scoreboard.push { name: player.user.name, points: player.points, wasRight: player.wasRight, userId: player.user.id }
     
     scoreboard.sort (a, b) ->
       return b.points - a.points

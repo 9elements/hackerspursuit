@@ -23,6 +23,11 @@
     socket = null;
     started = false;
     startGame = function() {
+      if (started) {
+        $('#countwait').html("Reconnecting...");
+        $('#view-game').hide();
+        started = false;
+      }
       $('#view-login').hide();
       $('#view-wait').fadeIn();
       $(document).keydown(function(event) {
@@ -49,7 +54,7 @@
                 $('#view-wait').hide();
                 $('#view-game').fadeIn();
                 setTimeout(function() {
-                  return listEntry("System", "Navigate to /highscore for overall score");
+                  return listEntry("System", "Navigate to <a href=\"/highscore\" target=\"_blank\">/highscore</a> for overall score");
                 }, 3000);
                 started = true;
               }
@@ -75,10 +80,10 @@
               return soundManager.play("wrong");
             });
             socket.on("answer.twice", function() {
-              return addAlert("ALREADY SELECTED AN ANSWER.");
+              return addAlert("You already selected an answer.");
             });
             socket.on("answer.over", function() {
-              return addAlert("TIME IS OVER.");
+              return addAlert("Time is over.");
             });
             socket.on("question.countdown", function(seconds) {
               if (started) {
@@ -93,7 +98,10 @@
               _results = [];
               for (_i = 0, _len = scoreboard.length; _i < _len; _i++) {
                 entry = scoreboard[_i];
-                listEntry = $('<li>').html("" + entry.points + " " + (entry.name.substring(0, 8)));
+                listEntry = $('<li>').append($('<a>').attr({
+                  href: "/profile/" + entry.userId,
+                  target: "_blank"
+                }).html("" + entry.points + " " + (entry.name.substring(0, 8))));
                 _results.push($('#scoreboard').append(listEntry));
               }
               return _results;
@@ -105,9 +113,9 @@
               var answer, correct, _results;
               correct = result.correct;
               if (!started) {
-                $('#countwait').html("GOOD LUCK!");
+                $('#countwait').html("Good luck!");
               }
-              $('#countdown').html("OVER");
+              $('#countdown').html("Over");
               _results = [];
               for (answer = 1; answer <= 4; answer++) {
                 _results.push(correct !== ("a" + answer) ? $('ul#answers li div[data-answer=' + answer + ']').fadeOut() : void 0);
