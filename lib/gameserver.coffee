@@ -76,7 +76,7 @@ module.exports = class
         @loadQuestions fileName
   
   startGame: ->
-    @loadQuestions( global.config.game.questionsPath + "/flash" )
+    @loadQuestions( global.config.game.questionsPath)
     @questions.sort randOrd
     
     @question        = null
