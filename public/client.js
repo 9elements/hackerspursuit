@@ -141,7 +141,10 @@
       message = $('<li>').html("<div class='message-wrapper'><span class='name'>" + name + ":</span> " + msg + "</div>");
       $('#messages').prepend(message);
       return setTimeout(function() {
-        return message.css('height', '28px');
+        message.css('height', '28px');
+        if ($('#messages li').length > 30) {
+          return $('#messages li:last-child').remove();
+        }
       }, 1);
     };
     addAlert = function(msg) {

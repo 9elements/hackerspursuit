@@ -123,6 +123,8 @@ $(document).ready ->
     $('#messages').prepend(message)
     setTimeout ->
       message.css('height', '28px')
+      if $('#messages li').length > 30
+        $('#messages li:last-child').remove()
     , 1
   
   addAlert = (msg) ->
