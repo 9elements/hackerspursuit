@@ -43,7 +43,9 @@ module.exports = class
 
     player.client.on 'chat.msg', (msg) =>
       return unless player.client.authenticated
-      @io.sockets.in("nerds").emit('chat.msg', {name: player.user.name, msg: msg.content})    
+      chatMsg = msg.content.replace(/&/g, '').replace(/</g, '').replace(/"/g, '&quot;')
+      return unless chatMsg.length > 0
+      @io.sockets.in("nerds").emit('chat.msg', {name: player.user.name, msg: chatMsg})    
 
   loadQuestions: (path) ->
     files = fs.readdirSync(path)

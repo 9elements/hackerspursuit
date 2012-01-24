@@ -19,8 +19,4 @@
 
 # TODO Daniel
 
-* Hover für Antworten
-* Chat absichern
 * Detailiertere Highscoreliste und Profilansichten (mit Aufschlüsselung nach Kategorie, die Daten sind vorhanden)
-* Es gibt immer noch Fragen bei denen Antworten fehlen, und Fragen bei denen Nerd Level fehlt
-	* Kommando: find * | xargs grep -c nerd_level | grep 0
