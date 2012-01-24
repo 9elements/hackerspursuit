@@ -17,30 +17,30 @@ $(document).ready ->
 
   ### Communication ###
   
-  socket   = null
-  started  = false
+  socket  = null
+  started = false
+  loaded  = false
 
   startGame = ->
-    if started
-      $('#countwait').html("Reconnecting...")
-      $('#view-game').hide()
-      started = false
-
     $('#view-login').hide()
     $('#view-wait').fadeIn()
-    
-    $(document).keydown (event) ->
-      key = if event.keyCode then event.keyCode else event.which
-      
-    $('#a1, #a2, #a3, #a4').click ->
-      sendAnswer($(this).attr("data-answer"))
   
   connect = ->
     socket = io.connect(host, { 'port': parseInt(port) })
+
+    socket.on "disconnect", ->
+      $('#header-countwait').html("Trying to reconnect")
+      $('#countwait').html("Pease stand by...")
+      $('#view-game').hide()
+      started = false
+
+
     socket.on "connect", ->
       id = socket.socket.sessionid
       $.getJSON "/user/auth-socket.json?id=#{id}", (data) =>
         startGame()
+        return if loaded
+
         if data.success
 
           socket.on "question.new", (question) ->
@@ -52,6 +52,7 @@ $(document).ready ->
               , 3000
 
               started = true
+              loaded = true
             
             $('.selected').removeClass('selected')
             for answer in [1..4]
@@ -126,6 +127,14 @@ $(document).ready ->
   
   addAlert = (msg) ->
     listEntry "System", msg
+
+  ### Buttons ###
+
+  $(document).keydown (event) ->
+    key = if event.keyCode then event.keyCode else event.which
+        
+  $('#a1, #a2, #a3, #a4').click ->
+    sendAnswer($(this).attr("data-answer"))
 
   ### Chat ###
 

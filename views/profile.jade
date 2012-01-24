@@ -1,18 +1,21 @@
 .view-container
-  .display.listcontainer.clearfix
+  .display.profile.listcontainer.clearfix
     - if (typeof error !== "undefined")
       h2 Error #{error}
     - else
       h2 Profile #{profileName}
       
-      h3 Right answers
-      ul
-        li Overall #{overallScore}
-        li Unique #{realScore}
+      h3 #{overallScore} Right answers
+      ul.profile-list
+        li
+          .score #{Math.round(realScore / categoryCounts.all * 100)}% Unique
+          .details #{realScore} / #{categoryCounts.all}
 
       h3 Unique by category
-      ul
+      ul.profile-list
         - each category in categoryScore
-          li #{category.name}: #{category.score}
+          li 
+            .score #{Math.round(category.score / categoryCounts[category.name.toLowerCase()] * 100)}% #{category.name}
+            .details #{category.score} / #{categoryCounts[category.name.toLowerCase()]}
 
     .display-overlay

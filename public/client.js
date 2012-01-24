@@ -5,7 +5,7 @@
     return Math.round(Math.random()) - 0.5;
   };
   $(document).ready(function() {
-    var addAlert, connect, listEntry, sendAnswer, socket, startGame, started;
+    var addAlert, connect, listEntry, loaded, sendAnswer, socket, startGame, started;
     soundManager.url = "/swfs/";
     soundManager.onready(function() {
       soundManager.createSound({
@@ -22,31 +22,29 @@
     /* Communication */
     socket = null;
     started = false;
+    loaded = false;
     startGame = function() {
-      if (started) {
-        $('#countwait').html("Reconnecting...");
-        $('#view-game').hide();
-        started = false;
-      }
       $('#view-login').hide();
-      $('#view-wait').fadeIn();
-      $(document).keydown(function(event) {
-        var key;
-        return key = event.keyCode ? event.keyCode : event.which;
-      });
-      return $('#a1, #a2, #a3, #a4').click(function() {
-        return sendAnswer($(this).attr("data-answer"));
-      });
+      return $('#view-wait').fadeIn();
     };
     connect = function() {
       socket = io.connect(host, {
         'port': parseInt(port)
+      });
+      socket.on("disconnect", function() {
+        $('#header-countwait').html("Trying to reconnect");
+        $('#countwait').html("Pease stand by...");
+        $('#view-game').hide();
+        return started = false;
       });
       return socket.on("connect", function() {
         var id;
         id = socket.socket.sessionid;
         return $.getJSON("/user/auth-socket.json?id=" + id, __bind(function(data) {
           startGame();
+          if (loaded) {
+            return;
+          }
           if (data.success) {
             socket.on("question.new", function(question) {
               var answer, keys;
@@ -57,6 +55,7 @@
                   return listEntry("System", "Navigate to <a href=\"/highscore\" target=\"_blank\">/highscore</a> for overall score");
                 }, 3000);
                 started = true;
+                loaded = true;
               }
               $('.selected').removeClass('selected');
               for (answer = 1; answer <= 4; answer++) {
@@ -148,6 +147,14 @@
     addAlert = function(msg) {
       return listEntry("System", msg);
     };
+    /* Buttons */
+    $(document).keydown(function(event) {
+      var key;
+      return key = event.keyCode ? event.keyCode : event.which;
+    });
+    $('#a1, #a2, #a3, #a4').click(function() {
+      return sendAnswer($(this).attr("data-answer"));
+    });
     /* Chat */
     $('#chat-form').bind('submit', function(e) {
       var message;

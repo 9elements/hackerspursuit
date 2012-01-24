@@ -11,6 +11,7 @@ randOrd = ->
 module.exports = class
   constructor: (@io) ->
     @questions = []
+    @categoryCounts = {all: 0}
     @players = []
     @clients = {}
     @highscore = []
@@ -60,6 +61,9 @@ module.exports = class
       if fileStats.isFile()
         unless fileName.indexOf(".json") is -1
           try
+            @categoryCounts[catName] = 0 unless @categoryCounts[catName]?
+            @categoryCounts[catName] += 1
+            @categoryCounts['all'] += 1
             rawQuestion = JSON.parse(fs.readFileSync(fileName))
             @questions.push ( new Question questionId,
               rawQuestion.question.nerdLevel,
@@ -134,6 +138,7 @@ module.exports = class
 
   renderProfile: (req, res) ->
     userId = req.params.id
+    gameServer = @
 
     global.store.users.findById userId, (err, user) ->
       unless user?
@@ -152,6 +157,7 @@ module.exports = class
               realScore: realScore
               overallScore: overallScore
               categoryScore: categoryScore
+              categoryCounts: gameServer.categoryCounts
             }
 
         addScoreForCategory = (category) ->
