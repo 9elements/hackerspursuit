@@ -5,13 +5,12 @@
     - else
       h2 Profile #{profileName}
       
-      h3 #{overallScore} Right answers
       ul.profile-list
         li
-          .score #{Math.round(realScore / categoryCounts.all * 100)}% Unique
+          .score #{Math.round(realScore / categoryCounts.all * 100)}% Hacker
           .details #{realScore} / #{categoryCounts.all}
 
-      h3 Unique by category
+      h3 Hacker by category
       ul.profile-list
         - each category in categoryScore
           li 
