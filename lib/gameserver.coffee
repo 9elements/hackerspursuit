@@ -140,48 +140,39 @@ module.exports = class
     userId = req.params.id
     gameServer = @
 
-    global.store.users.findById userId, (err, user) ->
-      unless user?
-        res.render 'profile', { error: "Profile not found" }
-      else
-        finishedCount = 0
-        realScore = 0
-        overallScore = 0
-        categoryScore = []
+    await
+      global.store.users.findById userId, defer err, user
 
-        checkFinish = =>
-          finishedCount -= 1
-          if finishedCount == 0
-            res.render 'profile', {
-              profileName: user.name
-              realScore: realScore
-              overallScore: overallScore
-              categoryScore: categoryScore
-              categoryCounts: gameServer.categoryCounts
-            }
+    unless user?
+      res.render 'profile', { error: "Profile not found" }
+    else
+      realScore = 0
+      overallScore = 0
+      categoryScore = []
+      
+      await global.store.scores.categoryKeys defer err, categories
+      
+      addScoreForCategory = (category, df) ->
+        await global.store.scores.scoreByCategory category, userId, defer err, score
+        categoryName = category.match(/(\w*)$/)[0].toUpperCase()
+        categoryScore.push {
+          name: categoryName
+          score: score
+        }
+        df()
 
-        addScoreForCategory = (category) ->
-          global.store.scores.scoreByCategory category, userId, (err, score) ->
-            categoryName = category.match(/(\w*)$/)[0].toUpperCase()
-            categoryScore.push {
-              name: categoryName
-              score: score
-            }
-            checkFinish()
+      await
+        addScoreForCategory( category, defer() ) for category in categories
+        global.store.scores.scoreById userId, defer err, realScore
+        global.store.scores.overallById userId, defer err, overallScore
 
-        global.store.scores.categoryKeys (err, categories) ->
-          finishedCount = categories.length + 2
-          addScoreForCategory category for category in categories
-          
-          global.store.scores.scoreById userId, (err, score) ->
-            realScore = score
-            checkFinish()
-
-          global.store.scores.overallById userId, (err, score) ->
-            overallScore = score
-            checkFinish()
-
-
+      res.render 'profile', {
+        profileName: user.name
+        realScore: realScore
+        overallScore: overallScore
+        categoryScore: categoryScore
+        categoryCounts: gameServer.categoryCounts
+      }
 
   rebuildScoreList: =>
     newHighscore = []
