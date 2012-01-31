@@ -34,10 +34,15 @@ module.exports = class
           n = parseInt(msg.answer)
           if n > 0 and n < 5
             if player.setAnswer "a#{n}"
-              if player.checkAnswer @question
+              if player.checkAnswer @question, @firstRight
+                @firstRight = false
                 player.client.emit 'answer.correct', n
+                for badge in player.checkStats()
+                  @io.sockets.in("nerds").emit('badge.new', { name: player.user.name, badge: badge })
+
               else
                 player.client.emit 'answer.wrong', n
+
               @broadcastScoreboard()
             else
               player.client.emit 'answer.twice', null
@@ -207,6 +212,7 @@ module.exports = class
       @questions.sort randOrd
 
     @question = @questions[@currentQuestion]
+    @firstRight = true
 
     @io.sockets.in("nerds").emit('question.new', {
       nerdLevel: @question.nerdLevel,

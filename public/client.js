@@ -109,6 +109,14 @@
             socket.on("chat.msg", function(result) {
               return listEntry(result.name, result.msg);
             });
+            socket.on("badge.new", function(badge) {
+              if (badge.badge === 'rampage') {
+                addAlert("" + badge.name + " goes on the rampage!");
+              }
+              if (badge.badge === 'epic') {
+                return addAlert("" + badge.name + " knowledge is epic!");
+              }
+            });
             return socket.on("question.wait", function(result) {
               var answer, correct, _results;
               correct = result.correct;

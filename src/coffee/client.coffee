@@ -99,6 +99,12 @@ $(document).ready ->
           
           socket.on "chat.msg", (result) ->
             listEntry result.name, result.msg
+          
+          socket.on "badge.new", (badge) ->
+            if badge.badge == 'rampage'
+              addAlert "#{badge.name} goes on the rampage!"
+            if badge.badge == 'epic'
+              addAlert "#{badge.name} knowledge is epic!"
 
           socket.on "question.wait", (result) ->
             correct = result.correct
