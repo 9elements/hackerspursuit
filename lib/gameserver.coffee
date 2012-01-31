@@ -184,28 +184,26 @@ module.exports = class
 
 
   rebuildScoreList: =>
-    finishedCount = 0
     newHighscore = []
+    c_scores = []
+    c_users = []
 
-    checkFinish = =>
-      finishedCount -= 1
-      if finishedCount == 0
-        @highscore = newHighscore
+    await global.store.scores.highScoreIds defer err, highest
+    count = highest.length - 1
 
-    addEntryFor = (list_entry, i) =>
-      global.store.scores.scoreById list_entry, (err, score) ->
-        newHighscore[i] = { score: score }
-        global.store.users.findById list_entry, (err, user) ->
-          newHighscore[i].userName = user.name
-          newHighscore[i].userId = user.id
-          checkFinish()
+    await
+      for i in [0..count]
+        global.store.users.findById highest[i], defer err_u, c_users[i]
+        global.store.scores.scoreById highest[i], defer err_s, c_scores[i]
 
-    global.store.scores.highScoreIds (err, highest) ->
-      finishedCount = highest.length
-      i = 0
-      for list_entry in highest
-        addEntryFor(list_entry, i)
-        i += 1
+    for i in  [0..count]
+      newHighscore[i] = { 
+        score: c_scores[i]
+        userName: c_users[i].name
+        userId: c_users[i].id 
+      }
+
+    @highscore = newHighscore
 
 
   initCycle: =>
