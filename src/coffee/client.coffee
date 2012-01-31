@@ -32,6 +32,7 @@ $(document).ready ->
       $('#header-countwait').html("Trying to reconnect")
       $('#countwait').html("Pease stand by...")
       $('#view-game').hide()
+      $('#view-wait').fadeIn()
       started = false
 
 

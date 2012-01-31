@@ -1,22 +1,6 @@
 # Features
 
-* Highscorelise (Persistent, mit Fortschrittsbalken gemessen an allen vorhandenen Fragen) **DRIN**
-	* Evtl. Frage merken, so dass beste Kategorie oder so angezeigt werde kann **DRIN**
+* Fortschrittbalken für Highscoreliste
+* Badges
 * Anzeige, ob jemand schon geantwortet hat (evtl. auch Indikator, ob diese richtig war)
-* Badges (z.B. 5 richtige Antworten in einer Reihe)
-* Chat **DRIN**
-* Sounds
-
-# Todo
-
-* Jade durch haml-coffee ersetzen
-* Everyauth mit rein
-* Mini-Profile vorsehen
-* Node Env Zeug einbauen **Drin**
-  * Domain u. Port
-  * OAuth Daten
-* Prüfen: Wird evtl. der falsche User rausgeschmissen bei Disconnect (2 User, beide gleiche IP, Problem bei Refresh)
-
-# TODO Daniel
-
-* Detailiertere Highscoreliste und Profilansichten (mit Aufschlüsselung nach Kategorie, die Daten sind vorhanden)
+* Sounds (Hintergrundmusik)

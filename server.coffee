@@ -19,7 +19,7 @@ HOST = config.server.host
 PORT = config.server.port
 
 process.on "uncaughtException", (err) ->
-  console.log "\033[1;31mUNCAUGHT EXCEPTION:\033[m"
+  console.log "UNCAUGHT EXCEPTION:"
   console.log err.stack
 
 ### Util ###

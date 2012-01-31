@@ -35,6 +35,7 @@
         $('#header-countwait').html("Trying to reconnect");
         $('#countwait').html("Pease stand by...");
         $('#view-game').hide();
+        $('#view-wait').fadeIn();
         return started = false;
       });
       return socket.on("connect", function() {

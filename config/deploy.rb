@@ -25,7 +25,7 @@ namespace :deploy do
     run "rm -rf #{current_path}/config.coffee && ln -s #{shared_path}/config.coffee #{current_path}/config.coffee"
   end
   task(:restart, :roles => :app, :except => { :no_release => true }) {
-    run "cd #{current_path}; npm install; forever stopall; NODE_ENV=#{node_env} forever start -c coffee server.coffee"
+    run "cd #{current_path}; npm install; forever stopall; NODE_ENV=#{node_env} forever start -c iced server.coffee"
   }
 end
 
