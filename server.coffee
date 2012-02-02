@@ -67,7 +67,8 @@ app.get '/highscore', (req, res) ->
   res.render 'highscore', { list: gameserver.highscore }
 
 app.get '/profile/:id', (req, res) ->
-  gameserver.renderProfile(req, res)
+  await gameserver.getProfileData req.params.id, defer data
+  res.render 'profile', data
 
 # as soon as a user authenticates himself with a get request,
 # make him join the "/nerds" room to join the game and receive

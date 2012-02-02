@@ -141,15 +141,14 @@ module.exports = class
     else
       @endCycle()
 
-  renderProfile: (req, res) ->
-    userId = req.params.id
+  getProfileData: (userId, callback) ->
     gameServer = @
 
     await
       global.store.users.findById userId, defer err, user
 
     unless user?
-      res.render 'profile', { error: "Profile not found" }
+      callback { error: "Profile not found" }
     else
       realScore = 0
       overallScore = 0
@@ -171,7 +170,7 @@ module.exports = class
         global.store.scores.scoreById userId, defer err, realScore
         global.store.scores.overallById userId, defer err, overallScore
 
-      res.render 'profile', {
+      callback {
         profileName: user.name
         realScore: realScore
         overallScore: overallScore
