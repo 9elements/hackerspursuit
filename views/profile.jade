@@ -15,7 +15,7 @@
         - each category in categoryScore
           li 
             .score #{Math.round(category.score / categoryCounts[category.name.toLowerCase()] * 100)}% #{category.name}
-            .details #{category.score} / #{categoryCounts[category.name.toLowerCase()]}
+            .details #{category.score || "0"} / #{categoryCounts[category.name.toLowerCase()]}
 
       h3 Badges
       ul.profile-list
