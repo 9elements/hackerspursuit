@@ -17,4 +17,11 @@
             .score #{Math.round(category.score / categoryCounts[category.name.toLowerCase()] * 100)}% #{category.name}
             .details #{category.score} / #{categoryCounts[category.name.toLowerCase()]}
 
+      h3 Badges
+      ul.profile-list
+        - each badge in badges
+          li 
+            .score #{badge.toUpperCase()}
+            .details Description here
+
     .display-overlay

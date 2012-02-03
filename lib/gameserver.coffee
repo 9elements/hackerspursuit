@@ -38,6 +38,8 @@ module.exports = class
                 @firstRight = false
                 player.client.emit 'answer.correct', n
                 for badge in player.checkStats()
+                  # Broadcast badge and add it to persistent store
+                  global.store.badges.addBadge(player.user.id, badge)
                   @io.sockets.in("nerds").emit('badge.new', { name: player.user.name, badge: badge })
 
               else
@@ -153,8 +155,13 @@ module.exports = class
       realScore = 0
       overallScore = 0
       categoryScore = []
+      userBadges = []
       
-      await global.store.scores.categoryKeys defer err, categories
+      await
+        global.store.scores.categoryKeys defer err, categories
+        global.store.badges.badgeKeys defer err, badges
+
+      # Score
       
       addScoreForCategory = (category, df) ->
         await global.store.scores.scoreByCategory category, userId, defer err, score
@@ -170,12 +177,22 @@ module.exports = class
         global.store.scores.scoreById userId, defer err, realScore
         global.store.scores.overallById userId, defer err, overallScore
 
+      # Badges
+
+      addBadgeForUser = (badge, df) ->
+        await global.store.badges.hasBadge userId, badge, defer err, hasBadge
+        badges.push badge if hasBadge
+        df()
+
+      addBadgeForUser( badge, defer() ) for badge in badges
+
       callback {
         profileName: user.name
         realScore: realScore
         overallScore: overallScore
         categoryScore: categoryScore
         categoryCounts: gameServer.categoryCounts
+        badges: badges
       }
 
   rebuildScoreList: =>

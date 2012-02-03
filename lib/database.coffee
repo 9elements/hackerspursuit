@@ -1,6 +1,7 @@
 redis = require("redis")
 User = require("../models/user")
 Score = require("../models/score")
+Badge = require("../models/badge")
 
 module.exports = class
   constructor: (host, port, dbindex, auth, callback) ->
@@ -25,3 +26,4 @@ module.exports = class
     
     @users = new User @client
     @scores = new Score @client
+    @badges = new Badge @client
