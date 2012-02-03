@@ -10,5 +10,5 @@ module.exports = class
       callback err, keys
 
   hasBadge: (userId, badge, callback) ->
-    @client.sismember "badge:#{badge}", userId, (err, result) ->
-      if result > 0 then callback true else callback false
+    @client.sismember "#{badge}", userId, (err, result) ->
+      if result > 0 then callback( err, true )  else callback( err, false ) 

@@ -181,10 +181,11 @@ module.exports = class
 
       addBadgeForUser = (badge, df) ->
         await global.store.badges.hasBadge userId, badge, defer err, hasBadge
-        badges.push badge if hasBadge
+        userBadges.push badge if hasBadge
         df()
 
-      addBadgeForUser( badge, defer() ) for badge in badges
+      await
+        addBadgeForUser( badge, defer() ) for badge in badges
 
       callback {
         profileName: user.name
@@ -192,7 +193,7 @@ module.exports = class
         overallScore: overallScore
         categoryScore: categoryScore
         categoryCounts: gameServer.categoryCounts
-        badges: badges
+        badges: userBadges
       }
 
   rebuildScoreList: =>
