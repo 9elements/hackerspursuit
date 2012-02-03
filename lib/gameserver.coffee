@@ -34,16 +34,16 @@ module.exports = class
           n = parseInt(msg.answer)
           if n > 0 and n < 5
             if player.setAnswer "a#{n}"
-              if player.checkAnswer @question, @firstRight
+              if player.checkAnswer @question, @firstRight, @players.length
                 @firstRight = false
                 player.client.emit 'answer.correct', n
-                for badge in player.checkStats()
-                  # Broadcast badge and add it to persistent store
-                  global.store.badges.addBadge(player.user.id, badge)
-                  @io.sockets.in("nerds").emit('badge.new', { name: player.user.name, badge: badge })
-
               else
                 player.client.emit 'answer.wrong', n
+            
+              for badge in player.checkStats()
+                # Broadcast badge and add it to persistent store
+                global.store.badges.addBadge(player.user.id, badge)
+                @io.sockets.in("nerds").emit('badge.new', { name: player.user.name, badge: badge })
 
               @broadcastScoreboard()
             else

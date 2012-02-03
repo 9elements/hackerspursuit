@@ -111,10 +111,25 @@
             });
             socket.on("badge.new", function(badge) {
               if (badge.badge === 'rampage') {
-                addAlert("" + badge.name + " goes on the rampage!");
+                addAlert("" + badge.name + " is on a rampage");
               }
               if (badge.badge === 'epic') {
-                return addAlert("" + badge.name + " knowledge is epic!");
+                addAlert("" + badge.name + " knowledge is epic");
+              }
+              if (badge.badge === "godmode") {
+                addAlert("" + badge.name + " is on godmode");
+              }
+              if (badge.badge === "pawned") {
+                addAlert("" + badge.name + " pawned");
+              }
+              if (badge.badge === "monsterpawned") {
+                addAlert("" + badge.name + " monsterpawned");
+              }
+              if (badge.badge === "failed") {
+                addAlert("" + badge.name + " failed");
+              }
+              if (badge.badge === "epicfail") {
+                return addAlert("" + badge.name + " failed epic");
               }
             });
             return socket.on("question.wait", function(result) {

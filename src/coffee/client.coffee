@@ -102,9 +102,20 @@ $(document).ready ->
           
           socket.on "badge.new", (badge) ->
             if badge.badge == 'rampage'
-              addAlert "#{badge.name} goes on the rampage!"
+              addAlert "#{badge.name} is on a rampage"
             if badge.badge == 'epic'
-              addAlert "#{badge.name} knowledge is epic!"
+              addAlert "#{badge.name} knowledge is epic"
+            if badge.badge == "godmode"
+              addAlert "#{badge.name} is on godmode"
+            if badge.badge == "pawned"
+              addAlert "#{badge.name} pawned"
+            if badge.badge == "monsterpawned"
+              addAlert "#{badge.name} monsterpawned"
+            if badge.badge == "failed"
+                addAlert "#{badge.name} failed"
+            if badge.badge == "epicfail"
+              addAlert "#{badge.name} failed epic"
+
 
           socket.on "question.wait", (result) ->
             correct = result.correct
