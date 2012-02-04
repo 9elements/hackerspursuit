@@ -1,0 +1,43 @@
+# How to setup hackerpursuit
+
+
+## Instal iced coffe
+  
+  For some reason I cannot remember you have to install iced coffee globaly.
+  $ npm install iced-coffee-script -g
+
+
+## Install node packages
+  
+  cd to the project home dir and do this:
+  $ npm install
+
+
+## Clone repo containing the questions
+  
+  $ cd ..
+  $ git clone git://github.com/9elements/NerdPursuit.git
+
+
+## Create your own config.coffee for the hackerpursuit project
+  
+  $ cd ../hackerpursuit
+  $ cp config.example.coffee config.coffee
+
+  Mabe you shold ask someone to get a valid config file. Saves you a lot of time ;)
+  Be sure that the 'exports.game.questionsPath' is set to the questions directory of the repo that you cloned in the last step.
+
+
+## Start redis server
+  
+  Open a new shell and fire up redis:
+  $ redis-server
+
+## Start the node server
+  
+  $ iced server.coffee
+
+
+## Go to http://local.hackerspursuit.com:3030 in your browser
+
+  BOOM! Like a bows!
