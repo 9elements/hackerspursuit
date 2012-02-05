@@ -4,7 +4,7 @@
   
 The project is uses [IcedCoffeeScript](http://maxtaco.github.com/coffee-script/), which you have to install first in case you haven't already played with that awesome language extension.
 
-  $ npm install iced-coffee-script -g
+    $ npm install iced-coffee-script -g
 
 
 ## Install node packages
