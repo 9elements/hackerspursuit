@@ -5,7 +5,7 @@
     return Math.round(Math.random()) - 0.5;
   };
   $(document).ready(function() {
-    var addAlert, connect, listEntry, loaded, sendAnswer, socket, startGame, started;
+    var addAlert, connect, intro, listEntry, loaded, sendAnswer, socket, startGame, started;
     soundManager.url = "/swfs/";
     soundManager.onready(function() {
       soundManager.createSound({
@@ -199,7 +199,8 @@
     $('#view-game, #header-countwait').hide();
     /* intro */
     $('.view-content .view-wait').show();
-    return Intro.start($('#view-wait .display'), __bind(function() {
+    intro = new Intro($('#view-wait .display'));
+    return intro.start(__bind(function() {
       $('#header-countwait').show();
       /* start game */
       return connect();

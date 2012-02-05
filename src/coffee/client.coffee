@@ -173,7 +173,8 @@ $(document).ready ->
 
   $('.view-content .view-wait').show()
 
-  Intro.start $('#view-wait .display'), =>
+  intro = new Intro $('#view-wait .display')
+  intro.start =>
     $('#header-countwait').show()
 
     ### start game ###

@@ -1,74 +1,75 @@
 (function() {
   var Particle;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Particle = (function() {
     function Particle(type, position, pixel, staticIntro) {
-      var dir, power, speed, stauchung;
       if (type == null) {
         type = null;
       }
       if (position == null) {
         position = null;
       }
+      this.draw = __bind(this.draw, this);
+      this.update = __bind(this.update, this);
       switch (type) {
         case 'func':
-          dir = {
+          this.dir = {
             x: Math.random() < 0.5 ? 1 : -1,
             y: Math.random() < 0.5 ? 1 : -1
           };
-          speed = Math.pow(Math.random() + MIN_SPEED, 2) * MAX_SPEED;
-          power = {
+          this.speed = Math.pow(Math.random() + Intro.MIN_SPEED, 2) * Intro.MAX_SPEED;
+          this.power = {
             x: 2,
             y: 2
           };
-          stauchung = {
-            x: Math.pow(Math.random() + MIN_SPEED, 2),
-            y: Math.pow(Math.random() + MIN_SPEED, 2)
+          this.stauchung = {
+            x: Math.pow(Math.random() + Intro.MIN_SPEED, 2),
+            y: Math.pow(Math.random() + Intro.MIN_SPEED, 2)
           };
           if (Math.random() > 0.5) {
-            this.func_in = function(time) {
-              return {
-                x: position.x,
-                y: stauchung.y * Math.pow(time, power.y) * dir.y * speed + position.y
-              };
-            };
+            this.func_in = this.inVertical;
           } else {
-            this.func_in = function(time) {
-              return {
-                x: stauchung.x * Math.pow(time, power.x) * dir.x * speed + position.x,
-                y: position.y
-              };
-            };
+            this.func_in = this.inHorizontal;
           }
-          this.func_out = function(time) {
-            return {
-              x: stauchung.x * Math.pow(time, power.x) * dir.x * speed + position.x,
-              y: stauchung.y * Math.pow(time, power.y) * dir.y * speed + position.y
-            };
-          };
-          this.pos = position;
+          this.func_out = this.out;
+          this.drawPosition = this.pos = position;
           this.pixel = pixel;
           this.staticIntro = staticIntro;
       }
     }
+    Particle.prototype.inVertical = function() {
+      return {
+        x: this.pos.x,
+        y: this.stauchung.y * Math.pow(Intro.TIME, this.power.y) * this.dir.y * this.speed + this.pos.y
+      };
+    };
+    Particle.prototype.inHorizontal = function() {
+      return {
+        x: this.stauchung.x * Math.pow(Intro.TIME, this.power.x) * this.dir.x * this.speed + this.pos.x,
+        y: this.pos.y
+      };
+    };
+    Particle.prototype.out = function() {
+      return {
+        x: this.stauchung.x * Math.pow(Intro.TIME, this.power.x) * this.dir.x * this.speed + this.pos.x,
+        y: this.stauchung.y * Math.pow(Intro.TIME, this.power.y) * this.dir.y * this.speed + this.pos.y
+      };
+    };
     Particle.prototype.update = function() {
-      var current, duration, newValue;
-      switch (window.animationPhase) {
+      var newValue;
+      switch (Intro.animationPhase) {
         case 'logo_in':
           if (!this.staticIntro) {
-            return this.pos = this.func_in(TIME);
+            return this.drawPosition = this.func_in();
           }
           break;
         case 'type_in':
           if (this.staticIntro) {
-            duration = window.animationPhaseEnd['type_in'].end;
-            current = window.FRAME / duration + 0.02;
-            return this.pixel[3] = current;
+            return this.pixel[3] = Intro.FRAME / Intro.animationPhaseEnd['type_in'].end + 0.02;
           }
           break;
-        case 'pause':
-          break;
         case 'out':
-          this.pos = this.func_out(TIME);
+          this.drawPosition = this.func_out();
           if (this.pixel[3] > 0) {
             newValue = this.pixel[3] * 0.97;
           }
@@ -76,9 +77,9 @@
       }
     };
     Particle.prototype.draw = function() {
-      CTX.strokeStyle = 'rgba(0,255,0,255)';
-      CTX.fillStyle = "rgba(" + this.pixel[0] + "," + this.pixel[1] + "," + this.pixel[2] + "," + this.pixel[3] + ")";
-      return CTX.fillRect(this.pos.x, this.pos.y, PARTICLE_SIZE, PARTICLE_SIZE);
+      Intro.CTX.strokeStyle = 'rgba(0,255,0,255)';
+      Intro.CTX.fillStyle = "rgba(" + this.pixel[0] + "," + this.pixel[1] + "," + this.pixel[2] + "," + this.pixel[3] + ")";
+      return Intro.CTX.fillRect(this.drawPosition.x, this.drawPosition.y, Intro.PARTICLE_SIZE, Intro.PARTICLE_SIZE);
     };
     return Particle;
   })();
