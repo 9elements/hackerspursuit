@@ -167,5 +167,14 @@ $(document).ready ->
       
   ### Views ###
   
-  $('.view-content').hide()
-  connect()
+  $('#view-game, #header-countwait').hide()
+
+  ### intro ###
+
+  $('.view-content .view-wait').show()
+
+  Intro.start $('#view-wait .display'), =>
+    $('#header-countwait').show()
+
+    ### start game ###
+    connect()

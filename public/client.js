@@ -196,7 +196,13 @@
       });
     });
     /* Views */
-    $('.view-content').hide();
-    return connect();
+    $('#view-game, #header-countwait').hide();
+    /* intro */
+    $('.view-content .view-wait').show();
+    return Intro.start($('#view-wait .display'), __bind(function() {
+      $('#header-countwait').show();
+      /* start game */
+      return connect();
+    }, this));
   });
 }).call(this);
