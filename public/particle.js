@@ -26,11 +26,7 @@
             x: Math.pow(Math.random() + Intro.MIN_SPEED, 2),
             y: Math.pow(Math.random() + Intro.MIN_SPEED, 2)
           };
-          if (Math.random() > 0.5) {
-            this.func_in = this.inVertical;
-          } else {
-            this.func_in = this.inHorizontal;
-          }
+          this.func_in = this.inBoth;
           this.func_out = this.out;
           this.drawPosition = this.pos = position;
           this.pixel = pixel;
@@ -49,6 +45,12 @@
         y: this.pos.y
       };
     };
+    Particle.prototype.inBoth = function() {
+      return {
+        x: this.stauchung.x * Math.pow(Intro.TIME, this.power.x) * this.dir.x * this.speed + this.pos.x,
+        y: this.stauchung.y * Math.pow(Intro.TIME, this.power.y) * this.dir.y * this.speed + this.pos.y
+      };
+    };
     Particle.prototype.out = function() {
       return {
         x: this.stauchung.x * Math.pow(Intro.TIME, this.power.x) * this.dir.x * this.speed + this.pos.x,
@@ -60,7 +62,7 @@
       rotationFactor = Math.sin(Intro.rotationFrame * 0.03);
       delta_x = Intro.canvasCenter.x - this.pos.x;
       return {
-        x: Intro.canvasCenter.x + delta_x * rotationFactor,
+        x: Math.round(Intro.canvasCenter.x + delta_x * rotationFactor) - 3,
         y: this.pos.y
       };
     };
@@ -126,8 +128,11 @@
             this.drawPosition.x -= waveOffset.x;
             this.drawPosition.y -= waveOffset.y;
           }
+          break;
+        case 'fade_out':
+          this.pixel[3] = this.pixel[3] * 0.95;
       }
-      if (!this.staticIntro) {
+      if (!this.staticIntro && Intro.rotationFrame !== null) {
         rotationOffset = this.rotationOffset();
         this.drawPosition.x -= rotationOffset.x;
         return this.drawPosition.y -= rotationOffset.y;

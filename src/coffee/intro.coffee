@@ -7,7 +7,7 @@ class Intro
   # @animationPhase = 'type_in'
   @TIME = 0
   @PARTICLES = []
-  animationPhases: ['pause1', 'type_in', 'wave', 'pause3', 'out']
+  animationPhases: ['pause1', 'type_in', 'wave', 'pause3', 'fade_out'] # 'out']
   # animationPhases: ['wave', 'pause3', 'out']
   @animationPhaseEnd:
     'logo_in':
@@ -31,7 +31,10 @@ class Intro
     'out':
       start: 0
       end: 180
-  @rotationFrame: 0
+    'fade_out':
+      start: 0
+      end: 150
+  @rotationFrame: 16
 
   constructor: (container) ->
     @container = container
@@ -62,13 +65,16 @@ class Intro
     
   main_loop: =>
     Intro.FRAME += 1
-    Intro.rotationFrame += 1
+    unless Intro.rotationFrame is null
+      Intro.rotationFrame += 1
     nextEnd = Intro.animationPhaseEnd[Intro.animationPhase].end
     if Intro.FRAME is nextEnd
-      if Intro.animationPhase is 'out'
+      if Intro.animationPhase is 'fade_out'
         clearInterval @INTERVAL
         @animationFinished()
         return 
+      if Intro.animationPhase is 'wave'
+        Intro.rotationFrame = null
       Intro.animationPhase = @animationPhases.shift()
       # console.log 'switching to', Intro.animationPhase
       Intro.FRAME = Intro.animationPhaseEnd[Intro.animationPhase].start

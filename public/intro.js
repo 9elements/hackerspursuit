@@ -8,7 +8,7 @@
     Intro.animationPhase = 'logo_in';
     Intro.TIME = 0;
     Intro.PARTICLES = [];
-    Intro.prototype.animationPhases = ['pause1', 'type_in', 'wave', 'pause3', 'out'];
+    Intro.prototype.animationPhases = ['pause1', 'type_in', 'wave', 'pause3', 'fade_out'];
     Intro.animationPhaseEnd = {
       'logo_in': {
         start: -400,
@@ -37,9 +37,13 @@
       'out': {
         start: 0,
         end: 180
+      },
+      'fade_out': {
+        start: 0,
+        end: 150
       }
     };
-    Intro.rotationFrame = 0;
+    Intro.rotationFrame = 16;
     function Intro(container) {
       this.main_loop = __bind(this.main_loop, this);      var i;
       this.container = container;
@@ -67,13 +71,18 @@
     Intro.prototype.main_loop = function() {
       var nextEnd, particle, _i, _len, _ref, _results;
       Intro.FRAME += 1;
-      Intro.rotationFrame += 1;
+      if (Intro.rotationFrame !== null) {
+        Intro.rotationFrame += 1;
+      }
       nextEnd = Intro.animationPhaseEnd[Intro.animationPhase].end;
       if (Intro.FRAME === nextEnd) {
-        if (Intro.animationPhase === 'out') {
+        if (Intro.animationPhase === 'fade_out') {
           clearInterval(this.INTERVAL);
           this.animationFinished();
           return;
+        }
+        if (Intro.animationPhase === 'wave') {
+          Intro.rotationFrame = null;
         }
         Intro.animationPhase = this.animationPhases.shift();
         Intro.FRAME = Intro.animationPhaseEnd[Intro.animationPhase].start;

@@ -11,10 +11,11 @@ class Particle
         @stauchung =
           x: Math.pow(Math.random()+Intro.MIN_SPEED,2)
           y: Math.pow(Math.random()+Intro.MIN_SPEED,2)
-        if Math.random() > 0.5
-          @func_in = @inVertical
-        else
-          @func_in = @inHorizontal
+        # if Math.random() > 0.5
+        #   @func_in = @inVertical
+        # else
+        #   @func_in = @inHorizontal
+        @func_in = @inBoth
         @func_out = @out
         @drawPosition =  @pos = position
         @pixel = pixel
@@ -34,6 +35,13 @@ class Particle
       y: @pos.y
     }
 
+  inBoth: ->
+    # console.log "#{@stauchung.y} * #{Math.pow(Intro.TIME,@power.y)} * #{@dir.y} * #{@speed} + #{@pos.y} = #{@stauchung.y * Math.pow(Intro.TIME,@power.y) * @dir.y * @speed + @pos.y}"
+    {
+      x: @stauchung.x * Math.pow(Intro.TIME,@power.x) * @dir.x * @speed + @pos.x
+      y: @stauchung.y * Math.pow(Intro.TIME,@power.y) * @dir.y * @speed + @pos.y
+    }
+
   out: ->
     { 
       x: @stauchung.x * Math.pow(Intro.TIME,@power.x) * @dir.x * @speed + @pos.x
@@ -44,7 +52,7 @@ class Particle
     rotationFactor = Math.sin(Intro.rotationFrame*0.03)
     delta_x = Intro.canvasCenter.x - @pos.x
     {
-      x: Intro.canvasCenter.x + delta_x * rotationFactor
+      x: Math.round(Intro.canvasCenter.x + delta_x * rotationFactor) - 3
       y: @pos.y
     }
 
@@ -98,8 +106,10 @@ class Particle
           waveOffset = @waveOffset()
           @drawPosition.x -= waveOffset.x
           @drawPosition.y -= waveOffset.y
+      when 'fade_out'
+        @pixel[3] = @pixel[3] * 0.95
 
-    unless @staticIntro
+    if not @staticIntro and Intro.rotationFrame isnt null
       rotationOffset = @rotationOffset()
       # console.log "drawPosition: x: #{@drawPosition.x} y: #{@drawPosition.y} offset: x: #{rotationOffset.x} y: #{rotationOffset.y}"
       @drawPosition.x -= rotationOffset.x 
