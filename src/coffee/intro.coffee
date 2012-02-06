@@ -30,7 +30,7 @@ class Intro
       end: 30
     'out':
       start: 0
-      end: 200
+      end: 180
   @rotationFrame: 0
 
   constructor: (container) ->
@@ -47,7 +47,7 @@ class Intro
     @WIDTH = $(@container).width()
     @HEIGHT = $(@container).height()
     $(@container).css 'padding-bottom', 0
-    @START = -200
+    @START = -250
     # @START = 0
     @PAUSE = 100
     @EXPLOSION_POWER = 7
@@ -69,9 +69,8 @@ class Intro
         clearInterval @INTERVAL
         @animationFinished()
         return 
-      
       Intro.animationPhase = @animationPhases.shift()
-      console.log 'switching to', Intro.animationPhase
+      # console.log 'switching to', Intro.animationPhase
       Intro.FRAME = Intro.animationPhaseEnd[Intro.animationPhase].start
 
     if Intro.FRAME < 1

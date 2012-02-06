@@ -36,7 +36,7 @@
       },
       'out': {
         start: 0,
-        end: 200
+        end: 180
       }
     };
     Intro.rotationFrame = 0;
@@ -55,7 +55,7 @@
       this.WIDTH = $(this.container).width();
       this.HEIGHT = $(this.container).height();
       $(this.container).css('padding-bottom', 0);
-      this.START = -200;
+      this.START = -250;
       this.PAUSE = 100;
       this.EXPLOSION_POWER = 7;
       Intro.CANVAS = $("<canvas width='" + this.WIDTH + "' height='" + this.HEIGHT + "'></canvas>");
@@ -76,7 +76,6 @@
           return;
         }
         Intro.animationPhase = this.animationPhases.shift();
-        console.log('switching to', Intro.animationPhase);
         Intro.FRAME = Intro.animationPhaseEnd[Intro.animationPhase].start;
       }
       if (Intro.FRAME < 1) {
