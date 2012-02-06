@@ -7,7 +7,9 @@ class PImage
     @image.src = @url
     $(@image).load =>
       @pre_process()
-  
+      Intro.imageCenterOffset = @getImageCenter()
+      # console.log 'imageCenterOffset', Intro.imageCenterOffset.x, Intro.imageCenterOffset.y
+
   pre_process: ->
     Intro.CTX.drawImage($(@image).get(0), 0, 0)
     @img_data = Intro.CTX.getImageData(0,0,@image.width,@image.height)
@@ -17,6 +19,11 @@ class PImage
       y: (Math.floor($('canvas').height()/2) - @image.height*Intro.PARTICLE_SIZE/2)
     @createPixels()
   
+
+  getImageCenter: ->
+    { x: @image.width/2, y: @image.height/2 }
+
+
   createPixels: ->
     for i in [0..@img_data.data.length/4]
       index = i * 4
@@ -32,5 +39,7 @@ class PImage
           if isStatic then 0 else 1
         ]
         Intro.PARTICLES.push new Particle 'func', point, pixel, isStatic
+        # console.log point.x, point.y
+        # return
 
 window.PImage = PImage

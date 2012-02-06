@@ -4,27 +4,40 @@ class Intro
   @MAX_SPEED = 0.8
   @MIN_SPEED = 0.05
   @animationPhase = 'logo_in'
+  # @animationPhase = 'type_in'
   @TIME = 0
   @PARTICLES = []
-  @animationPhaseEnd =
+  animationPhases: ['pause1', 'type_in', 'wave', 'pause3', 'out']
+  # animationPhases: ['wave', 'pause3', 'out']
+  @animationPhaseEnd:
     'logo_in':
       start: -400
       end: 0
     'pause1':
       start: 0
-      end: 60
+      end: 30
     'type_in':
       start: 0
       end: 100
     'pause2':
       start: 0
       end: 60
+    'wave':
+      start: 0
+      end: 80
+    'pause3':
+      start: 0
+      end: 30
     'out':
       start: 0
       end: 200
+  @rotationFrame: 0
 
   constructor: (container) ->
     @container = container
+    Intro.canvasCenter =
+      x: $(@container).width()/2
+      y: $(@container).height()/2
     i = new PImage
     i.init()
 
@@ -34,7 +47,8 @@ class Intro
     @WIDTH = $(@container).width()
     @HEIGHT = $(@container).height()
     $(@container).css 'padding-bottom', 0
-    @START = -300
+    @START = -200
+    # @START = 0
     @PAUSE = 100
     @EXPLOSION_POWER = 7
     Intro.CANVAS = $("<canvas width='#{@WIDTH}' height='#{@HEIGHT}'></canvas>")
@@ -48,34 +62,18 @@ class Intro
     
   main_loop: =>
     Intro.FRAME += 1
+    Intro.rotationFrame += 1
     nextEnd = Intro.animationPhaseEnd[Intro.animationPhase].end
-    switch Intro.animationPhase
-      when 'logo_in'
-        if Intro.FRAME is nextEnd
-          # console.log 'logo_in is over, switching to pause1'
-          Intro.animationPhase = 'pause1'
-          Intro.FRAME = Intro.animationPhaseEnd['pause1'].start
-      when 'pause1'
-        if Intro.FRAME is nextEnd
-          # console.log 'switching to type_in'
-          Intro.animationPhase = 'type_in'
-          Intro.FRAME = Intro.animationPhaseEnd['type_in'].start
-      when 'type_in'
-        if Intro.FRAME is nextEnd
-          # console.log 'switching to pause2'
-          Intro.animationPhase = 'pause2'
-          Intro.FRAME = Intro.animationPhaseEnd['pause2'].start
-      when 'pause2'
-        if Intro.FRAME is nextEnd
-          # console.log 'switching to out'
-          Intro.animationPhase = 'out'
-          Intro.FRAME = Intro.animationPhaseEnd['out'].start
-      when 'out'
-        if Intro.FRAME is nextEnd
-          # console.log 'end'
-          clearInterval(@INTERVAL)
-          @animationFinished()
-    
+    if Intro.FRAME is nextEnd
+      if Intro.animationPhase is 'out'
+        clearInterval @INTERVAL
+        @animationFinished()
+        return 
+      
+      Intro.animationPhase = @animationPhases.shift()
+      console.log 'switching to', Intro.animationPhase
+      Intro.FRAME = Intro.animationPhaseEnd[Intro.animationPhase].start
+
     if Intro.FRAME < 1
       Intro.TIME = 0.06 * Math.pow(Intro.FRAME,2)
     else

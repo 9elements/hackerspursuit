@@ -40,10 +40,41 @@ class Particle
       y: @stauchung.y * Math.pow(Intro.TIME,@power.y) * @dir.y * @speed + @pos.y
     }
 
+  rotate: ->
+    rotationFactor = Math.sin(Intro.rotationFrame*0.03)
+    delta_x = Intro.canvasCenter.x - @pos.x
+    {
+      x: Intro.canvasCenter.x + delta_x * rotationFactor
+      y: @pos.y
+    }
+
+  rotationOffset: ->
+    rotatedPosition = @rotate()
+    {
+      x: @pos.x - rotatedPosition.x
+      y: 0
+    }
+
+  waveOffset: ->
+    offset = { x: 0, y: 0 }
+    t = ((Intro.FRAME) * 4 + 200)
+    t_delta = 40
+    index = @pos.x + (@pos.y - 200) * 0.8
+    if (t-t_delta) < index < (t+t_delta)
+      delta = index - t
+      offset =
+        x: 0
+        y: -(Math.pow(delta,2) * 0.002) + 3
+    return offset
+
   update: =>
+    @drawPosition =
+      x: @pos.x
+      y: @pos.y
     switch Intro.animationPhase
       when 'logo_in'
         @drawPosition = @func_in() unless @staticIntro
+        # @drawPosition = @rotationOffset()
       when 'type_in'
         if @staticIntro
           @pixel[3] = Intro.FRAME/Intro.animationPhaseEnd['type_in'].end + 0.02
@@ -56,6 +87,20 @@ class Particle
           @pixel[2]
           newValue
         ]
+      when 'wave'
+        if @staticIntro
+          waveOffset = @waveOffset()
+          @drawPosition.x -= waveOffset.x
+          @drawPosition.y -= waveOffset.y
+
+    unless @staticIntro
+      rotationOffset = @rotationOffset()
+      # console.log "drawPosition: x: #{@drawPosition.x} y: #{@drawPosition.y} offset: x: #{rotationOffset.x} y: #{rotationOffset.y}"
+      @drawPosition.x -= rotationOffset.x 
+      @drawPosition.y -= rotationOffset.y
+      # console.log "(#{Intro.rotationFrame})(#{@pos.x}, #{@pos.y}) x: #{@drawPosition.x} y: #{@drawPosition.y}"
+    
+
   
   draw: =>
     Intro.CTX.strokeStyle = 'rgba(0,255,0,255)'

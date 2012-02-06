@@ -10,7 +10,8 @@
       this.image = document.createElement('img');
       this.image.src = this.url;
       return $(this.image).load(__bind(function() {
-        return this.pre_process();
+        this.pre_process();
+        return Intro.imageCenterOffset = this.getImageCenter();
       }, this));
     };
     PImage.prototype.pre_process = function() {
@@ -22,6 +23,12 @@
         y: Math.floor($('canvas').height() / 2) - this.image.height * Intro.PARTICLE_SIZE / 2
       };
       return this.createPixels();
+    };
+    PImage.prototype.getImageCenter = function() {
+      return {
+        x: this.image.width / 2,
+        y: this.image.height / 2
+      };
     };
     PImage.prototype.createPixels = function() {
       var i, index, isStatic, pixel, point, _ref, _results;

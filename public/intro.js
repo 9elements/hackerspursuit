@@ -8,6 +8,7 @@
     Intro.animationPhase = 'logo_in';
     Intro.TIME = 0;
     Intro.PARTICLES = [];
+    Intro.prototype.animationPhases = ['pause1', 'type_in', 'wave', 'pause3', 'out'];
     Intro.animationPhaseEnd = {
       'logo_in': {
         start: -400,
@@ -15,7 +16,7 @@
       },
       'pause1': {
         start: 0,
-        end: 60
+        end: 30
       },
       'type_in': {
         start: 0,
@@ -25,14 +26,27 @@
         start: 0,
         end: 60
       },
+      'wave': {
+        start: 0,
+        end: 80
+      },
+      'pause3': {
+        start: 0,
+        end: 30
+      },
       'out': {
         start: 0,
         end: 200
       }
     };
+    Intro.rotationFrame = 0;
     function Intro(container) {
       this.main_loop = __bind(this.main_loop, this);      var i;
       this.container = container;
+      Intro.canvasCenter = {
+        x: $(this.container).width() / 2,
+        y: $(this.container).height() / 2
+      };
       i = new PImage;
       i.init();
     }
@@ -41,7 +55,7 @@
       this.WIDTH = $(this.container).width();
       this.HEIGHT = $(this.container).height();
       $(this.container).css('padding-bottom', 0);
-      this.START = -300;
+      this.START = -200;
       this.PAUSE = 100;
       this.EXPLOSION_POWER = 7;
       Intro.CANVAS = $("<canvas width='" + this.WIDTH + "' height='" + this.HEIGHT + "'></canvas>");
@@ -53,37 +67,17 @@
     Intro.prototype.main_loop = function() {
       var nextEnd, particle, _i, _len, _ref, _results;
       Intro.FRAME += 1;
+      Intro.rotationFrame += 1;
       nextEnd = Intro.animationPhaseEnd[Intro.animationPhase].end;
-      switch (Intro.animationPhase) {
-        case 'logo_in':
-          if (Intro.FRAME === nextEnd) {
-            Intro.animationPhase = 'pause1';
-            Intro.FRAME = Intro.animationPhaseEnd['pause1'].start;
-          }
-          break;
-        case 'pause1':
-          if (Intro.FRAME === nextEnd) {
-            Intro.animationPhase = 'type_in';
-            Intro.FRAME = Intro.animationPhaseEnd['type_in'].start;
-          }
-          break;
-        case 'type_in':
-          if (Intro.FRAME === nextEnd) {
-            Intro.animationPhase = 'pause2';
-            Intro.FRAME = Intro.animationPhaseEnd['pause2'].start;
-          }
-          break;
-        case 'pause2':
-          if (Intro.FRAME === nextEnd) {
-            Intro.animationPhase = 'out';
-            Intro.FRAME = Intro.animationPhaseEnd['out'].start;
-          }
-          break;
-        case 'out':
-          if (Intro.FRAME === nextEnd) {
-            clearInterval(this.INTERVAL);
-            this.animationFinished();
-          }
+      if (Intro.FRAME === nextEnd) {
+        if (Intro.animationPhase === 'out') {
+          clearInterval(this.INTERVAL);
+          this.animationFinished();
+          return;
+        }
+        Intro.animationPhase = this.animationPhases.shift();
+        console.log('switching to', Intro.animationPhase);
+        Intro.FRAME = Intro.animationPhaseEnd[Intro.animationPhase].start;
       }
       if (Intro.FRAME < 1) {
         Intro.TIME = 0.06 * Math.pow(Intro.FRAME, 2);

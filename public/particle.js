@@ -55,17 +55,56 @@
         y: this.stauchung.y * Math.pow(Intro.TIME, this.power.y) * this.dir.y * this.speed + this.pos.y
       };
     };
+    Particle.prototype.rotate = function() {
+      var delta_x, rotationFactor;
+      rotationFactor = Math.sin(Intro.rotationFrame * 0.03);
+      delta_x = Intro.canvasCenter.x - this.pos.x;
+      return {
+        x: Intro.canvasCenter.x + delta_x * rotationFactor,
+        y: this.pos.y
+      };
+    };
+    Particle.prototype.rotationOffset = function() {
+      var rotatedPosition;
+      rotatedPosition = this.rotate();
+      return {
+        x: this.pos.x - rotatedPosition.x,
+        y: 0
+      };
+    };
+    Particle.prototype.waveOffset = function() {
+      var delta, index, offset, t, t_delta;
+      offset = {
+        x: 0,
+        y: 0
+      };
+      t = Intro.FRAME * 4 + 200;
+      t_delta = 40;
+      index = this.pos.x + (this.pos.y - 200) * 0.8;
+      if (((t - t_delta) < index && index < (t + t_delta))) {
+        delta = index - t;
+        offset = {
+          x: 0,
+          y: -(Math.pow(delta, 2) * 0.002) + 3
+        };
+      }
+      return offset;
+    };
     Particle.prototype.update = function() {
-      var newValue;
+      var newValue, rotationOffset, waveOffset;
+      this.drawPosition = {
+        x: this.pos.x,
+        y: this.pos.y
+      };
       switch (Intro.animationPhase) {
         case 'logo_in':
           if (!this.staticIntro) {
-            return this.drawPosition = this.func_in();
+            this.drawPosition = this.func_in();
           }
           break;
         case 'type_in':
           if (this.staticIntro) {
-            return this.pixel[3] = Intro.FRAME / Intro.animationPhaseEnd['type_in'].end + 0.02;
+            this.pixel[3] = Intro.FRAME / Intro.animationPhaseEnd['type_in'].end + 0.02;
           }
           break;
         case 'out':
@@ -73,7 +112,19 @@
           if (this.pixel[3] > 0) {
             newValue = this.pixel[3] * 0.97;
           }
-          return this.pixel = [this.pixel[0], this.pixel[1], this.pixel[2], newValue];
+          this.pixel = [this.pixel[0], this.pixel[1], this.pixel[2], newValue];
+          break;
+        case 'wave':
+          if (this.staticIntro) {
+            waveOffset = this.waveOffset();
+            this.drawPosition.x -= waveOffset.x;
+            this.drawPosition.y -= waveOffset.y;
+          }
+      }
+      if (!this.staticIntro) {
+        rotationOffset = this.rotationOffset();
+        this.drawPosition.x -= rotationOffset.x;
+        return this.drawPosition.y -= rotationOffset.y;
       }
     };
     Particle.prototype.draw = function() {
