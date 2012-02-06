@@ -67,6 +67,12 @@ class Particle
         y: -(Math.pow(delta,2) * 0.002) + 3
     return offset
 
+  rasterizeAlpha: (alpha) ->
+    newAlpha = alpha * 100
+    newAlpha = Math.floor(newAlpha/16) * 16
+    return newAlpha/100
+
+
   update: =>
     @drawPosition =
       x: @pos.x
@@ -80,12 +86,12 @@ class Particle
           @pixel[3] = Intro.FRAME/Intro.animationPhaseEnd['type_in'].end + 0.02
       when 'out'
         @drawPosition = @func_out()
-        newValue = @pixel[3]*0.97 if @pixel[3] > 0
+        alpha = @pixel[3]*0.97 if @pixel[3] > 0
         @pixel = [
           @pixel[0]
           @pixel[1]
           @pixel[2]
-          newValue
+          alpha
         ]
       when 'wave'
         if @staticIntro
@@ -99,12 +105,12 @@ class Particle
       @drawPosition.x -= rotationOffset.x 
       @drawPosition.y -= rotationOffset.y
       # console.log "(#{Intro.rotationFrame})(#{@pos.x}, #{@pos.y}) x: #{@drawPosition.x} y: #{@drawPosition.y}"
-    
-
   
   draw: =>
     Intro.CTX.strokeStyle = 'rgba(0,255,0,255)'
-    Intro.CTX.fillStyle = "rgba(#{@pixel[0]},#{@pixel[1]},#{@pixel[2]},#{@pixel[3]})"
+    Intro.CTX.fillStyle = "rgba(#{@pixel[0]},#{@pixel[1]},#{@pixel[2]},#{@rasterizeAlpha(@pixel[3])})"
+    @drawPosition.x = Math.floor(@drawPosition.x/2) * 2
+    @drawPosition.y = Math.floor(@drawPosition.y/2) * 2
     Intro.CTX.fillRect @drawPosition.x, @drawPosition.y, Intro.PARTICLE_SIZE, Intro.PARTICLE_SIZE
 
 window.Particle = Particle

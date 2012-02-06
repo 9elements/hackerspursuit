@@ -90,8 +90,14 @@
       }
       return offset;
     };
+    Particle.prototype.rasterizeAlpha = function(alpha) {
+      var newAlpha;
+      newAlpha = alpha * 100;
+      newAlpha = Math.floor(newAlpha / 16) * 16;
+      return newAlpha / 100;
+    };
     Particle.prototype.update = function() {
-      var newValue, rotationOffset, waveOffset;
+      var alpha, rotationOffset, waveOffset;
       this.drawPosition = {
         x: this.pos.x,
         y: this.pos.y
@@ -110,9 +116,9 @@
         case 'out':
           this.drawPosition = this.func_out();
           if (this.pixel[3] > 0) {
-            newValue = this.pixel[3] * 0.97;
+            alpha = this.pixel[3] * 0.97;
           }
-          this.pixel = [this.pixel[0], this.pixel[1], this.pixel[2], newValue];
+          this.pixel = [this.pixel[0], this.pixel[1], this.pixel[2], alpha];
           break;
         case 'wave':
           if (this.staticIntro) {
@@ -129,7 +135,9 @@
     };
     Particle.prototype.draw = function() {
       Intro.CTX.strokeStyle = 'rgba(0,255,0,255)';
-      Intro.CTX.fillStyle = "rgba(" + this.pixel[0] + "," + this.pixel[1] + "," + this.pixel[2] + "," + this.pixel[3] + ")";
+      Intro.CTX.fillStyle = "rgba(" + this.pixel[0] + "," + this.pixel[1] + "," + this.pixel[2] + "," + (this.rasterizeAlpha(this.pixel[3])) + ")";
+      this.drawPosition.x = Math.floor(this.drawPosition.x / 2) * 2;
+      this.drawPosition.y = Math.floor(this.drawPosition.y / 2) * 2;
       return Intro.CTX.fillRect(this.drawPosition.x, this.drawPosition.y, Intro.PARTICLE_SIZE, Intro.PARTICLE_SIZE);
     };
     return Particle;
