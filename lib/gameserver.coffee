@@ -25,6 +25,8 @@ module.exports = class
   joinPlayer: (player) =>
     @players.push player
 
+    player.client.emit 'profile.info', { id: player.user.id }
+
     player.client.on 'answer.set', (msg) =>
       return unless player.client.authenticated
       try 

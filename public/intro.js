@@ -58,11 +58,10 @@
       this.callback = callback;
       this.WIDTH = $(this.container).width();
       this.HEIGHT = $(this.container).height();
-      $(this.container).css('padding-bottom', 0);
       this.START = -250;
       this.PAUSE = 100;
       this.EXPLOSION_POWER = 7;
-      Intro.CANVAS = $("<canvas width='" + this.WIDTH + "' height='" + this.HEIGHT + "'></canvas>");
+      Intro.CANVAS = $("<canvas id='canvas-intro' width='" + this.WIDTH + "' height='" + this.HEIGHT + "'></canvas>");
       Intro.CANVAS.appendTo($(this.container));
       Intro.CTX = Intro.CANVAS.get(0).getContext('2d');
       Intro.FRAME = this.START;

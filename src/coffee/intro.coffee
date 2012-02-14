@@ -49,12 +49,11 @@ class Intro
     @callback = callback
     @WIDTH = $(@container).width()
     @HEIGHT = $(@container).height()
-    $(@container).css 'padding-bottom', 0
     @START = -250
     # @START = 0
     @PAUSE = 100
     @EXPLOSION_POWER = 7
-    Intro.CANVAS = $("<canvas width='#{@WIDTH}' height='#{@HEIGHT}'></canvas>")
+    Intro.CANVAS = $("<canvas id='canvas-intro' width='#{@WIDTH}' height='#{@HEIGHT}'></canvas>")
     Intro.CANVAS.appendTo $(@container)
     Intro.CTX = Intro.CANVAS.get(0).getContext('2d')
     Intro.FRAME = @START

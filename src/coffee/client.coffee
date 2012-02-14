@@ -1,6 +1,27 @@
 randOrd = ->
   Math.round(Math.random())-0.5
 
+ImageManipulator = class ImageManipulator
+  constructor: (@image_el, @canvas)->
+    @width = @image_el.width
+    @height = @image_el.height
+
+  pixelize: (size) =>         
+    @image_data = @canvas.getImageData(0, 0, @width, @height)
+    x_steps = parseInt @width / size
+    
+    for w in [0..(@width-1)] by size
+      for h in [0..(@height-1)] by size
+        average = (@image_data.data[((@height*h)+w)*4] + @image_data.data[((@height*h)+w)*4+1] + @image_data.data[((@height*h)+w)*4+2]) / 3
+        for i in [0..(size-1)]
+          for j in [0..(size-1)]
+            unless w+j > @width-1 or h+i > @height-1
+              @image_data.data[((@width*(h+i))+w+j)*4] = average
+              @image_data.data[((@width*(h+i))+w+j)*4+1] = average + 20
+              @image_data.data[((@width*(h+i))+w+j)*4+2] = average
+    
+    @canvas.putImageData(@image_data, 0, 0)
+
 $(document).ready ->
   soundManager.url = "/swfs/"
 
@@ -28,6 +49,19 @@ $(document).ready ->
   connect = ->
     socket = io.connect(host, { 'port': parseInt(port) })
 
+    socket.on "profile.info", (profile) ->
+
+      $('#profile-image').load ->
+        canvas_el = $("<canvas id='canvas-profile' width='#{@.width-1}' height='#{@.height-1}'></canvas>")
+        $('#canvas-container').append canvas_el
+        canvas = canvas_el.get(0).getContext('2d')
+        canvas.drawImage(@, 0, 0, @.width, @.height)
+        im = new ImageManipulator(@, canvas, canvas_el)
+        im.pixelize(4)
+        $('#canvas-container').fadeIn()
+
+      $('#profile-image').attr('src', "/image/#{profile.id}")
+
     socket.on "disconnect", ->
       $('#header-countwait').html("Trying to reconnect")
       $('#countwait').html("Pease stand by...")
@@ -35,7 +69,6 @@ $(document).ready ->
       $('.display').removeClass('stripes')
       $('#view-wait').fadeIn()
       started = false
-
 
     socket.on "connect", ->
       id = socket.socket.sessionid

@@ -6,8 +6,8 @@
         ul
           li
             a.clickable(href="/auth/twitter") Login with Twitter
-          li
-            a.clickable(href="/auth/facebook") Login with Facebook
+          li Login via Facebook deactivated
+            // a.clickable(href="/auth/facebook") Login with Facebook
 
     - else
       script(type="text/javascript")
@@ -26,6 +26,8 @@
       #view-game.view-content
         #left-pane
           h3 Profile
+          img#profile-image
+          #canvas-container
 
         #question-pane
           h2#question Question
