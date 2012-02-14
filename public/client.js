@@ -107,16 +107,17 @@
               }
             });
             socket.on("scoreboard", function(scoreboard) {
-              var entry, listEntry, _i, _len, _results;
+              var entry, listEntry, rank, _i, _len, _results;
               $('#scoreboard li').remove();
+              rank = 0;
               _results = [];
               for (_i = 0, _len = scoreboard.length; _i < _len; _i++) {
                 entry = scoreboard[_i];
-                listEntry = $('<li>').append($('<a>').attr({
+                rank += 1;
+                _results.push(rank < 11 ? (listEntry = $('<li>').append($('<a>').attr({
                   href: "/profile/" + entry.userId,
                   target: "_blank"
-                }).html("" + entry.points + " " + (entry.name.substring(0, 8))));
-                _results.push($('#scoreboard').append(listEntry));
+                }).html("" + entry.points + " " + (entry.name.substring(0, 8)))), $('#scoreboard').append(listEntry)) : void 0);
               }
               return _results;
             });

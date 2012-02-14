@@ -109,10 +109,13 @@ $(document).ready ->
           
           socket.on "scoreboard", (scoreboard) ->
             $('#scoreboard li').remove()
+            rank = 0
             for entry in scoreboard
-              listEntry = $('<li>').append(
-                $('<a>').attr(href: "/profile/#{entry.userId}", target: "_blank").html("#{entry.points} #{entry.name.substring(0, 8)}"))
-              $('#scoreboard').append listEntry
+              rank += 1
+              if rank < 11
+                listEntry = $('<li>').append(
+                  $('<a>').attr(href: "/profile/#{entry.userId}", target: "_blank").html("#{entry.points} #{entry.name.substring(0, 8)}"))
+                $('#scoreboard').append listEntry
           
           socket.on "chat.msg", (result) ->
             listEntry result.name, result.msg
