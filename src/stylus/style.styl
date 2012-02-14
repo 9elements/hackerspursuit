@@ -7,7 +7,7 @@ body
   padding 0
   margin 0
   font 15px 'SilkscreenNormal', Arial, sans-serif
-  background-color #dcdcdf
+  background-image url(/img/background.png)
   text-align: center
   color #566050
   height 100%
@@ -30,35 +30,32 @@ h1, h2, h3
   display inline-block
 
 #container
-  background-color #444
   margin 0
   padding 0
   margin-left auto
   margin-right auto
-  width 796px
+  width 880px
   min-height 100%
 
 #header
   padding-top 30px
 
 #wrapper
-  padding-top 20px
-  padding-bottom 20px
-  padding-left 44px
-  padding-right 44px
+  padding: 0
+  margin: 0
+  margin-top: 24px
 
 .display
   position relative
   border-radius(15px)
-  background-color #e4f9d7
+  background-color #dff8d0
   border 1px solid #000
   shadow(rgba(white, 0.5))
   padding-bottom: 20px
   min-height 350px
-  
-.with-background
+
+.stripes
   background-image url(/img/screenbg.png)
-  background-repeat repeat-y
 
 .display-overlay
   position absolute
@@ -68,53 +65,96 @@ h1, h2, h3
   width 100%
   background-image url(/img/stripes.png)
   border-radius(14px)
-  top-shadow(rgba(black, 0.6))
   pointer-events none
 
+.display-gradient
+  position absolute
+  top 0
+  left 0
+  height 100%
+  width 100%
+  top-shadow(rgba(black, 0.6))
+  background-half-gradient(304deg, rgba(255,255,255,0), 0%, rgba(255,255,255,0.1), 50%)
+  border-radius(14px)
+  pointer-events none
+
+#view-wait, #view-prepare, #view-login
+  h2
+    margin-top 72px
+
+#view-login
+  ul
+    list-style none
+    li
+      padding-bottom 8px
+
 #left-pane
-  float left
-  width 170px
+  position absolute
+  top 0
+  left 20px
+  width 160px
   height 100%
   text-align left
-  padding-left 20px
   h3
     color #e0f8d1
 
-  ul
-    list-style none
-    padding 0
-    margin 0
-    li
-      color #566050
-
-#right-pane
-  float left
+#question-pane
+  position absolute
+  top 0
+  left 200px
   text-align left
   padding 20px
   padding-left 40px
   width 430px
 
   h2
-    font-weight normal
-    font-size 16px
-    margin-top 0
+    font-size 15px
+
+#right-pane
+  position absolute
+  top 0
+  right 10px
+  height 100%
+  width 135px
+  text-align left
+  h3
+    color #e0f8d1
+    font-size: normal
+
+  ul
+    list-style none
+    padding 0
+    margin 0
+    li
+      margin 0
+      padding 0
+      color #566050
+
+#view-chat
+  margin-top 20px
+  padding 10px
+  border-radius 10px
+  height 40px
+  background-linear-gradient(top, #767676, 0%, #4b4b4b, 100%)
+  border 1px solid #000
+  top-shadow(rgba(white, 0.1))
 
 .chat
+  margin 0
+  padding 0
+  padding-left 8px
+  padding-right 8px
   position relative
-  margin-top 20px
   border-radius(15px)
   background-color #e4f9d7
   border 1px solid #000
   min-height 20px
-  margin-left 13px
-  margin-right 13px
   text-align left
   color #e0f8d1
-  padding-left 11px
-  padding-top 1px
   background-image url(/img/chatbg.png)
   background-repeat repeat-y
   shadow(rgba(white, 0.5))
+  hard-top-shadow(rgba(black, 0.6))
   form
     display inline
     input
@@ -122,25 +162,23 @@ h1, h2, h3
       border none
       background-color #e4f9d7
       background transparent
-      width 600px
+      width 766px
       outline none
       font 16px 'SilkscreenNormal', Arial, sans-serif
       color #566050
 
 .slot
-  margin-top 20px
+  margin 0
+  margin-top 8px
   border-radius(3px)
   height 6px
-  margin-left 13px
-  margin-right 13px
   background-color #181818
   shadow(rgba(white, 0.5))
 
 .paper
   margin-top -3px
-  margin-left 18px
-  margin-right 18px
-  background-color white
+  margin-left 5px
+  margin-right 6px
   text-align left
   position relative
   
@@ -183,14 +221,12 @@ h1, h2, h3
           color #000
 
   .paper-bottom
-    background-color #444
     background-image url(/img/paper-bottom.png)
     background-repeat repeat-x
     height 17px
     width 100%
 
 .listcontainer
-  width 660px
   padding 20px
 
   ul

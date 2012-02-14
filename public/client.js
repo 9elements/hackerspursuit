@@ -34,7 +34,8 @@
       socket.on("disconnect", function() {
         $('#header-countwait').html("Trying to reconnect");
         $('#countwait').html("Pease stand by...");
-        $('#view-game').hide();
+        $('#view-game, #view-prepare, #view-chat').hide();
+        $('.display').removeClass('stripes');
         $('#view-wait').fadeIn();
         return started = false;
       });
@@ -47,22 +48,35 @@
             return;
           }
           if (data.success) {
-            socket.on("question.new", function(question) {
-              var answer, keys;
+            socket.on("question.prepare", function(question) {
+              $('.display').removeClass('stripes');
               if (!started) {
                 $('#view-wait').hide();
-                $('#view-game').fadeIn();
+                $('#view-chat').fadeIn();
                 setTimeout(function() {
                   return listEntry("System", "Navigate to <a href=\"/highscore\" target=\"_blank\">/highscore</a> for overall score");
                 }, 3000);
                 started = true;
                 loaded = true;
               }
+              $('#question-category').text("Next question is about " + question.category);
+              $('#question-author').text("by " + question.createdBy);
+              $('#view-game').hide();
+              return $('#view-prepare').fadeIn();
+            });
+            socket.on("question.new", function(question) {
+              var answer, keys;
+              if (!started) {
+                return;
+              }
+              $('#view-prepare').hide();
+              $('.display').addClass('stripes');
+              $('#view-game').fadeIn();
               $('.selected').removeClass('selected');
               for (answer = 1; answer <= 4; answer++) {
                 $('#a' + answer).fadeIn('fast');
               }
-              $('#question').text("" + question.category + ": " + question.text);
+              $('#question').text("" + question.text);
               keys = [1, 2, 3, 4];
               keys.sort(randOrd);
               $('#a1').attr("data-answer", keys[0]).removeClass("selected").text(question['a' + keys[0]]);
@@ -196,10 +210,10 @@
       });
     });
     /* Views */
-    $('#view-game, #header-countwait').hide();
+    $('#view-game, #view-prepare, #header-countwait, #view-chat').hide();
     /* intro */
     $('.view-content .view-wait').show();
-    intro = new Intro($('#view-wait .display'));
+    intro = new Intro($('.display'));
     return intro.start(__bind(function() {
       $('#header-countwait').show();
       /* start game */

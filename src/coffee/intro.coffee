@@ -90,7 +90,6 @@ class Intro
       particle.draw()
   
   animationFinished: ->
-    $(container).css 'padding-bottom', '20px'
     Intro.CANVAS.remove()
     @callback()
 

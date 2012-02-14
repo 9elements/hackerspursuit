@@ -31,7 +31,8 @@ $(document).ready ->
     socket.on "disconnect", ->
       $('#header-countwait').html("Trying to reconnect")
       $('#countwait').html("Pease stand by...")
-      $('#view-game').hide()
+      $('#view-game, #view-prepare, #view-chat').hide()
+      $('.display').removeClass('stripes')
       $('#view-wait').fadeIn()
       started = false
 
@@ -44,22 +45,38 @@ $(document).ready ->
 
         if data.success
 
-          socket.on "question.new", (question) ->
-            if !started
+          socket.on "question.prepare", (question) ->
+            $('.display').removeClass('stripes')
+
+            unless started
               $('#view-wait').hide()
-              $('#view-game').fadeIn()
+              $('#view-chat').fadeIn()
               setTimeout ->
                 listEntry "System", "Navigate to <a href=\"/highscore\" target=\"_blank\">/highscore</a> for overall score"
               , 3000
 
               started = true
               loaded = true
+
+            $('#question-category').text("Next question is about #{question.category}")
+            $('#question-author').text("by #{question.createdBy}")
+
+            $('#view-game').hide()
+            $('#view-prepare').fadeIn()
+            
+
+          socket.on "question.new", (question) ->
+            return unless started
+
+            $('#view-prepare').hide()
+            $('.display').addClass('stripes')
+            $('#view-game').fadeIn()
             
             $('.selected').removeClass('selected')
             for answer in [1..4]
               $('#a' + answer).fadeIn('fast')
               
-            $('#question').text("#{question.category}: #{question.text}")
+            $('#question').text("#{question.text}")
 
             keys = [1..4]
             keys.sort randOrd
@@ -167,13 +184,13 @@ $(document).ready ->
       
   ### Views ###
   
-  $('#view-game, #header-countwait').hide()
+  $('#view-game, #view-prepare, #header-countwait, #view-chat').hide()
 
   ### intro ###
 
   $('.view-content .view-wait').show()
 
-  intro = new Intro $('#view-wait .display')
+  intro = new Intro $('.display')
   intro.start =>
     $('#header-countwait').show()
 

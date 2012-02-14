@@ -103,7 +103,6 @@
       return _results;
     };
     Intro.prototype.animationFinished = function() {
-      $(container).css('padding-bottom', '20px');
       Intro.CANVAS.remove();
       return this.callback();
     };

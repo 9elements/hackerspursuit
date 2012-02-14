@@ -1,37 +1,33 @@
 .view-container
-  - if(!everyauth.loggedIn)
-    #view-login.view-content
-      .login-container
-        .display.listcontainer.clearfix
-          h2 Welcome
-          ul
-            li
-              a.clickable(href="/auth/twitter") Login with Twitter
-            li
-              a.clickable(href="/auth/facebook") Login with Facebook
+  .display
+    - if(!everyauth.loggedIn)
+      #view-login
+        h2 Welcome
+        ul
+          li
+            a.clickable(href="/auth/twitter") Login with Twitter
+          li
+            a.clickable(href="/auth/facebook") Login with Facebook
 
-          .display-overlay
-
-  - else
-    script(type="text/javascript")
-      var host = "#{host}";
-      var port = "#{port}";
-    script(type="text/javascript", src="/image.js")
-    script(type="text/javascript", src="/particle.js")
-    script(type="text/javascript", src="/intro.js")
-    script(type="text/javascript", src="/client.js")
-    #view-wait.view-content
-      .display
-        .display-overlay
+    - else
+      script(type="text/javascript")
+        var host = "#{host}";
+        var port = "#{port}";
+      script(type="text/javascript", src="/image.js")
+      script(type="text/javascript", src="/particle.js")
+      script(type="text/javascript", src="/intro.js")
+      script(type="text/javascript", src="/client.js")
+      #view-wait
         h2#header-countwait Please wait for the next question
         #countwait
-    #view-game.view-content
-      .display.with-background.clearfix
+      #view-prepare
+        h2#question-category
+        h3#question-author
+      #view-game.view-content
         #left-pane
-          h3 SCOREBOARD
-          ul#scoreboard
+          h3 Profile
 
-        #right-pane
+        #question-pane
           h2#question Question
           ul#answers
             li
@@ -43,11 +39,18 @@
             li
               #a4.clickable Answer 4  
           
-          .countdown COUNTDOWN&nbsp
+          .countdown Countdown&nbsp;
             span#countdown
 
-        .display-overlay
+        #right-pane
+          h3 Scoreboard
+          ul#scoreboard
 
+    .display-overlay
+    .display-gradient
+
+  - if(everyauth.loggedIn)
+    #view-chat
       .chat CHAT
         form#chat-form
           input(type='text', id='chat-msg')
@@ -60,5 +63,5 @@
         ul#messages
         .paper-bottom
 
-    - if (everyauth.user)
-      #userid(style="display: none;") #{everyauth.user.id}
+  - if (everyauth.user)
+    #userid(style="display: none;") #{everyauth.user.id}

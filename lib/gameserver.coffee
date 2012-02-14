@@ -123,26 +123,6 @@ module.exports = class
     
     @io.sockets.in("nerds").emit('scoreboard', scoreboard)
 
-  endCycle: =>
-    @acceptingAnswers = false
-      
-    @io.sockets.in("nerds").emit('question.wait', {
-      correct: @question.correct
-      })
-    
-    @broadcastScoreboard()
-    @rebuildScoreList()
-
-    setTimeout @initCycle, global.config.game.pauseMilliseconds
-    
-  countDown: (seconds) =>
-    @leftSeconds -= 1
-    if @leftSeconds > 0
-      @io.sockets.in("nerds").emit('question.countdown', @leftSeconds)
-      setTimeout @countDown, 1000
-    else
-      @endCycle()
-
   getProfileData: (userId, callback) ->
     gameServer = @
 
@@ -231,19 +211,49 @@ module.exports = class
     @question = @questions[@currentQuestion]
     @firstRight = true
 
-    @io.sockets.in("nerds").emit('question.new', {
+    @io.sockets.in("nerds").emit('question.prepare', {
       nerdLevel: @question.nerdLevel,
       text: @question.text,
       category: @question.category,
-      a1: @question.a1,
-      a2: @question.a2,
-      a3: @question.a3,
-      a4: @question.a4,
       createdAt: @question.createdAt,
       createdBy: @question.createdBy,
       countdown: global.config.game.countSeconds
     })
+
+    setTimeout =>
+      @io.sockets.in("nerds").emit('question.new', {
+        nerdLevel: @question.nerdLevel,
+        text: @question.text,
+        category: @question.category,
+        a1: @question.a1,
+        a2: @question.a2,
+        a3: @question.a3,
+        a4: @question.a4,
+        createdAt: @question.createdAt,
+        createdBy: @question.createdBy,
+        countdown: global.config.game.countSeconds
+      })
+      @currentQuestion += 1
+      @leftSeconds = global.config.game.countSeconds
+      @countDown()
+    , global.config.game.prepareSeconds * 1000
+
+  countDown: (seconds) =>
+    @leftSeconds -= 1
+    if @leftSeconds > 0
+      @io.sockets.in("nerds").emit('question.countdown', @leftSeconds)
+      setTimeout @countDown, 1000
+    else
+      @endCycle()
+
+  endCycle: =>
+    @acceptingAnswers = false
+      
+    @io.sockets.in("nerds").emit('question.wait', {
+      correct: @question.correct
+      })
     
-    @currentQuestion += 1
-    @leftSeconds = global.config.game.countSeconds
-    @countDown()
+    @broadcastScoreboard()
+    @rebuildScoreList()
+
+    setTimeout @initCycle, global.config.game.pauseMilliseconds

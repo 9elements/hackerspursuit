@@ -11,6 +11,14 @@ border-left-radius(n)
   -border-top-left-radius n
   -border-bottom-left-radius n
 
+border-right-radius(n)
+  -webkit-border-top-right-radius n
+  -webkit-border-bottom-right-radius n
+  -moz-border-top-right-radius n
+  -moz-border-bottom-right-radius n
+  -border-top-right-radius n
+  -border-bottom-right-radius n
+
 shadow(c)
   -moz-box-shadow:    0 1px 0px 0 c
   -webkit-box-shadow: 0 1px 0px 0 c
@@ -30,3 +38,18 @@ transition(a, t)
   -webkit-transition a t ease
   -moz-transition a t ease
   -o-transition a t ease
+
+background-linear-gradient(startPoint, startColor, startInterval, endColor, endInterval)
+  background-color startColor
+  background-image -webkit-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+  background-image -moz-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+  background-image -ms-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+  background-image -o-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+  background-image linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+
+background-half-gradient(startPoint, startColor, startInterval, endColor, endInterval)
+  background-image -webkit-linear-gradient(startPoint, startColor startInterval, endColor endInterval, startColor endInterval, startColor 100%)
+  background-image -moz-linear-gradient(startPoint, startColor startInterval, endColor endInterval, startColor endInterval, startColor 100%)
+  background-image -ms-linear-gradient(startPoint, startColor startInterval, endColor endInterval, startColor endInterval, startColor 100%)
+  background-image -o-linear-gradient(startPoint, startColor startInterval, endColor endInterval, startColor endInterval, startColor 100%)
+  background-image linear-gradient(startPoint, startColor startInterval, endColor endInterval, startColor endInterval, startColor 100%)
