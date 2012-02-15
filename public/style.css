@@ -14,8 +14,8 @@ h1,h2,h3{font-weight:normal}
 #view-wait h2,#view-prepare h2,#view-login h2{margin-top:72px}
 #view-login ul{list-style:none;}
 #view-login ul li{padding-bottom:8px}
-#left-pane{position:absolute;top:0;left:20px;width:160px;height:100%;text-align:left;}
-#left-pane h3{color:#e0f8d1}
+#left-pane{position:absolute;padding-top:20px;top:0;left:20px;width:160px;height:100%;text-align:left;}
+#left-pane h3{color:#e0f8d1;text-align:center;width:160px}
 #left-pane #profile-image{display:none}
 #left-pane #canvas-container{width:160px;text-align:center;display:none}
 #question-pane{position:absolute;top:0;left:200px;text-align:left;padding:20px;padding-left:40px;width:430px;}

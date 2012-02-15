@@ -26,7 +26,10 @@ module.exports = class
     @players.push player
 
     # TODO: Implement the same for facebook profile images
-    player.client.emit 'profile.info', { id: player.user.id, profileImage: player.user.profile_image_url.replace(/_normal/, '_bigger') }
+    player.client.emit 'profile.info',
+      id: player.user.id
+      profileImage: player.user.profile_image_url.replace(/_normal/, '_bigger')
+      name: player.user.name
 
     player.client.on 'answer.set', (msg) =>
       return unless player.client.authenticated

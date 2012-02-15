@@ -29,6 +29,7 @@ $(document).ready ->
     socket = io.connect(host, { 'port': parseInt(port) })
 
     socket.on "profile.info", (profile) ->
+      $('#profile-name').text(profile.name.substring(0, 8))
       $.getImageData
         url: profile.profileImage
         success: (image) ->

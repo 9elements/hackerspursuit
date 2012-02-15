@@ -32,6 +32,7 @@
         'port': parseInt(port)
       });
       socket.on("profile.info", function(profile) {
+        $('#profile-name').text(profile.name.substring(0, 8));
         return $.getImageData({
           url: profile.profileImage,
           success: function(image) {
