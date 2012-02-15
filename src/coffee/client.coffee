@@ -32,6 +32,7 @@ $(document).ready ->
       $.getImageData
         url: profile.profileImage
         success: (image) ->
+          $('#canvas-container').empty()
           canvas_el = $("<canvas id='canvas-profile' width='#{image.width-1}' height='#{image.height-1}'></canvas>")
           $('#canvas-container').append canvas_el
           canvas = canvas_el.get(0).getContext('2d')

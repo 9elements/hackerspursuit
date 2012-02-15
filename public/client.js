@@ -36,6 +36,7 @@
           url: profile.profileImage,
           success: function(image) {
             var average, canvas, canvas_el, h, i, image_data, j, size, w, _ref, _ref2, _ref3, _ref4, _step, _step2;
+            $('#canvas-container').empty();
             canvas_el = $("<canvas id='canvas-profile' width='" + (image.width - 1) + "' height='" + (image.height - 1) + "'></canvas>");
             $('#canvas-container').append(canvas_el);
             canvas = canvas_el.get(0).getContext('2d');
