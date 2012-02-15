@@ -10,10 +10,16 @@ html
     script(src='socket.io/socket.io.js', type='text/javascript')
     script(src='/javascripts/soundmanager2.js', type='text/javascript')
     script(src='/javascripts/getimagedata.js', type='text/javascript')
+    script(src='/shinylogo.js', type='text/javascript')
   body
     #container.clearfix
       #header
-        img(src="/img/logo.png")
+        canvas#shinylogo(width=252, height=44)
 
       #wrapper
         != body
+
+    #static(style="display: none")
+      img#logo(src="/img/logo.png")
+      img#logo-shine(src='/img/logo_shine.png')
+      canvas#canvas-shine(width=300, height=300)
