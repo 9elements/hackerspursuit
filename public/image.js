@@ -19,8 +19,8 @@
       this.img_data = Intro.CTX.getImageData(0, 0, this.image.width, this.image.height);
       Intro.CTX.clearRect(0, 0, Intro.CANVAS.width(), Intro.CANVAS.height());
       this.img_offset = {
-        x: Math.floor($('canvas').width() / 2) - this.image.width * Intro.PARTICLE_SIZE / 2,
-        y: Math.floor($('canvas').height() / 2) - this.image.height * Intro.PARTICLE_SIZE / 2
+        x: Math.floor(Intro.CANVAS.width() / 2) - this.image.width * Intro.PARTICLE_SIZE / 2,
+        y: Math.floor(Intro.CANVAS.height() / 2) - this.image.height * Intro.PARTICLE_SIZE / 2
       };
       return this.createPixels();
     };
