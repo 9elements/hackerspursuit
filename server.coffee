@@ -72,26 +72,6 @@ app.get '/profile/:id', (req, res) ->
   await gameserver.getProfileData req.params.id, defer data
   res.render 'profile', data
 
-app.get '/image/:id', (req, res) ->
-  # TOOD: Implemenet the same for facebook profile images
-  
-  await store.users.findById req.params.id, defer err, userData
-  parsedImageUrl = url.parse userData.profile_image_url
-
-  proxy = http.createClient(80, parsedImageUrl.host)
-  proxyRequest = proxy.request 'GET', parsedImageUrl.pathname.replace(/_normal/, '_bigger')
-  proxyRequest.addListener 'response', (proxyResponse) ->
-    proxyResponse.addListener 'data', (chunk) ->
-      res.write chunk, 'binary'
-
-    proxyResponse.addListener 'end', ->
-      res.end()
-  
-    res.writeHead proxyResponse.statusCode, proxyResponse.headers
-  
-  proxyRequest.end()
-
-
 # as soon as a user authenticates himself with a get request,
 # make him join the "/nerds" room to join the game and receive
 # question events

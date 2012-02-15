@@ -1,27 +1,6 @@
 randOrd = ->
   Math.round(Math.random())-0.5
 
-ImageManipulator = class ImageManipulator
-  constructor: (@image_el, @canvas)->
-    @width = @image_el.width
-    @height = @image_el.height
-
-  pixelize: (size) =>         
-    @image_data = @canvas.getImageData(0, 0, @width, @height)
-    x_steps = parseInt @width / size
-    
-    for w in [0..(@width-1)] by size
-      for h in [0..(@height-1)] by size
-        average = (@image_data.data[((@height*h)+w)*4] + @image_data.data[((@height*h)+w)*4+1] + @image_data.data[((@height*h)+w)*4+2]) / 3
-        for i in [0..(size-1)]
-          for j in [0..(size-1)]
-            unless w+j > @width-1 or h+i > @height-1
-              @image_data.data[((@width*(h+i))+w+j)*4] = average
-              @image_data.data[((@width*(h+i))+w+j)*4+1] = average + 20
-              @image_data.data[((@width*(h+i))+w+j)*4+2] = average
-    
-    @canvas.putImageData(@image_data, 0, 0)
-
 $(document).ready ->
   soundManager.url = "/swfs/"
 
@@ -50,17 +29,29 @@ $(document).ready ->
     socket = io.connect(host, { 'port': parseInt(port) })
 
     socket.on "profile.info", (profile) ->
+      $.getImageData
+        url: profile.profileImage
+        success: (image) ->
+          canvas_el = $("<canvas id='canvas-profile' width='#{image.width-1}' height='#{image.height-1}'></canvas>")
+          $('#canvas-container').append canvas_el
+          canvas = canvas_el.get(0).getContext('2d')
+          canvas.drawImage(image, 0, 0, image.width, image.height)
+          image_data = canvas.getImageData(0, 0, image.width, image.height)
+          size = 4
+          for w in [0..(image.width-1)] by size
+            for h in [0..(image.height-1)] by size
+              average = (image_data.data[((image.height*h)+w)*4] + image_data.data[((image.height*h)+w)*4+1] + image_data.data[((image.height*h)+w)*4+2]) / 3
+              for i in [0..(size-1)]
+                for j in [0..(size-1)]
+                  unless w+j > image.width-1 or h+i > image.height-1
+                    image_data.data[((image.width*(h+i))+w+j)*4] = average
+                    image_data.data[((image.width*(h+i))+w+j)*4+1] = average + 20
+                    image_data.data[((image.width*(h+i))+w+j)*4+2] = average
 
-      $('#profile-image').load ->
-        canvas_el = $("<canvas id='canvas-profile' width='#{@.width-1}' height='#{@.height-1}'></canvas>")
-        $('#canvas-container').append canvas_el
-        canvas = canvas_el.get(0).getContext('2d')
-        canvas.drawImage(@, 0, 0, @.width, @.height)
-        im = new ImageManipulator(@, canvas, canvas_el)
-        im.pixelize(4)
-        $('#canvas-container').fadeIn()
+          canvas.putImageData(image_data, 0, 0)
 
-      $('#profile-image').attr('src', "/image/#{profile.id}")
+        error: (xhr, text_status) ->
+          console.log "Error loading profile image: #{text_status}"
 
     socket.on "disconnect", ->
       $('#header-countwait').html("Trying to reconnect")
@@ -84,6 +75,8 @@ $(document).ready ->
             unless started
               $('#view-wait').hide()
               $('#view-chat').fadeIn()
+              $('#canvas-container').fadeIn()
+
               setTimeout ->
                 listEntry "System", "Navigate to <a href=\"/highscore\" target=\"_blank\">/highscore</a> for overall score"
               , 3000
@@ -225,6 +218,7 @@ $(document).ready ->
   ### intro ###
 
   $('.view-content .view-wait').show()
+
 
   intro = new Intro $('.display')
   intro.start =>

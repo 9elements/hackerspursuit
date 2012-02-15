@@ -1,39 +1,9 @@
 (function() {
-  var ImageManipulator, randOrd;
+  var randOrd;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   randOrd = function() {
     return Math.round(Math.random()) - 0.5;
   };
-  ImageManipulator = ImageManipulator = (function() {
-    function ImageManipulator(image_el, canvas) {
-      this.image_el = image_el;
-      this.canvas = canvas;
-      this.pixelize = __bind(this.pixelize, this);
-      this.width = this.image_el.width;
-      this.height = this.image_el.height;
-    }
-    ImageManipulator.prototype.pixelize = function(size) {
-      var average, h, i, j, w, x_steps, _ref, _ref2, _ref3, _ref4, _step, _step2;
-      this.image_data = this.canvas.getImageData(0, 0, this.width, this.height);
-      x_steps = parseInt(this.width / size);
-      for (w = 0, _ref = this.width - 1, _step = size; 0 <= _ref ? w <= _ref : w >= _ref; w += _step) {
-        for (h = 0, _ref2 = this.height - 1, _step2 = size; 0 <= _ref2 ? h <= _ref2 : h >= _ref2; h += _step2) {
-          average = (this.image_data.data[((this.height * h) + w) * 4] + this.image_data.data[((this.height * h) + w) * 4 + 1] + this.image_data.data[((this.height * h) + w) * 4 + 2]) / 3;
-          for (i = 0, _ref3 = size - 1; 0 <= _ref3 ? i <= _ref3 : i >= _ref3; 0 <= _ref3 ? i++ : i--) {
-            for (j = 0, _ref4 = size - 1; 0 <= _ref4 ? j <= _ref4 : j >= _ref4; 0 <= _ref4 ? j++ : j--) {
-              if (!(w + j > this.width - 1 || h + i > this.height - 1)) {
-                this.image_data.data[((this.width * (h + i)) + w + j) * 4] = average;
-                this.image_data.data[((this.width * (h + i)) + w + j) * 4 + 1] = average + 20;
-                this.image_data.data[((this.width * (h + i)) + w + j) * 4 + 2] = average;
-              }
-            }
-          }
-        }
-      }
-      return this.canvas.putImageData(this.image_data, 0, 0);
-    };
-    return ImageManipulator;
-  })();
   $(document).ready(function() {
     var addAlert, connect, intro, listEntry, loaded, sendAnswer, socket, startGame, started;
     soundManager.url = "/swfs/";
@@ -62,17 +32,36 @@
         'port': parseInt(port)
       });
       socket.on("profile.info", function(profile) {
-        $('#profile-image').load(function() {
-          var canvas, canvas_el, im;
-          canvas_el = $("<canvas id='canvas-profile' width='" + (this.width - 1) + "' height='" + (this.height - 1) + "'></canvas>");
-          $('#canvas-container').append(canvas_el);
-          canvas = canvas_el.get(0).getContext('2d');
-          canvas.drawImage(this, 0, 0, this.width, this.height);
-          im = new ImageManipulator(this, canvas, canvas_el);
-          im.pixelize(4);
-          return $('#canvas-container').fadeIn();
+        return $.getImageData({
+          url: profile.profileImage,
+          success: function(image) {
+            var average, canvas, canvas_el, h, i, image_data, j, size, w, _ref, _ref2, _ref3, _ref4, _step, _step2;
+            canvas_el = $("<canvas id='canvas-profile' width='" + (image.width - 1) + "' height='" + (image.height - 1) + "'></canvas>");
+            $('#canvas-container').append(canvas_el);
+            canvas = canvas_el.get(0).getContext('2d');
+            canvas.drawImage(image, 0, 0, image.width, image.height);
+            image_data = canvas.getImageData(0, 0, image.width, image.height);
+            size = 4;
+            for (w = 0, _ref = image.width - 1, _step = size; 0 <= _ref ? w <= _ref : w >= _ref; w += _step) {
+              for (h = 0, _ref2 = image.height - 1, _step2 = size; 0 <= _ref2 ? h <= _ref2 : h >= _ref2; h += _step2) {
+                average = (image_data.data[((image.height * h) + w) * 4] + image_data.data[((image.height * h) + w) * 4 + 1] + image_data.data[((image.height * h) + w) * 4 + 2]) / 3;
+                for (i = 0, _ref3 = size - 1; 0 <= _ref3 ? i <= _ref3 : i >= _ref3; 0 <= _ref3 ? i++ : i--) {
+                  for (j = 0, _ref4 = size - 1; 0 <= _ref4 ? j <= _ref4 : j >= _ref4; 0 <= _ref4 ? j++ : j--) {
+                    if (!(w + j > image.width - 1 || h + i > image.height - 1)) {
+                      image_data.data[((image.width * (h + i)) + w + j) * 4] = average;
+                      image_data.data[((image.width * (h + i)) + w + j) * 4 + 1] = average + 20;
+                      image_data.data[((image.width * (h + i)) + w + j) * 4 + 2] = average;
+                    }
+                  }
+                }
+              }
+            }
+            return canvas.putImageData(image_data, 0, 0);
+          },
+          error: function(xhr, text_status) {
+            return console.log("Error loading profile image: " + text_status);
+          }
         });
-        return $('#profile-image').attr('src', "/image/" + profile.id);
       });
       socket.on("disconnect", function() {
         $('#header-countwait').html("Trying to reconnect");
@@ -96,6 +85,7 @@
               if (!started) {
                 $('#view-wait').hide();
                 $('#view-chat').fadeIn();
+                $('#canvas-container').fadeIn();
                 setTimeout(function() {
                   return listEntry("System", "Navigate to <a href=\"/highscore\" target=\"_blank\">/highscore</a> for overall score");
                 }, 3000);

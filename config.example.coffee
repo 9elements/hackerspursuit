@@ -24,6 +24,7 @@ exports.game =
   questionsPath: "../HPQuestions/questions"
   countSeconds: 10
   pauseMilliseconds: 3000
+  prepareSeconds: 3
 
 if currentEnv == "development"
   exports.twitter =

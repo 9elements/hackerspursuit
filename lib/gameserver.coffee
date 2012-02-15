@@ -25,7 +25,8 @@ module.exports = class
   joinPlayer: (player) =>
     @players.push player
 
-    player.client.emit 'profile.info', { id: player.user.id }
+    # TODO: Implement the same for facebook profile images
+    player.client.emit 'profile.info', { id: player.user.id, profileImage: player.user.profile_image_url.replace(/_normal/, '_bigger') }
 
     player.client.on 'answer.set', (msg) =>
       return unless player.client.authenticated
@@ -205,7 +206,6 @@ module.exports = class
     for player in @players
       player.resetAnswer()
       
-    @acceptingAnswers = true
     if @currentQuestion == @questions.length
       @currentQuestion = 0
       @questions.sort randOrd
@@ -223,6 +223,8 @@ module.exports = class
     })
 
     setTimeout =>
+      @acceptingAnswers = true
+
       @io.sockets.in("nerds").emit('question.new', {
         nerdLevel: @question.nerdLevel,
         text: @question.text,
