@@ -30,30 +30,7 @@ $(document).ready ->
 
     socket.on "profile.info", (profile) ->
       $('#profile-name').text(profile.name.substring(0, 8))
-      $.getImageData
-        url: profile.profileImage
-        success: (image) ->
-          $('#canvas-container').empty()
-          canvas_el = $("<canvas id='canvas-profile' width='#{image.width-1}' height='#{image.height-1}'></canvas>")
-          $('#canvas-container').append canvas_el
-          canvas = canvas_el.get(0).getContext('2d')
-          canvas.drawImage(image, 0, 0, image.width, image.height)
-          image_data = canvas.getImageData(0, 0, image.width, image.height)
-          size = 4
-          for w in [0..(image.width-1)] by size
-            for h in [0..(image.height-1)] by size
-              average = (image_data.data[((image.height*h)+w)*4] + image_data.data[((image.height*h)+w)*4+1] + image_data.data[((image.height*h)+w)*4+2]) / 3
-              for i in [0..(size-1)]
-                for j in [0..(size-1)]
-                  unless w+j > image.width-1 or h+i > image.height-1
-                    image_data.data[((image.width*(h+i))+w+j)*4] = average
-                    image_data.data[((image.width*(h+i))+w+j)*4+1] = average + 20
-                    image_data.data[((image.width*(h+i))+w+j)*4+2] = average
-
-          canvas.putImageData(image_data, 0, 0)
-
-        error: (xhr, text_status) ->
-          console.log "Error loading profile image: #{text_status}"
+      $('#canvas-container').pixelize(profile.profileImage)
 
     socket.on "disconnect", ->
       $('#header-countwait').html("Trying to reconnect")
@@ -217,7 +194,7 @@ $(document).ready ->
   
   $('#view-game, #view-prepare, #header-countwait, #view-chat').hide()
 
-  ### intro ###
+  ### Intro ###
 
   $('.view-content .view-wait').show()
 
