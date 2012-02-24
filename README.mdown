@@ -25,7 +25,7 @@ Switch to the project home dir and enter:
     $ cd ../hackerpursuit
     $ cp config.example.coffee config.coffee
 
-Mabe you shold ask someone to get a valid config file. Saves you a lot of time ;)
+Mabe you should ask someone to get a valid config file. Saves you a lot of time ;)  
 Make sure that 'exports.game.questionsPath' is set to the questions directory of the repo that you cloned in the last step.
 
 ## Start redis server
