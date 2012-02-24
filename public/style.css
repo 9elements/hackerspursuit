@@ -42,7 +42,9 @@ h1,h2,h3{font-weight:normal}
 .listcontainer ul{list-style:none;padding:0;}
 .listcontainer ul li{padding-top:10px}
 ul#answers{list-style:none;padding-left:0;}
-ul#answers li{min-height:24px;padding-bottom:2px}
+ul#answers li{min-height:24px;padding-bottom:2px;}
+ul#answers li .correct{background-image:url("/img/correct.png");background-repeat:no-repeat;background-position:390px center}
+ul#answers li .wrong{background-image:url("/img/wrong.png");background-repeat:no-repeat;background-position:390px center}
 a{color:#566050;text-decoration:none}
 .tab_container{clear:both;float:left;width:100%}
 .clickable{padding:4px;width:400px;display:inline-block;cursor:pointer;color:#eff9d6;background-color:#9dad92}

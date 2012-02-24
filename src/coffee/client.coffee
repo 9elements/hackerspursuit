@@ -76,6 +76,9 @@ $(document).ready ->
 
             $('#prepare-pane').hide()
             $('#question-pane').fadeIn()
+
+            $('.correct').removeClass("correct")
+            $('.wrong').removeClass("wrong")
             
             $('.selected').removeClass('selected')
             for answer in [1..4]
@@ -93,11 +96,11 @@ $(document).ready ->
           
           socket.on "answer.correct", (answer) ->
             console.log answer
-            $('ul#answers li div[data-answer=' + answer + ']').addClass("selected")
+            $('ul#answers li div[data-answer=' + answer + ']').addClass("selected correct")
             soundManager.play "correct"
           
           socket.on "answer.wrong", (answer) ->
-            $('ul#answers li div[data-answer=' + answer + ']').addClass("selected")
+            $('ul#answers li div[data-answer=' + answer + ']').addClass("selected wrong")
             soundManager.play "wrong"
           
           socket.on "answer.twice", ->

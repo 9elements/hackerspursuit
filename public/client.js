@@ -77,6 +77,8 @@
               }
               $('#prepare-pane').hide();
               $('#question-pane').fadeIn();
+              $('.correct').removeClass("correct");
+              $('.wrong').removeClass("wrong");
               $('.selected').removeClass('selected');
               for (answer = 1; answer <= 4; answer++) {
                 $('#a' + answer).fadeIn('fast');
@@ -91,11 +93,11 @@
             });
             socket.on("answer.correct", function(answer) {
               console.log(answer);
-              $('ul#answers li div[data-answer=' + answer + ']').addClass("selected");
+              $('ul#answers li div[data-answer=' + answer + ']').addClass("selected correct");
               return soundManager.play("correct");
             });
             socket.on("answer.wrong", function(answer) {
-              $('ul#answers li div[data-answer=' + answer + ']').addClass("selected");
+              $('ul#answers li div[data-answer=' + answer + ']').addClass("selected wrong");
               return soundManager.play("wrong");
             });
             socket.on("answer.twice", function() {
