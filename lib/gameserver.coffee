@@ -25,7 +25,6 @@ module.exports = class
   joinPlayer: (player) =>
     @players.push player
 
-    # TODO: Implement the same for facebook profile images
     player.client.emit 'profile.info',
       id: player.user.id
       profileImage: player.user.profile_image_url.replace(/_normal/, '_bigger')

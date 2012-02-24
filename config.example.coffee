@@ -32,18 +32,8 @@ if currentEnv == "development"
     consumerSecret: ''
     host: 'http://local.hackerspursuit.com:3030'
 
-  exports.facebook =
-    appId: ''
-    appSecret: ''
-    host: 'http://local.hackerspursuit.com:3030'
-
 if currentEnv == "production"
   exports.twitter =
     consumerKey: ''
     consumerSecret: ''
-    host: 'http://www.hackerspursuit.com'
-
-  exports.facebook =
-    appId: ''
-    appSecret: ''
     host: 'http://www.hackerspursuit.com'

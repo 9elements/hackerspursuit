@@ -51,18 +51,6 @@ module.exports =
         promise.fulfill(user)
       return promise
     .redirectPath('/')
-    everyauth.facebook
-      .appId(config.facebook.appId)
-      .appSecret(config.facebook.appSecret)
-      .myHostname(config.facebook.host)
-      .handleAuthCallbackError (req, res) ->
-        sys.util "Facebook Auth Callback Error. Oh noes!"
-      .findOrCreateUser (session, accessToken, accessTokExtra, fbUserMetadata) ->
-        promise = @.Promise()
-        global.store.users.findOrCreate "facebook", fbUserMetadata, (user) ->
-          promise.fulfill(user)
-        return promise
-      .redirectPath('/')
       
     everyauth.everymodule.findUserById (userId, callback) ->
       global.store.users.findById userId, (err, user) ->
