@@ -72,11 +72,12 @@ $(document).ready ->
         if data.success
 
           socket.on "question.prepare", (question) ->
-            $('.display').removeClass('stripes')
 
             unless started
               $('#view-wait').hide()
               $('#view-chat').fadeIn()
+              $('#view-game').fadeIn()
+              $('.display').addClass('stripes')
               $('#canvas-container').fadeIn()
 
               setTimeout ->
@@ -89,16 +90,15 @@ $(document).ready ->
             $('#question-category').text("Next question is about #{question.category}")
             $('#question-author').text("by #{question.createdBy}")
 
-            $('#view-game').hide()
-            $('#view-prepare').fadeIn()
+            $('#question-pane').hide()
+            $('#prepare-pane').fadeIn()
             
 
           socket.on "question.new", (question) ->
             return unless started
 
-            $('#view-prepare').hide()
-            $('.display').addClass('stripes')
-            $('#view-game').fadeIn()
+            $('#prepare-pane').hide()
+            $('#question-pane').fadeIn()
             
             $('.selected').removeClass('selected')
             for answer in [1..4]

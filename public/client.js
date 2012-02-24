@@ -83,10 +83,11 @@
           }
           if (data.success) {
             socket.on("question.prepare", function(question) {
-              $('.display').removeClass('stripes');
               if (!started) {
                 $('#view-wait').hide();
                 $('#view-chat').fadeIn();
+                $('#view-game').fadeIn();
+                $('.display').addClass('stripes');
                 $('#canvas-container').fadeIn();
                 setTimeout(function() {
                   return listEntry("System", "Navigate to <a href=\"/highscore\" target=\"_blank\">/highscore</a> for overall score");
@@ -96,17 +97,16 @@
               }
               $('#question-category').text("Next question is about " + question.category);
               $('#question-author').text("by " + question.createdBy);
-              $('#view-game').hide();
-              return $('#view-prepare').fadeIn();
+              $('#question-pane').hide();
+              return $('#prepare-pane').fadeIn();
             });
             socket.on("question.new", function(question) {
               var answer, keys;
               if (!started) {
                 return;
               }
-              $('#view-prepare').hide();
-              $('.display').addClass('stripes');
-              $('#view-game').fadeIn();
+              $('#prepare-pane').hide();
+              $('#question-pane').fadeIn();
               $('.selected').removeClass('selected');
               for (answer = 1; answer <= 4; answer++) {
                 $('#a' + answer).fadeIn('fast');
