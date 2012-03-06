@@ -1,0 +1,3 @@
+[submodule "NerdPursuit"]
+	path = NerdPursuit
+	url = git@github.com:Nerds/NerdPursuit.git

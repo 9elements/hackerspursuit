@@ -10,30 +10,40 @@ exports.env =
 
 exports.env[currentEnv] = true
 
-exports.server =
-  host: "local.hackerspursuit.com"
-  port: 3030
-
-exports.database =
-  host : "stage.hackerspursuit.com"
-  port : 3030
-  dbindex : 1
-  auth : ""
-
 exports.game =
-  questionsPath: "../HPQuestions/questions"
+  questionsPath: "./NerdPursuit/questions"
+  prepareSeconds: 3
   countSeconds: 10
   pauseMilliseconds: 3000
-  prepareSeconds: 3
 
 if currentEnv == "development"
+  exports.database =
+    host: ""
+    port: 5678
+    dbindex: 1
+    auth: ""
+
+  exports.server =
+    host: "local.hackerspursuit.com"
+    port: 1234
+
   exports.twitter =
     consumerKey: ''
     consumerSecret: ''
-    host: 'http://local.hackerspursuit.com:3030'
+    host: ''
 
 if currentEnv == "production"
+  exports.database =
+    host: ""
+    port: 5678
+    dbindex: 1
+    auth: ""
+
+  exports.server =
+    host: ""
+    port: 1234
+
   exports.twitter =
     consumerKey: ''
     consumerSecret: ''
-    host: 'http://www.hackerspursuit.com'
+    host: ''

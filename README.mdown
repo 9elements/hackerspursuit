@@ -6,19 +6,11 @@ The project is uses [IcedCoffeeScript](http://maxtaco.github.com/coffee-script/)
 
     $ npm install iced-coffee-script -g
 
-
 ## Install node packages
   
 Switch to the project home dir and enter:
   
     $ npm install
-
-
-## Clone repo containing the questions
-  
-    $ cd ..  
-    $ git clone git://github.com/9elements/NerdPursuit.git
-
 
 ## Create your own config.coffee for the hackerpursuit project
   
