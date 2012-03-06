@@ -83,7 +83,7 @@
               for (answer = 1; answer <= 4; answer++) {
                 $('#a' + answer).fadeIn('fast');
               }
-              $('#question').text("" + question.text);
+              $('#question').text("" + question.subCategory + ": " + question.text);
               keys = [1, 2, 3, 4];
               keys.sort(randOrd);
               $('#a1').attr("data-answer", keys[0]).removeClass("selected").text(question['a' + keys[0]]);

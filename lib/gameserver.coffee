@@ -64,23 +64,22 @@ module.exports = class
     files = fs.readdirSync(path)
     for name in files
       fileName = "#{path}/#{name}"
-
-      # Use own catname and id
-      catName = path.match(/(\w*)$/)[0]
-      questionId = "question-#{catName}-#{name}"
-
       fileStats = fs.statSync(fileName)
+
       if fileStats.isFile()
         unless fileName.indexOf(".json") is -1
           try
-            @categoryCounts[catName] = 0 unless @categoryCounts[catName]?
-            @categoryCounts[catName] += 1
-            @categoryCounts['all'] += 1
             rawQuestion = JSON.parse(fs.readFileSync(fileName))
-            @questions.push ( new Question questionId,
+
+            @categoryCounts[rawQuestion.question.category] = 0 unless @categoryCounts[rawQuestion.question.category]?
+            @categoryCounts[rawQuestion.question.category] += 1
+            @categoryCounts['all'] += 1
+
+            @questions.push ( new Question "question-#{rawQuestion.question.category}-#{name}",
               rawQuestion.question.nerdLevel,
               rawQuestion.question.text,
-              catName,
+              rawQuestion.question.category,
+              rawQuestion.question.sub_category,
               rawQuestion.question.a1,
               rawQuestion.question.a2,
               rawQuestion.question.a3,
@@ -187,21 +186,23 @@ module.exports = class
     c_users = []
 
     await global.store.scores.highScoreIds defer err, highest
-    count = highest.length - 1
 
-    await
-      for i in [0..count]
-        global.store.users.findById highest[i], defer err_u, c_users[i]
-        global.store.scores.scoreById highest[i], defer err_s, c_scores[i]
+    unless highest.length == 0
+      count = highest.length - 1
 
-    for i in  [0..count]
-      newHighscore[i] = { 
-        score: c_scores[i]
-        userName: c_users[i].name
-        userId: c_users[i].id 
-      }
+      await
+        for i in [0..count]
+          global.store.users.findById highest[i], defer err_u, c_users[i]
+          global.store.scores.scoreById highest[i], defer err_s, c_scores[i]
 
-    @highscore = newHighscore
+      for i in  [0..count]
+        newHighscore[i] = { 
+          score: c_scores[i]
+          userName: c_users[i].name
+          userId: c_users[i].id 
+        }
+
+      @highscore = newHighscore
 
 
   initCycle: =>
@@ -231,6 +232,7 @@ module.exports = class
         nerdLevel: @question.nerdLevel,
         text: @question.text,
         category: @question.category,
+        subCategory: @question.subCategory
         a1: @question.a1,
         a2: @question.a2,
         a3: @question.a3,

@@ -53,6 +53,6 @@ a{color:#566050;text-decoration:none}
 .selected:hover{background-color:#6c7565;opacity:1}
 .profile h3{margin-top:20px;margin-bottom:4px}
 .profile .profile-list{text-align:left;padding:0;margin:0;}
-.profile .profile-list .score{width:332px;text-align:right;display:inline-block}
+.profile .profile-list .score{width:420px;text-align:right;display:inline-block}
 .profile .profile-list .details{padding-left:20px;display:inline-block;color:#9dad92}
 #footer{padding-top:18px}

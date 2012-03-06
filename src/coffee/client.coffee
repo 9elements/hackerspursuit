@@ -84,7 +84,7 @@ $(document).ready ->
             for answer in [1..4]
               $('#a' + answer).fadeIn('fast')
               
-            $('#question').text("#{question.text}")
+            $('#question').text("#{question.subCategory}: #{question.text}")
 
             keys = [1..4]
             keys.sort randOrd
