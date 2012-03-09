@@ -134,7 +134,7 @@ module.exports = class
     
     @io.sockets.in("nerds").emit('scoreboard', scoreboard)
 
-  getProfileData: (userId, callback) ->
+  getProfileData: (session, userId, callback) ->
     gameServer = @
 
     await
@@ -186,6 +186,7 @@ module.exports = class
         categoryScore: categoryScore
         categoryCounts: gameServer.categoryCounts
         badges: userBadges
+        currentUser: (session.hackerId == user.hackerId)
         proposeTwitter: (connectedProvider.indexOf("twitter") == -1)
         proposeFacebook: (connectedProvider.indexOf("facebook") == -1)
       }

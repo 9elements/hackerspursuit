@@ -69,7 +69,7 @@ app.get '/highscore', (req, res) ->
   res.render 'highscore', { list: gameserver.highscore }
 
 app.get '/profile/:id', (req, res) ->
-  await gameserver.getProfileData req.params.id, defer data
+  await gameserver.getProfileData req.session, req.params.id, defer data
   res.render 'profile', data
 
 # as soon as a user authenticates himself with a get request,

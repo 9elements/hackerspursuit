@@ -69,3 +69,8 @@ module.exports =
     everyauth.everymodule.findUserById (userId, callback) ->
       global.store.users.findById userId, (err, user) ->
         callback err, user
+
+    everyauth.everymodule.handleLogout (req, res) ->
+      req.logout()
+      req.session.destroy()
+      res.redirect('/')

@@ -28,6 +28,7 @@ module.exports = class
 
         else
           # User currently logged out, use stored data, and set hackerId
+          userData = JSON.parse(user)
           session.hackerId = userData.hackerId
           callback userData
 

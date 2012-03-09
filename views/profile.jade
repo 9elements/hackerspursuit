@@ -27,17 +27,20 @@
       - if (badges.length == 0)
         = "No badged earned yet"
 
-      h3 Social Connect
-      - if (proposeTwitter || proposeFacebook)
+      - if (currentUser)
+        h3 Social Connect
         ul.social-connect
-          - if (proposeTwitter)
-            li
+          li
+            - if (proposeTwitter)
               a.clickable(href="/auth/twitter") Connect with Twitter
-          - if (proposeFacebook)
-            li
-              a.clickable(href="/auth/facebook") Connect with Facebook
-      - else
-        = "All services connected"
+            - else
+              = "Connected with Twitter"
 
+          li
+            - if (proposeFacebook)
+              a.clickable(href="/auth/facebook") Connect with Facebook
+            - else
+              = "Connected with Facebook"
+      
     .display-overlay
     .display-gradient
