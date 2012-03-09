@@ -86,7 +86,9 @@ module.exports = class
               rawQuestion.question.a4,
               rawQuestion.question.right_answer,
               rawQuestion.question.created_at,
-              rawQuestion.question.created_by )
+              rawQuestion.question.creator,
+              rawQuestion.question.creator_twitter,
+              rawQuestion.question.creator_github )
           catch error
             sys.puts "Warning: Could not parse question #{fileName}"
       else
