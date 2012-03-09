@@ -24,5 +24,20 @@
             .score #{badge.toUpperCase()}
             .details Description here
 
+      - if (badges.length == 0)
+        = "No badged earned yet"
+
+      h3 Social Connect
+      - if (proposeTwitter || proposeFacebook)
+        ul.social-connect
+          - if (proposeTwitter)
+            li
+              a.clickable(href="/auth/twitter") Connect with Twitter
+          - if (proposeFacebook)
+            li
+              a.clickable(href="/auth/facebook") Connect with Facebook
+      - else
+        = "All services connected"
+
     .display-overlay
     .display-gradient

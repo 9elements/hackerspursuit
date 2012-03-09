@@ -1,20 +1,21 @@
 .view-container
   .display
     - if(!everyauth.loggedIn)
+      script(type="text/javascript", src="/image.js")
+      script(type="text/javascript", src="/particle.js")
+      script(type="text/javascript", src="/intro.js")
       #view-login
         h2 Welcome
         ul
           li
             a.clickable(href="/auth/twitter") Login with Twitter
+          li
             a.clickable(href="/auth/facebook") Login with Facebook
 
     - else
       script(type="text/javascript")
         var host = "#{host}";
         var port = "#{port}";
-      script(type="text/javascript", src="/image.js")
-      script(type="text/javascript", src="/particle.js")
-      script(type="text/javascript", src="/intro.js")
       script(type="text/javascript", src="/pixelize.js")
       script(type="text/javascript", src="/client.js")
       #view-wait
@@ -68,6 +69,3 @@
 
   - if (everyauth.user)
     #userid(style="display: none;") #{everyauth.user.id}
-    p Connect more profiles
-      a.clickable(href="/auth/twitter") Login with Twitter
-      a.clickable(href="/auth/facebook") Login with Facebook

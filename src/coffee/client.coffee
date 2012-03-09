@@ -201,10 +201,5 @@ $(document).ready ->
 
   $('.view-content .view-wait').show()
 
-
-  intro = new Intro $('.display')
-  intro.start =>
-    $('#header-countwait').show()
-
-    ### start game ###
-    connect()
+  $('#header-countwait').show()
+  connect()

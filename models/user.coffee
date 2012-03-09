@@ -54,3 +54,10 @@ module.exports = class
         callback err, null
       else
         @.findById provider[0], callback
+
+  servicesForHackerId: (id, callback) ->
+    @client.smembers "user:#{id}", (err, provider) =>
+      unless provider?
+        callback err, null
+      else
+        callback null, provider.join("")

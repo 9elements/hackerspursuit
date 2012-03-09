@@ -151,6 +151,7 @@ module.exports = class
       await
         global.store.scores.categoryKeys defer err, categories
         global.store.badges.badgeKeys defer err, badges
+        global.store.users.servicesForHackerId user.hackerId, defer err, connectedProvider
 
       # Score
       
@@ -185,6 +186,8 @@ module.exports = class
         categoryScore: categoryScore
         categoryCounts: gameServer.categoryCounts
         badges: userBadges
+        proposeTwitter: (connectedProvider.indexOf("twitter") == -1)
+        proposeFacebook: (connectedProvider.indexOf("facebook") == -1)
       }
 
   rebuildScoreList: =>
@@ -199,7 +202,6 @@ module.exports = class
 
       await
         for i in [0..count]
-          console.log "CHECKING #{highest[i]}"
           global.store.users.findByHackerId highest[i], defer err_u, c_users[i]
           global.store.scores.scoreById highest[i], defer err_s, c_scores[i]
 

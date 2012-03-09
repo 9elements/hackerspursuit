@@ -12,6 +12,7 @@ h1,h2,h3{font-weight:normal}
 .display-overlay{position:absolute;top:0;left:0;height:100%;width:100%;background-image:url("/img/stripes.png");-webkit-border-radius:14px;-moz-border-radius:14px;border-radius:14px;pointer-events:none}
 .display-gradient{position:absolute;top:0;left:0;height:100%;width:100%;-moz-box-shadow:inset 0 3px 4px 0 rgba(0,0,0,0.60);-webkit-box-shadow:inset 0 3px 4px 0 rgba(0,0,0,0.60);box-shadow:inset 0 3px 4px 0 rgba(0,0,0,0.60);background-image:-webkit-linear-gradient(304deg,rgba(255,255,255,0.00) 0%,rgba(255,255,255,0.10) 50%,rgba(255,255,255,0.00) 50%,rgba(255,255,255,0.00) 100%);background-image:-moz-linear-gradient(304deg,rgba(255,255,255,0.00) 0%,rgba(255,255,255,0.10) 50%,rgba(255,255,255,0.00) 50%,rgba(255,255,255,0.00) 100%);background-image:-ms-linear-gradient(304deg,rgba(255,255,255,0.00) 0%,rgba(255,255,255,0.10) 50%,rgba(255,255,255,0.00) 50%,rgba(255,255,255,0.00) 100%);background-image:-o-linear-gradient(304deg,rgba(255,255,255,0.00) 0%,rgba(255,255,255,0.10) 50%,rgba(255,255,255,0.00) 50%,rgba(255,255,255,0.00) 100%);background-image:linear-gradient(304deg,rgba(255,255,255,0.00) 0%,rgba(255,255,255,0.10) 50%,rgba(255,255,255,0.00) 50%,rgba(255,255,255,0.00) 100%);-webkit-border-radius:14px;-moz-border-radius:14px;border-radius:14px;pointer-events:none}
 #view-wait h2,#view-login h2,#prepare-pane h2{margin-top:72px}
+#view-login{display:none;}
 #view-login ul{list-style:none;padding:0;}
 #view-login ul li{padding-bottom:8px}
 #left-pane{position:absolute;padding-top:20px;top:0;left:20px;width:160px;height:100%;text-align:left;}
@@ -55,4 +56,6 @@ a{color:#566050;text-decoration:none}
 .profile .profile-list{text-align:left;padding:0;margin:0;}
 .profile .profile-list .score{width:420px;text-align:right;display:inline-block}
 .profile .profile-list .details{padding-left:20px;display:inline-block;color:#9dad92}
+.profile .social-connect{list-style:none;padding:0;}
+.profile .social-connect li{padding-bottom:8px}
 #footer{padding-top:18px}

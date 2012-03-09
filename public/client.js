@@ -5,7 +5,7 @@
     return Math.round(Math.random()) - 0.5;
   };
   $(document).ready(function() {
-    var addAlert, connect, intro, listEntry, loaded, sendAnswer, socket, startGame, started;
+    var addAlert, connect, listEntry, loaded, sendAnswer, socket, startGame, started;
     soundManager.url = "/swfs/";
     soundManager.onready(function() {
       soundManager.createSound({
@@ -221,11 +221,7 @@
     $('#view-game, #view-prepare, #header-countwait, #view-chat').hide();
     /* Intro */
     $('.view-content .view-wait').show();
-    intro = new Intro($('.display'));
-    return intro.start(__bind(function() {
-      $('#header-countwait').show();
-      /* start game */
-      return connect();
-    }, this));
+    $('#header-countwait').show();
+    return connect();
   });
 }).call(this);

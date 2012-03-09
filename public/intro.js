@@ -1,5 +1,5 @@
 (function() {
-  var Intro;
+  var Intro, intro;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Intro = (function() {
     Intro.PARTICLE_SIZE = 2;
@@ -108,4 +108,8 @@
     return Intro;
   })();
   window.Intro = Intro;
+  intro = new Intro($('.display'));
+  intro.start(__bind(function() {
+    return $('#view-login').fadeIn();
+  }, this));
 }).call(this);

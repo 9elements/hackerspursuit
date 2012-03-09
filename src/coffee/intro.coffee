@@ -93,3 +93,7 @@ class Intro
     @callback()
 
 window.Intro = Intro
+
+intro = new Intro $('.display')
+intro.start =>
+  $('#view-login').fadeIn()
