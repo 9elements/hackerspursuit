@@ -6,6 +6,7 @@
         ul
           li
             a.clickable(href="/auth/twitter") Login with Twitter
+            a.clickable(href="/auth/facebook") Login with Facebook
 
     - else
       script(type="text/javascript")
@@ -67,3 +68,6 @@
 
   - if (everyauth.user)
     #userid(style="display: none;") #{everyauth.user.id}
+    p Connect more profiles
+      a.clickable(href="/auth/twitter") Login with Twitter
+      a.clickable(href="/auth/facebook") Login with Facebook

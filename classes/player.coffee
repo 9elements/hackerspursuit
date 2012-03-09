@@ -57,8 +57,8 @@ module.exports = class
       @wasRight = true
 
       # Save data to persistent store
-      global.store.scores.addOverall @user.id
-      global.store.scores.addReal @user.id, question.category, question.id
+      global.store.scores.addOverall @user.hackerId
+      global.store.scores.addReal @user.hackerId, question.category, question.id
 
       # Stats
       @.refreshStats(question, first, true, competitors)

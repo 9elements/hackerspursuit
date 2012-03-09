@@ -25,9 +25,14 @@ module.exports = class
   joinPlayer: (player) =>
     @players.push player
 
+    if player.user.id.indexOf("facebook") isnt -1
+      profileImageUrl = "http://graph.facebook.com/#{player.user.username}/picture?type=normal"
+    else
+      profileImageUrl = player.user.profile_image_url.replace(/_normal/, '_bigger')
+
     player.client.emit 'profile.info',
       id: player.user.id
-      profileImage: player.user.profile_image_url.replace(/_normal/, '_bigger')
+      profileImage: profileImageUrl
       name: player.user.name
 
     player.client.on 'answer.set', (msg) =>
@@ -47,7 +52,7 @@ module.exports = class
             
               for badge in player.checkStats()
                 # Broadcast badge and add it to persistent store
-                global.store.badges.addBadge(player.user.id, badge)
+                global.store.badges.addBadge(player.user.hackerId, badge)
                 @io.sockets.in("nerds").emit('badge.new', { name: player.user.name, badge: badge })
 
               @broadcastScoreboard()
@@ -150,7 +155,7 @@ module.exports = class
       # Score
       
       addScoreForCategory = (category, df) ->
-        await global.store.scores.scoreByCategory category, userId, defer err, score
+        await global.store.scores.scoreByCategory category, user.hackerId, defer err, score
         categoryName = category.match(/(\w*)$/)[0].toUpperCase()
         categoryScore.push {
           name: categoryName
@@ -160,13 +165,13 @@ module.exports = class
 
       await
         addScoreForCategory( category, defer() ) for category in categories
-        global.store.scores.scoreById userId, defer err, realScore
-        global.store.scores.overallById userId, defer err, overallScore
+        global.store.scores.scoreById user.hackerId, defer err, realScore
+        global.store.scores.overallById user.hackerId, defer err, overallScore
 
       # Badges
 
       addBadgeForUser = (badge, df) ->
-        await global.store.badges.hasBadge userId, badge, defer err, hasBadge
+        await global.store.badges.hasBadge user.hackerId, badge, defer err, hasBadge
         userBadges.push badge if hasBadge
         df()
 
@@ -194,7 +199,8 @@ module.exports = class
 
       await
         for i in [0..count]
-          global.store.users.findById highest[i], defer err_u, c_users[i]
+          console.log "CHECKING #{highest[i]}"
+          global.store.users.findByHackerId highest[i], defer err_u, c_users[i]
           global.store.scores.scoreById highest[i], defer err_s, c_scores[i]
 
       for i in  [0..count]
