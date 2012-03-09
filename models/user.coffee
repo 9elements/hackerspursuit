@@ -11,15 +11,16 @@ module.exports = class
 
         if session.hackerId?
           # User already logged in with an account, check if merge is necessary
+          user = JSON.parse(user)
 
           if user.hackerId == session.hackerId
             # This account belongs to the logged in account (perheaps the same)
-            callback JSON.parse(user)
+            callback user
 
           else
             # This account is an additional account for the logged in account
             # TODO: Merge old data into new record
-            # TODO: Remove providerId from previous user
+            @client.del "user:#{user.hackerId}"
             userData.hackerId = session.hackerId
             userData.id = providerId
             @client.set providerId, JSON.stringify(userData)
@@ -28,9 +29,8 @@ module.exports = class
 
         else
           # User currently logged out, use stored data, and set hackerId
-          userData = JSON.parse(user)
-          session.hackerId = userData.hackerId
-          callback userData
+          session.hackerId = user.hackerId
+          callback user
 
       else
         # New account, create and set hackerId
