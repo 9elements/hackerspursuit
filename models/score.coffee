@@ -14,26 +14,14 @@ module.exports = class
   # Real: Unique right answers, answering the same question twice will not raise the count
   addReal: (userId, questionCategory, questionId) ->
 
+    questionCategory = questionCategory.replace(/[^a-zA-Z0-9]+/g,'')
+
     @client.sadd "score:users:#{userId}:all", questionId, (err, result) =>
 
       # Update real counts only if this question wasn't answered right before
       if result > 0
-        
-        # Cumulated count
-        @client.zscore "score:real:all", userId, (err, currentRealAll) =>
-          if currentRealAll?
-            newScore = parseInt(currentRealAll) + 1
-            @client.zadd "score:real:all", newScore, userId
-          else
-            @client.zadd "score:real:all", 1, userId
-
-        # Count by category
-        @client.zscore "score:real:category:#{questionCategory}", userId, (err, currentRealCategory) =>
-          if currentRealCategory?
-            newScore = parseInt(currentRealCategory) + 1
-            @client.zadd "score:real:category:#{questionCategory}", newScore, userId
-          else
-            @client.zadd "score:real:category:#{questionCategory}", 1, userId
+        @client.zincrby "score:real:all", 1, userId
+        @client.zincrby "score:real:category:#{questionCategory}", 1, userId
 
   highScoreIds: (callback) ->
     @client.zrevrange "score:real:all", 0, 10, (err, highest) ->
