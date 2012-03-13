@@ -19,14 +19,23 @@ role :web, domain
 role :db,  domain, :primary => true
 
 namespace :deploy do
-  task(:start,   :roles => :app) {}
-  task(:stop,    :roles => :app) {}
+
+  task :start, :roles => :app do
+    run "cd #{current_path}; npm install; NODE_ENV=#{node_env} forever start -c ./node_modules/iced-coffee-script/bin/coffee server.coffee"
+  end
+
+  task :stop, :roles => :app do
+    run "cd #{current_path}; forever stopall;"
+  end
+
   task :refresh_symlink do
     run "rm -rf #{current_path}/config.coffee && ln -s #{shared_path}/config.coffee #{current_path}/config.coffee"
   end
-  task(:restart, :roles => :app, :except => { :no_release => true }) {
+
+  task :restart, :roles => :app, :except => { :no_release => true } do
     run "cd #{current_path}; npm install; forever stopall; NODE_ENV=#{node_env} forever start -c ./node_modules/iced-coffee-script/bin/coffee server.coffee"
-  }
+  end
+
 end
 
 after "deploy:symlink", "deploy:refresh_symlink"
