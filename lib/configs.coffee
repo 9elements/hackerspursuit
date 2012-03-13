@@ -41,7 +41,6 @@ module.exports =
       app.use express.errorHandler()
   
   everyauthConfig: (everyauth) ->
-
     everyauth.twitter
     .consumerKey(config.twitter.consumerKey)
     .consumerSecret(config.twitter.consumerSecret)
@@ -58,7 +57,7 @@ module.exports =
       .appSecret(config.facebook.appSecret)
       .myHostname(config.facebook.host)
       .handleAuthCallbackError (req, res) ->
-        sys.util "Facebook Auth Callback Error. Oh noes!"
+        util.puts "Facebook Auth Callback Error. Oh noes!"
       .findOrCreateUser (session, accessToken, accessTokExtra, fbUserMetadata) ->
         promise = @.Promise()
         global.store.users.findOrCreate "facebook", fbUserMetadata, session, (user) ->

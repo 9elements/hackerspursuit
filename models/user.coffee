@@ -8,10 +8,10 @@ module.exports = class
     @client.get providerId, (err, user) =>
       if user?
         # User logged in with this account before
+        user = JSON.parse(user)
 
         if session.hackerId?
           # User already logged in with an account, check if merge is necessary
-          user = JSON.parse(user)
 
           if user.hackerId == session.hackerId
             # This account belongs to the logged in account (perheaps the same)
