@@ -11,12 +11,19 @@ module.exports = class
       console.log err
     
     @client.on "connect", =>
-      if not auth and dbindex isnt 0
+      if not auth and dbindex is 0
         if callback? then callback()
-        
-    @client.auth auth, (err, val) =>
-      if err?
-        console.log err
+
+      if auth? and auth != ""
+        @client.auth auth, (err, val) =>
+          if err?
+            console.log err
+          else
+            if dbindex isnt 0
+              @client.select dbindex, (err, val) =>
+                if callback? then callback()
+            else
+              if callback? then callback()
       else
         if dbindex isnt 0
           @client.select dbindex, (err, val) =>
