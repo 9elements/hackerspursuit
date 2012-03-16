@@ -203,7 +203,7 @@ module.exports = class
     await global.store.scores.overallById player.user.hackerId, defer err, overallScore
     overallScore = 0 unless overallScore?
 
-    if overallScore < 1
+    if overallScore < 30
       player.client.emit('progress.starter', parseInt(parseInt(overallScore) / 30 * 100))
     else
       categoryScore = []
