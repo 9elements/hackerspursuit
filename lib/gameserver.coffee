@@ -50,7 +50,7 @@ module.exports = class
               else
                 player.client.emit 'answer.wrong', n
             
-              for badge in player.checkStats()
+              for badge in player.checkBadges()
                 # Broadcast badge and add it to persistent store
                 global.store.badges.addBadge(player.user.hackerId, badge)
                 @io.sockets.in("nerds").emit('badge.new', { name: player.user.name, badge: badge })
@@ -127,7 +127,7 @@ module.exports = class
   broadcastScoreboard: =>
     scoreboard = []
     for player in @players
-      scoreboard.push { name: player.user.name, points: player.points, wasRight: player.wasRight, userId: player.user.id }
+      scoreboard.push { name: player.user.name, points: player.points, wasRight: player.wasRight, wasFirst: player.wasFirst, userId: player.user.id }
     
     scoreboard.sort (a, b) ->
       return b.points - a.points
@@ -152,6 +152,7 @@ module.exports = class
         global.store.scores.categoryKeys defer err, categories
         global.store.badges.badgeKeys defer err, badges
         global.store.users.servicesForHackerId user.hackerId, defer err, connectedProvider
+        global.store.scores.expById user.hackerId, defer err, exp
 
       # Score
       
@@ -181,9 +182,10 @@ module.exports = class
 
       callback {
         profileName: user.name
-        realScore: realScore
-        overallScore: overallScore
-        categoryScore: categoryScore
+        experience: if exp? then exp else 0
+        realScore: if realScore? then realScore else 0
+        overallScore: if overallScore? then overallScore else 0
+        categoryScore: if categoryScore? then categoryScore else 0
         categoryCounts: gameServer.categoryCounts
         badges: userBadges
         currentUser: (session.hackerId == user.hackerId)

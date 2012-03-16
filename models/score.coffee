@@ -2,6 +2,18 @@ module.exports = class
   constructor: (@client) ->
     null
 
+
+  ### Experience Stuff ###
+
+  addExp: (userId, exp, callback) ->
+    @client.zincrby "experience:all", exp, userId
+
+  expById: (userId, callback) ->
+    @client.zscore "experience:all", userId, (err, exp) =>
+      callback err, exp
+
+  ### Category Stuff ###
+
   # Overall: Every right answer, only counter, will contain duplicates
   addOverall: (userId) ->
     @client.zscore "score:overall", userId, (err, currentScore) =>

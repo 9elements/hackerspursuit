@@ -17,8 +17,10 @@ module.exports = class
   resetAnswer: ->
     @answer = 'a0'
     @wasRight = false
+    @wasFirst = false
 
   refreshStats: (question, first, right, competitors) ->
+
     if competitors > 1
       if right
         @rightInARow += 1
@@ -35,7 +37,7 @@ module.exports = class
       else if not right
         @highThree = 0
 
-  checkStats: ->
+  checkBadges: ->
     newBadges = []
     newBadges.push 'rampage' if @firstInARow == 3
     newBadges.push 'epic' if @rightInARow == 10
@@ -53,12 +55,22 @@ module.exports = class
     
   checkAnswer: (question, first, competitors) ->
     if question.correct == @answer
-      @points += 1
       @wasRight = true
+      @wasFirst = first
 
-      # Save data to persistent store
+      # Category score and exp
       global.store.scores.addOverall @user.hackerId
       global.store.scores.addReal @user.hackerId, question.category, question.id
+
+      if first and competitors > 15
+        @points += 3
+        global.store.scores.addExp @user.hackerId, 3
+      else if first and competitors > 1
+        @points += 2
+        global.store.scores.addExp @user.hackerId, 2
+      else
+        @points += 1
+        global.store.scores.addExp @user.hackerId, 1
 
       # Stats
       @.refreshStats(question, first, true, competitors)
@@ -66,5 +78,11 @@ module.exports = class
       return true
     else
       
+      # Exp
+      if @points > 0
+        @points -= 1
+        global.store.scores.addExp @user.hackerId, -1
+
+      # Stats
       @.refreshStats(question, false, false, competitors)
       return false

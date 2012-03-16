@@ -46,6 +46,9 @@ module.exports = class
 
 
   merge: (oldId, newId) ->
+
+    # Badges
+
     @client.keys "badge:*", (err, keys) =>
       for key in keys
         @client.srem key, oldId, (err, result) =>
@@ -53,8 +56,10 @@ module.exports = class
             # User had this badge
             @client.sadd key, newId
 
+    # Category score
+
     @client.zscore "score:overall", oldId, (err, oldScore) =>
-      @client.zincrby "score:overall", oldScore, newId 
+      @client.zincrby "score:overall", oldScore, newId if oldScore?
 
     @client.smembers "score:users:#{oldId}:all", (err, questionIds) =>
       for questionId in questionIds
@@ -67,13 +72,19 @@ module.exports = class
             @client.zincrby "score:real:all", 1, newId
             @client.zincrby "score:real:category:#{questionCategory}", 1, newId
 
-      # Delete old user record
-      @client.del "score:users:#{oldId}:all"
-      @client.zrem "score:overall", oldId
-      @client.zrem "score:real:all", oldId
-      @client.keys "score:real:category:*", (err, keys) =>
-        for key in keys
-          @client.zrem key, oldId
+    # Experience
+
+    @client.zscore "experience:all", oldId, (err, oldExperience) =>
+      @client.zincrby "experience:all", oldExperience, newId if oldExperience?
+
+    # Delete old user record
+    @client.del "score:users:#{oldId}:all"
+    @client.zrem "experience:all", oldId
+    @client.zrem "score:overall", oldId
+    @client.zrem "score:real:all", oldId
+    @client.keys "score:real:category:*", (err, keys) =>
+      for key in keys
+        @client.zrem key, oldId
   
   findById: (id, callback) ->
     @client.get id, (err, user) =>
