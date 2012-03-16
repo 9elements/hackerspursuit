@@ -21,6 +21,9 @@ $(document).ready ->
   started = false
   loaded  = false
 
+  progress_starter = false
+  progess_dna = false
+
   startGame = ->
     $('#view-login').hide()
     $('#view-wait').fadeIn()
@@ -31,6 +34,57 @@ $(document).ready ->
     socket.on "profile.info", (profile) ->
       $('#profile-name').text(profile.name.substring(0, 8))
       $('#canvas-container').pixelize(profile.profileImage)
+
+    socket.on "scoreboard", (scoreboard) ->
+      $('#scoreboard li').remove()
+      rank = 0
+      for entry in scoreboard
+        rank += 1
+        if rank < 11
+          listEntry = $('<li>').append(
+            $('<a>').attr(href: "/profile/#{entry.userId}", target: "_blank").html("#{entry.points} #{entry.name.substring(0, 8)}"))
+          $('#scoreboard').append listEntry
+    
+    socket.on "chat.msg", (result) ->
+      listEntry result.name, result.msg
+    
+    socket.on "badge.new", (badge) ->
+      if badge.badge == 'rampage'
+        addAlert "#{badge.name} is on a rampage"
+      if badge.badge == 'epic'
+        addAlert "#{badge.name} knowledge is epic"
+      if badge.badge == "godmode"
+        addAlert "#{badge.name} is on godmode"
+      if badge.badge == "pawned"
+        addAlert "#{badge.name} pawned"
+      if badge.badge == "monsterpawned"
+        addAlert "#{badge.name} monsterpawned"
+      if badge.badge == "failed"
+          addAlert "#{badge.name} failed"
+      if badge.badge == "epicfail"
+        addAlert "#{badge.name} failed epic"
+
+    socket.on "progress.starter", (percent) ->
+      unless progress_starter == true
+        progress_starter = true
+        $('#progress-starter').fadeIn()
+
+      $('#bar-starter').css('width', "#{percent}%")
+
+
+    socket.on "progress.dna", (dnaData) ->
+      if progress_starter == true
+        progress_starter = false
+        progress_dna = true
+        $('#progress-starter').fadeOut ->
+          $('#progress-dna').fadeIn()
+      else if progess_dna == false
+        progess_dna = true
+        $('#progress-dna').fadeIn()
+
+      for progress in dnaData
+        $("#bar-#{progress.name}").css('width', "#{progress.progress}%")
+
 
     socket.on "disconnect", ->
       $('#header-countwait').html("Trying to reconnect")
@@ -114,36 +168,6 @@ $(document).ready ->
               $('#countdown').html(seconds)
             else
               $('#countwait').html("JOINING IN #{seconds} SECONDS...")
-          
-          socket.on "scoreboard", (scoreboard) ->
-            $('#scoreboard li').remove()
-            rank = 0
-            for entry in scoreboard
-              rank += 1
-              if rank < 11
-                listEntry = $('<li>').append(
-                  $('<a>').attr(href: "/profile/#{entry.userId}", target: "_blank").html("#{entry.points} #{entry.name.substring(0, 8)}"))
-                $('#scoreboard').append listEntry
-          
-          socket.on "chat.msg", (result) ->
-            listEntry result.name, result.msg
-          
-          socket.on "badge.new", (badge) ->
-            if badge.badge == 'rampage'
-              addAlert "#{badge.name} is on a rampage"
-            if badge.badge == 'epic'
-              addAlert "#{badge.name} knowledge is epic"
-            if badge.badge == "godmode"
-              addAlert "#{badge.name} is on godmode"
-            if badge.badge == "pawned"
-              addAlert "#{badge.name} pawned"
-            if badge.badge == "monsterpawned"
-              addAlert "#{badge.name} monsterpawned"
-            if badge.badge == "failed"
-                addAlert "#{badge.name} failed"
-            if badge.badge == "epicfail"
-              addAlert "#{badge.name} failed epic"
-
 
           socket.on "question.wait", (result) ->
             correct = result.correct
@@ -195,7 +219,7 @@ $(document).ready ->
       
   ### Views ###
   
-  $('#view-game, #view-prepare, #header-countwait, #view-chat').hide()
+  $('#view-game, #view-prepare, #header-countwait, #view-chat, #progress-starter, #progress-dna').hide()
 
   ### Intro ###
 

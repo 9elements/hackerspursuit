@@ -58,3 +58,10 @@ background-half-gradient(startPoint, startColor, startInterval, endColor, endInt
   background-image -ms-linear-gradient(startPoint, startColor startInterval, endColor endInterval, startColor endInterval, startColor 100%)
   background-image -o-linear-gradient(startPoint, startColor startInterval, endColor endInterval, startColor endInterval, startColor 100%)
   background-image linear-gradient(startPoint, startColor startInterval, endColor endInterval, startColor endInterval, startColor 100%)
+
+backround-stripes(color)
+  background-color: color
+  -webkit-background-size 4px 20px
+  -moz-background-size 4px 20px
+  background -webkit-gradient(linear, 0 0, 4 0, color-stop(0.00, color), color-stop(0.50, color), color-stop(0.50, rgba(255,255,255,0)), color-stop(1.0, rgba(255,255,255,0)))
+  background -moz-repeating-linear-gradient(top left 360deg, color, color 2px, rgba(255,255,255,0) 2px, rgba(255,255,255,0) 4px)

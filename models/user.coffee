@@ -77,7 +77,8 @@ module.exports = class
     @client.zscore "experience:all", oldId, (err, oldExperience) =>
       @client.zincrby "experience:all", oldExperience, newId if oldExperience?
 
-    # Delete old user record
+    # Delete old user records
+
     @client.del "score:users:#{oldId}:all"
     @client.zrem "experience:all", oldId
     @client.zrem "score:overall", oldId

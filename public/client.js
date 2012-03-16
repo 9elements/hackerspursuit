@@ -5,7 +5,7 @@
     return Math.round(Math.random()) - 0.5;
   };
   $(document).ready(function() {
-    var addAlert, connect, listEntry, loaded, sendAnswer, socket, startGame, started;
+    var addAlert, connect, listEntry, loaded, progess_dna, progress_starter, sendAnswer, socket, startGame, started;
     soundManager.url = "/swfs/";
     soundManager.onready(function() {
       soundManager.createSound({
@@ -23,6 +23,8 @@
     socket = null;
     started = false;
     loaded = false;
+    progress_starter = false;
+    progess_dna = false;
     startGame = function() {
       $('#view-login').hide();
       return $('#view-wait').fadeIn();
@@ -34,6 +36,73 @@
       socket.on("profile.info", function(profile) {
         $('#profile-name').text(profile.name.substring(0, 8));
         return $('#canvas-container').pixelize(profile.profileImage);
+      });
+      socket.on("scoreboard", function(scoreboard) {
+        var entry, listEntry, rank, _i, _len, _results;
+        $('#scoreboard li').remove();
+        rank = 0;
+        _results = [];
+        for (_i = 0, _len = scoreboard.length; _i < _len; _i++) {
+          entry = scoreboard[_i];
+          rank += 1;
+          _results.push(rank < 11 ? (listEntry = $('<li>').append($('<a>').attr({
+            href: "/profile/" + entry.userId,
+            target: "_blank"
+          }).html("" + entry.points + " " + (entry.name.substring(0, 8)))), $('#scoreboard').append(listEntry)) : void 0);
+        }
+        return _results;
+      });
+      socket.on("chat.msg", function(result) {
+        return listEntry(result.name, result.msg);
+      });
+      socket.on("badge.new", function(badge) {
+        if (badge.badge === 'rampage') {
+          addAlert("" + badge.name + " is on a rampage");
+        }
+        if (badge.badge === 'epic') {
+          addAlert("" + badge.name + " knowledge is epic");
+        }
+        if (badge.badge === "godmode") {
+          addAlert("" + badge.name + " is on godmode");
+        }
+        if (badge.badge === "pawned") {
+          addAlert("" + badge.name + " pawned");
+        }
+        if (badge.badge === "monsterpawned") {
+          addAlert("" + badge.name + " monsterpawned");
+        }
+        if (badge.badge === "failed") {
+          addAlert("" + badge.name + " failed");
+        }
+        if (badge.badge === "epicfail") {
+          return addAlert("" + badge.name + " failed epic");
+        }
+      });
+      socket.on("progress.starter", function(percent) {
+        if (progress_starter !== true) {
+          progress_starter = true;
+          $('#progress-starter').fadeIn();
+        }
+        return $('#bar-starter').css('width', "" + percent + "%");
+      });
+      socket.on("progress.dna", function(dnaData) {
+        var progress, progress_dna, _i, _len, _results;
+        if (progress_starter === true) {
+          progress_starter = false;
+          progress_dna = true;
+          $('#progress-starter').fadeOut(function() {
+            return $('#progress-dna').fadeIn();
+          });
+        } else if (progess_dna === false) {
+          progess_dna = true;
+          $('#progress-dna').fadeIn();
+        }
+        _results = [];
+        for (_i = 0, _len = dnaData.length; _i < _len; _i++) {
+          progress = dnaData[_i];
+          _results.push($("#bar-" + progress.name).css('width', "" + progress.progress + "%"));
+        }
+        return _results;
       });
       socket.on("disconnect", function() {
         $('#header-countwait').html("Trying to reconnect");
@@ -113,47 +182,6 @@
                 return $('#countwait').html("JOINING IN " + seconds + " SECONDS...");
               }
             });
-            socket.on("scoreboard", function(scoreboard) {
-              var entry, listEntry, rank, _i, _len, _results;
-              $('#scoreboard li').remove();
-              rank = 0;
-              _results = [];
-              for (_i = 0, _len = scoreboard.length; _i < _len; _i++) {
-                entry = scoreboard[_i];
-                rank += 1;
-                _results.push(rank < 11 ? (listEntry = $('<li>').append($('<a>').attr({
-                  href: "/profile/" + entry.userId,
-                  target: "_blank"
-                }).html("" + entry.points + " " + (entry.name.substring(0, 8)))), $('#scoreboard').append(listEntry)) : void 0);
-              }
-              return _results;
-            });
-            socket.on("chat.msg", function(result) {
-              return listEntry(result.name, result.msg);
-            });
-            socket.on("badge.new", function(badge) {
-              if (badge.badge === 'rampage') {
-                addAlert("" + badge.name + " is on a rampage");
-              }
-              if (badge.badge === 'epic') {
-                addAlert("" + badge.name + " knowledge is epic");
-              }
-              if (badge.badge === "godmode") {
-                addAlert("" + badge.name + " is on godmode");
-              }
-              if (badge.badge === "pawned") {
-                addAlert("" + badge.name + " pawned");
-              }
-              if (badge.badge === "monsterpawned") {
-                addAlert("" + badge.name + " monsterpawned");
-              }
-              if (badge.badge === "failed") {
-                addAlert("" + badge.name + " failed");
-              }
-              if (badge.badge === "epicfail") {
-                return addAlert("" + badge.name + " failed epic");
-              }
-            });
             return socket.on("question.wait", function(result) {
               var answer, correct, _results;
               correct = result.correct;
@@ -218,7 +246,7 @@
       });
     });
     /* Views */
-    $('#view-game, #view-prepare, #header-countwait, #view-chat').hide();
+    $('#view-game, #view-prepare, #header-countwait, #view-chat, #progress-starter, #progress-dna').hide();
     /* Intro */
     $('.view-content .view-wait').show();
     $('#header-countwait').show();

@@ -16,9 +16,13 @@ h1,h2,h3{font-weight:normal}
 #view-login ul{list-style:none;padding:0;}
 #view-login ul li{padding-bottom:8px}
 #left-pane{position:absolute;padding-top:20px;top:0;left:20px;width:160px;height:100%;text-align:left;}
-#left-pane h3{color:#e0f8d1;text-align:center;width:160px}
+#left-pane h3{color:#5b6654;text-align:center;width:160px;font-weight:normal}
+#left-pane h4{margin-top:14px;margin-bottom:4px;width:130px;color:#dff8d0;text-align:center;font-size:13px;font-weight:normal}
 #left-pane #profile-image{display:none}
 #left-pane #canvas-container{width:160px;text-align:center;display:none}
+#left-pane #progress-starter,#left-pane #progress-dna{padding:0 10px;display:block;}
+#left-pane #progress-starter .progress-background,#left-pane #progress-dna .progress-background{position:relative;width:130px;height:16px;background-color:#5b6654;-webkit-background-size:4px 20px;-moz-background-size:4px 20px;background:-webkit-gradient(linear,0 0,4 0,color-stop(0,#5b6654),color-stop(.5,#5b6654),color-stop(.5,rgba(255,255,255,0.00)),color-stop(1,rgba(255,255,255,0.00)));background:-moz-repeating-linear-gradient(top left 360deg,#5b6654,#5b6654 2px,rgba(255,255,255,0.00) 2px,rgba(255,255,255,0.00) 4px)}
+#left-pane #progress-starter .progress-bar,#left-pane #progress-dna .progress-bar{position:relative;left:0;top:0;width:0;height:16px;background-color:#dff8d0;-webkit-background-size:4px 20px;-moz-background-size:4px 20px;background:-webkit-gradient(linear,0 0,4 0,color-stop(0,#dff8d0),color-stop(.5,#dff8d0),color-stop(.5,rgba(255,255,255,0.00)),color-stop(1,rgba(255,255,255,0.00)));background:-moz-repeating-linear-gradient(top left 360deg,#dff8d0,#dff8d0 2px,rgba(255,255,255,0.00) 2px,rgba(255,255,255,0.00) 4px);-webkit-transition:width .5s ease;-moz-transition:width .5s ease;-o-transition:width .5s ease}
 #prepare-pane{position:absolute;top:0;left:200px;text-align:center;padding:20px;padding-left:40px;width:430px}
 #question-pane{position:absolute;top:0;left:200px;text-align:left;padding:20px;padding-left:40px;width:430px;}
 #question-pane h2{font-size:15px;margin-top:0}

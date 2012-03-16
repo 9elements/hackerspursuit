@@ -35,6 +35,8 @@ module.exports = class
       profileImage: profileImageUrl
       name: player.user.name
 
+    @sendProfilingInfo(player)
+
     player.client.on 'answer.set', (msg) =>
       return unless player.client.authenticated
       try 
@@ -56,6 +58,10 @@ module.exports = class
                 @io.sockets.in("nerds").emit('badge.new', { name: player.user.name, badge: badge })
 
               @broadcastScoreboard()
+
+              # Send profiling info
+              @sendProfilingInfo(player)
+
             else
               player.client.emit 'answer.twice', null
 
@@ -185,13 +191,35 @@ module.exports = class
         experience: if exp? then exp else 0
         realScore: if realScore? then realScore else 0
         overallScore: if overallScore? then overallScore else 0
-        categoryScore: if categoryScore? then categoryScore else 0
+        categoryScore: categoryScore
         categoryCounts: gameServer.categoryCounts
         badges: userBadges
         currentUser: (session.hackerId == user.hackerId)
         proposeTwitter: (connectedProvider.indexOf("twitter") == -1)
         proposeFacebook: (connectedProvider.indexOf("facebook") == -1)
       }
+
+  sendProfilingInfo: (player) =>
+    await global.store.scores.overallById player.user.hackerId, defer err, overallScore
+    overallScore = 0 unless overallScore?
+
+    if overallScore < 1
+      player.client.emit('progress.starter', parseInt(parseInt(overallScore) / 30 * 100))
+    else
+      categoryScore = []
+
+      await global.store.scores.categoryKeys defer err, categories
+      for category in categories
+        await global.store.scores.scoreByCategory category, player.user.hackerId, defer err, score
+        categoryName = category.match(/(\w*)$/)[0]
+        util.puts categoryName
+
+        categoryScore.push {
+          name: categoryName
+          progress: (parseInt(score / @categoryCounts[categoryName] * 100))
+        }
+
+      player.client.emit('progress.dna', categoryScore)
 
   rebuildScoreList: =>
     newHighscore = []
@@ -209,7 +237,7 @@ module.exports = class
           global.store.scores.scoreById highest[i], defer err_s, c_scores[i]
 
       for i in  [0..count]
-        newHighscore[i] = { 
+        newHighscore[i] = {
           score: c_scores[i]
           userName: c_users[i].name
           userId: c_users[i].id 
