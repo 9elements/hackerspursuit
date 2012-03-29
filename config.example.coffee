@@ -32,6 +32,11 @@ if currentEnv == "development"
     consumerSecret: ''
     host: ''
 
+  exports.github =
+    appId: ''
+    appSecret: ''
+    host: ''
+
 if currentEnv == "production"
   exports.database =
     host: ""
@@ -46,4 +51,9 @@ if currentEnv == "production"
   exports.twitter =
     consumerKey: ''
     consumerSecret: ''
+    host: ''
+
+  exports.github =
+    appId: ''
+    appSecret: ''
     host: ''

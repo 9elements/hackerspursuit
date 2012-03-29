@@ -38,8 +38,10 @@ module.exports = class
 
     if player.user.id.indexOf("facebook") isnt -1
       profileImageUrl = "http://graph.facebook.com/#{player.user.username}/picture?type=normal"
-    else
+    else if player.user.id.indexOf("twitter") isnt -1
       profileImageUrl = player.user.profile_image_url.replace(/_normal/, '_bigger')
+    else if player.user.id.indexOf("github") isnt -1
+      profileImageUrl = "http://www.gravatar.com/avatar/#{player.user.gravatar_id}"
 
     player.client.emit 'profile.info',
       id: player.user.id
@@ -209,6 +211,7 @@ module.exports = class
         currentUser: (session.hackerId == user.hackerId)
         proposeTwitter: (connectedProvider.indexOf("twitter") == -1)
         proposeFacebook: (connectedProvider.indexOf("facebook") == -1)
+        proposeGithub: (connectedProvider.indexOf("github") == -1)
       }
 
   sendProfilingInfo: (player) =>

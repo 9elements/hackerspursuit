@@ -42,15 +42,30 @@ module.exports =
   
   everyauthConfig: (everyauth) ->
     everyauth.twitter
-    .consumerKey(config.twitter.consumerKey)
-    .consumerSecret(config.twitter.consumerSecret)
-    .myHostname(config.twitter.host)
-    .findOrCreateUser (session, accessToken, accessTokenSecret, twitterUserMetadata) ->
-      promise = @.Promise()
-      global.store.users.findOrCreate "twitter", twitterUserMetadata, session, (user) ->
-        promise.fulfill(user)
-      return promise
-    .redirectPath('/')
+      .consumerKey(config.twitter.consumerKey)
+      .consumerSecret(config.twitter.consumerSecret)
+      .myHostname(config.twitter.host)
+      .handleAuthCallbackError (req, res) ->
+        util.puts "Twitter Auth Callback Error. Oh noes!"
+      .findOrCreateUser (session, accessToken, accessTokenSecret, twitterUserMetadata) ->
+        promise = @.Promise()
+        global.store.users.findOrCreate "twitter", twitterUserMetadata, session, (user) ->
+          promise.fulfill(user)
+        return promise
+      .redirectPath('/')
+
+    everyauth.github
+      .appId(config.github.appId)
+      .appSecret(config.github.appSecret)
+      .myHostname(config.github.host)
+      .handleAuthCallbackError (req, res) ->
+        util.puts "Github Auth Callback Error. Oh noes!"
+      .findOrCreateUser (session, accessToken, accessTokenExtra, githubUserMetadata) ->
+        promise = @.Promise()
+        global.store.users.findOrCreate "github", githubUserMetadata, session, (user) ->
+          promise.fulfill(user)
+        return promise
+      .redirectPath('/')
 
     everyauth.facebook
       .appId(config.facebook.appId)
