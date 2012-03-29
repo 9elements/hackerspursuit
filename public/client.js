@@ -5,7 +5,7 @@
     return Math.round(Math.random()) - 0.5;
   };
   $(document).ready(function() {
-    var addAlert, connect, kicked, listEntry, loaded, progess_dna, progress_starter, sendAnswer, socket, startGame, started;
+    var addAlert, connect, kicked, listEntry, loaded, ownUserId, progess_dna, progress_starter, sendAnswer, socket, startGame, started;
     soundManager.url = "/swfs/";
     soundManager.onready(function() {
       soundManager.createSound({
@@ -26,6 +26,7 @@
     kicked = false;
     progress_starter = false;
     progess_dna = false;
+    ownUserId = null;
     startGame = function() {
       $('#view-login').hide();
       return $('#view-wait').fadeIn();
@@ -36,7 +37,8 @@
       });
       socket.on("profile.info", function(profile) {
         $('#profile-name').text(profile.name.substring(0, 8));
-        return $('#canvas-container').pixelize(profile.profileImage);
+        $('#canvas-container').pixelize(profile.profileImage);
+        return ownUserId = profile.id;
       });
       socket.on("scoreboard", function(scoreboard) {
         var entry, listEntry, rank, _i, _len, _results;
@@ -47,6 +49,9 @@
           entry = scoreboard[_i];
           rank += 1;
           _results.push(rank < 11 ? (listEntry = $('<li>').append($('<a>').attr({
+            href: "/profile/" + entry.userId,
+            target: "_blank"
+          }).html("" + entry.points + " " + (entry.name.substring(0, 8)))), $('#scoreboard').append(listEntry)) : entry.userId === ownUserId ? (listEntry = $('<li>').css('padding-left', '24px').css('margin', '8px 0px').html(".<br />.<br />"), $('#scoreboard').append(listEntry), listEntry = $('<li>').append($('<a>').attr({
             href: "/profile/" + entry.userId,
             target: "_blank"
           }).html("" + entry.points + " " + (entry.name.substring(0, 8)))), $('#scoreboard').append(listEntry)) : void 0);

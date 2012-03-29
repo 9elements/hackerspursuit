@@ -24,6 +24,7 @@ $(document).ready ->
 
   progress_starter = false
   progess_dna = false
+  ownUserId = null
 
   startGame = ->
     $('#view-login').hide()
@@ -35,6 +36,8 @@ $(document).ready ->
     socket.on "profile.info", (profile) ->
       $('#profile-name').text(profile.name.substring(0, 8))
       $('#canvas-container').pixelize(profile.profileImage)
+      ownUserId = profile.id
+
 
     socket.on "scoreboard", (scoreboard) ->
       $('#scoreboard li').remove()
@@ -45,6 +48,13 @@ $(document).ready ->
           listEntry = $('<li>').append(
             $('<a>').attr(href: "/profile/#{entry.userId}", target: "_blank").html("#{entry.points} #{entry.name.substring(0, 8)}"))
           $('#scoreboard').append listEntry
+        else
+          if entry.userId == ownUserId
+            listEntry = $('<li>').css('padding-left', '24px').css('margin', '8px 0px').html(".<br />.<br />")
+            $('#scoreboard').append listEntry
+            listEntry = $('<li>').append(
+              $('<a>').attr(href: "/profile/#{entry.userId}", target: "_blank").html("#{entry.points} #{entry.name.substring(0, 8)}"))
+            $('#scoreboard').append listEntry
     
     socket.on "chat.msg", (result) ->
       listEntry result.name, result.msg
