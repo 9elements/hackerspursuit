@@ -5,7 +5,7 @@
     return Math.round(Math.random()) - 0.5;
   };
   $(document).ready(function() {
-    var addAlert, connect, listEntry, loaded, progess_dna, progress_starter, sendAnswer, socket, startGame, started;
+    var addAlert, connect, kicked, listEntry, loaded, progess_dna, progress_starter, sendAnswer, socket, startGame, started;
     soundManager.url = "/swfs/";
     soundManager.onready(function() {
       soundManager.createSound({
@@ -23,6 +23,7 @@
     socket = null;
     started = false;
     loaded = false;
+    kicked = false;
     progress_starter = false;
     progess_dna = false;
     startGame = function() {
@@ -105,12 +106,14 @@
         return _results;
       });
       socket.on("disconnect", function() {
-        $('#header-countwait').html("Trying to reconnect");
-        $('#countwait').html("Pease stand by...");
-        $('#view-game, #view-prepare, #view-chat').hide();
-        $('.display').removeClass('stripes');
-        $('#view-wait').fadeIn();
-        return started = false;
+        if (!kicked) {
+          $('#header-countwait').html("Trying to reconnect");
+          $('#countwait').html("Pease stand by...");
+          $('#view-game, #view-prepare, #view-chat').hide();
+          $('.display').removeClass('stripes');
+          $('#view-wait').fadeIn();
+          return started = false;
+        }
       });
       return socket.on("connect", function() {
         var id;
@@ -182,7 +185,7 @@
                 return $('#countwait').html("JOINING IN " + seconds + " SECONDS...");
               }
             });
-            return socket.on("question.wait", function(result) {
+            socket.on("question.wait", function(result) {
               var answer, correct, _results;
               correct = result.correct;
               if (!started) {
@@ -194,6 +197,15 @@
                 _results.push(correct !== ("a" + answer) ? $('ul#answers li div[data-answer=' + answer + ']').fadeOut() : void 0);
               }
               return _results;
+            });
+            return socket.on("kicked", function(msg) {
+              kicked = true;
+              $('#header-countwait').html("Disconnected");
+              $('#countwait').html("You signed in with another client");
+              $('#view-game, #view-prepare, #view-chat').hide();
+              $('.display').removeClass('stripes');
+              $('#view-wait').fadeIn();
+              return socket.disconnect();
             });
           } else {
             return alert("Could not authenticate: " + data.error);

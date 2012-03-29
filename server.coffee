@@ -59,7 +59,7 @@ logError = (error, socket) ->
 
 ### Start Server ### 
 
-gameserver = new GameServer(io)
+gameserver = global.gameserver = new GameServer(io)
 gameserver.startGame()
 
 app.get '/', (req, res) ->

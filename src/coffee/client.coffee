@@ -20,6 +20,7 @@ $(document).ready ->
   socket  = null
   started = false
   loaded  = false
+  kicked = false
 
   progress_starter = false
   progess_dna = false
@@ -87,12 +88,13 @@ $(document).ready ->
 
 
     socket.on "disconnect", ->
-      $('#header-countwait').html("Trying to reconnect")
-      $('#countwait').html("Pease stand by...")
-      $('#view-game, #view-prepare, #view-chat').hide()
-      $('.display').removeClass('stripes')
-      $('#view-wait').fadeIn()
-      started = false
+      unless kicked
+        $('#header-countwait').html("Trying to reconnect")
+        $('#countwait').html("Pease stand by...")
+        $('#view-game, #view-prepare, #view-chat').hide()
+        $('.display').removeClass('stripes')
+        $('#view-wait').fadeIn()
+        started = false
 
     socket.on "connect", ->
       id = socket.socket.sessionid
@@ -178,6 +180,15 @@ $(document).ready ->
               
             for answer in [1..4]
               $('ul#answers li div[data-answer=' + answer + ']').fadeOut() unless correct is "a#{answer}"
+
+          socket.on "kicked", (msg) ->
+            kicked = true
+            $('#header-countwait').html("Disconnected")
+            $('#countwait').html("You signed in with another client")
+            $('#view-game, #view-prepare, #view-chat').hide()
+            $('.display').removeClass('stripes')
+            $('#view-wait').fadeIn()
+            socket.disconnect()
           
         else
           alert "Could not authenticate: #{data.error}"

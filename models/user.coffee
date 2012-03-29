@@ -19,11 +19,17 @@ module.exports = class
 
           else
             # This account is an additional account for the logged in account
+
+            # Logout accounts with the old hackerid
+            global.gameserver.removePlayersByHackerId user.hackerId
+
+            # Update account
             @client.del "user:#{user.hackerId}"
             userData.hackerId = session.hackerId
             userData.id = providerId
             @client.set providerId, JSON.stringify(userData)
             @client.sadd "user:#{session.hackerId}", providerId
+
 
             # Merge old data into new record
             @.merge(user.hackerId, session.hackerId)

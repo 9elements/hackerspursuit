@@ -8,6 +8,9 @@ Question = require('../classes/question')
 randOrd = ->
   Math.round(Math.random())-0.5
 
+Array::remove = (e) ->
+  @[t..t] = [] if (t = @indexOf(e)) > -1
+
 module.exports = class
   constructor: (@io) ->
     @questions = []
@@ -21,8 +24,16 @@ module.exports = class
       return @clients[id]
     else
       return null
+
+  removePlayersByHackerId: (hackerId) ->
+    for player in @players
+      if player.user.hackerId == hackerId
+        player.client.emit 'kicked', null
+        player.client.disconnect()
+        @players.remove player
   
-  joinPlayer: (player) =>
+  joinPlayer: (player) ->
+    @removePlayersByHackerId player.user.hackerId
     @players.push player
 
     if player.user.id.indexOf("facebook") isnt -1
