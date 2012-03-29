@@ -150,7 +150,8 @@ $(document).ready ->
             for answer in [1..4]
               $('#a' + answer).fadeIn('fast')
               
-            $('#question').text("#{question.subCategory}: #{question.text}")
+            $('#category').text("#{question.subCategory} / #{question.category}")
+            $('#question').text("#{question.text}")
 
             keys = [1..4]
             keys.sort randOrd
@@ -186,7 +187,7 @@ $(document).ready ->
             
             if !started
               $('#countwait').html("Good luck!")
-            $('#countdown').html("Over")
+            $('#countdown').html("0")
               
             for answer in [1..4]
               $('ul#answers li div[data-answer=' + answer + ']').fadeOut() unless correct is "a#{answer}"

@@ -25,7 +25,10 @@ h1,h2,h3{font-weight:normal}
 #left-pane #progress-starter .progress-bar,#left-pane #progress-dna .progress-bar{position:relative;left:0;top:0;width:0;height:16px;background-color:#dff8d0;-webkit-background-size:4px 20px;-moz-background-size:4px 20px;background:-webkit-gradient(linear,0 0,4 0,color-stop(0,#dff8d0),color-stop(.5,#dff8d0),color-stop(.5,rgba(255,255,255,0.00)),color-stop(1,rgba(255,255,255,0.00)));background:-moz-repeating-linear-gradient(top left 360deg,#dff8d0,#dff8d0 2px,rgba(255,255,255,0.00) 2px,rgba(255,255,255,0.00) 4px);-webkit-transition:width .5s ease;-moz-transition:width .5s ease;-o-transition:width .5s ease}
 #prepare-pane{position:absolute;top:0;left:200px;text-align:center;padding:20px;padding-left:40px;width:430px}
 #question-pane{position:absolute;top:0;left:200px;text-align:left;padding:20px;padding-left:40px;width:430px;}
-#question-pane h2{font-size:15px;margin-top:0}
+#question-pane .countdown{margin-bottom:24px;color:#92a486;}
+#question-pane .countdown #countdown{font-size:48px;color:#566050;padding-right:6px}
+#question-pane h2#category{font-size:15px;margin-top:0;margin-bottom:0;color:#92a486}
+#question-pane h2#question{font-size:15px;margin-top:0;margin-bottom:4px}
 #right-pane{position:absolute;top:0;right:10px;height:100%;width:135px;text-align:left;}
 #right-pane h3{color:#e0f8d1;font-size:normal}
 #right-pane ul{list-style:none;padding:0;margin:0;}

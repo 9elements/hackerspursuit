@@ -16,12 +16,7 @@ module.exports = class
 
   # Overall: Every right answer, only counter, will contain duplicates
   addOverall: (userId) ->
-    @client.zscore "score:overall", userId, (err, currentScore) =>
-      if currentScore?
-        newScore = parseInt(currentScore) + 1
-        @client.zadd "score:overall", newScore, userId
-      else
-        @client.zadd "score:overall", 1, userId
+    @client.zincrby "score:overall", 1, userId
   
   # Real: Unique right answers, answering the same question twice will not raise the count
   addReal: (userId, questionCategory, questionId) ->
