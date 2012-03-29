@@ -47,6 +47,7 @@ module.exports = class
       name: player.user.name
 
     @sendProfilingInfo(player)
+    @broadcastScoreboard()
 
     player.client.on 'answer.set', (msg) =>
       return unless player.client.authenticated
