@@ -101,7 +101,9 @@ $(document).ready ->
       unless kicked
         $('#header-countwait').html("Trying to reconnect")
         $('#countwait').html("Pease stand by...")
-        $('#view-game, #view-prepare, #view-chat').hide()
+        $('#view-game, #view-prepare').hide()
+        $('#chat-msg, .caption').css('display', 'none')
+        $('.chat').css('background-color', '#92a486')
         $('.display').removeClass('stripes')
         $('#view-wait').fadeIn()
         started = false
@@ -118,10 +120,27 @@ $(document).ready ->
 
             unless started
               $('#view-wait').hide()
-              $('#view-chat').fadeIn()
               $('#view-game').fadeIn()
               $('.display').addClass('stripes')
               $('#canvas-container').fadeIn()
+
+              # Display chat
+              i = 0
+              step = 0
+              while i < 800
+                if step % 2 == 0 then color = '#e4f9d7' else color = '#92a486'
+                do (color) ->
+                  window.setTimeout ->
+                    $('.chat').css('background-color', color)
+                  , i
+                step += 1
+                i += Math.random() * 100
+
+              window.setTimeout ->
+                $('.chat').css('background-color', '#e4f9d7')
+                $('#chat-msg').css('display', 'inline-block')
+                $('.caption').css('display', 'inline-block')
+              , (i+100)
 
               setTimeout ->
                 listEntry "System", "Navigate to <a href=\"/highscore\" target=\"_blank\">/highscore</a> for overall score"
@@ -215,7 +234,7 @@ $(document).ready ->
     $('#messages').prepend(message)
     setTimeout ->
       message.css('height', '28px')
-      if $('#messages li').length > 30
+      if $('#messages li').length > {duration: 30}
         $('#messages li:last-child').remove()
     , 1
   
@@ -241,7 +260,7 @@ $(document).ready ->
       
   ### Views ###
   
-  $('#view-game, #view-prepare, #header-countwait, #view-chat, #progress-starter, #progress-dna').hide()
+  $('#view-game, #view-prepare, #header-countwait, #progress-starter, #progress-dna').hide()
 
   ### Intro ###
 

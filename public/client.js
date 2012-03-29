@@ -114,7 +114,9 @@
         if (!kicked) {
           $('#header-countwait').html("Trying to reconnect");
           $('#countwait').html("Pease stand by...");
-          $('#view-game, #view-prepare, #view-chat').hide();
+          $('#view-game, #view-prepare').hide();
+          $('#chat-msg, .caption').css('display', 'none');
+          $('.chat').css('background-color', '#92a486');
           $('.display').removeClass('stripes');
           $('#view-wait').fadeIn();
           return started = false;
@@ -130,12 +132,33 @@
           }
           if (data.success) {
             socket.on("question.prepare", function(question) {
+              var color, i, step;
               if (!started) {
                 $('#view-wait').hide();
-                $('#view-chat').fadeIn();
                 $('#view-game').fadeIn();
                 $('.display').addClass('stripes');
                 $('#canvas-container').fadeIn();
+                i = 0;
+                step = 0;
+                while (i < 800) {
+                  if (step % 2 === 0) {
+                    color = '#e4f9d7';
+                  } else {
+                    color = '#92a486';
+                  }
+                  (function(color) {
+                    return window.setTimeout(function() {
+                      return $('.chat').css('background-color', color);
+                    }, i);
+                  })(color);
+                  step += 1;
+                  i += Math.random() * 100;
+                }
+                window.setTimeout(function() {
+                  $('.chat').css('background-color', '#e4f9d7');
+                  $('#chat-msg').css('display', 'inline-block');
+                  return $('.caption').css('display', 'inline-block');
+                }, i + 100);
                 setTimeout(function() {
                   return listEntry("System", "Navigate to <a href=\"/highscore\" target=\"_blank\">/highscore</a> for overall score");
                 }, 3000);
@@ -234,7 +257,9 @@
       $('#messages').prepend(message);
       return setTimeout(function() {
         message.css('height', '28px');
-        if ($('#messages li').length > 30) {
+        if ($('#messages li').length > {
+          duration: 30
+        }) {
           return $('#messages li:last-child').remove();
         }
       }, 1);
@@ -264,7 +289,7 @@
       });
     });
     /* Views */
-    $('#view-game, #view-prepare, #header-countwait, #view-chat, #progress-starter, #progress-dna').hide();
+    $('#view-game, #view-prepare, #header-countwait, #progress-starter, #progress-dna').hide();
     /* Intro */
     $('.view-content .view-wait').show();
     $('#header-countwait').show();

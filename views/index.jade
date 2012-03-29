@@ -70,19 +70,19 @@
     .display-overlay
     .display-gradient
 
-  - if(everyauth.loggedIn)
-    #view-chat
-      .chat CHAT
-        form#chat-form
-          input(type='text', id='chat-msg')
-        .display-overlay
+  #view-chat
+    .chat
+      .caption Chat
+      form#chat-form
+        input(type='text', id='chat-msg')
+      .display-overlay
 
-      .slot
+    .slot
 
-      .paper
-        .slot-shadow
-        ul#messages
-        .paper-bottom
+    .paper
+      .slot-shadow
+      ul#messages
+      .paper-bottom
 
   - if (everyauth.user)
     #userid(style="display: none;") #{everyauth.user.id}
