@@ -27,10 +27,12 @@ module.exports = class
 
   removePlayersByHackerId: (hackerId) ->
     for player in @players
-      if player.user.hackerId == hackerId
-        player.client.emit 'kicked', null
-        player.client.disconnect()
-        @players.remove player
+      try
+        if player.user.hackerId == hackerId
+          player.client.emit 'kicked', null
+          player.client.disconnect()
+      catch error
+
   
   joinPlayer: (player) ->
     @removePlayersByHackerId player.user.hackerId
