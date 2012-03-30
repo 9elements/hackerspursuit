@@ -24,15 +24,17 @@ module.exports = class
             global.gameserver.removePlayersByHackerId user.hackerId
 
             # Update account
+            await @findAllKeysByHackerId user.hackerId, defer err, otherProviders
             @client.del "user:#{user.hackerId}"
+
             userData.hackerId = session.hackerId
             userData.id = providerId
             @client.set providerId, JSON.stringify(userData)
-            @client.sadd "user:#{session.hackerId}", providerId
+            @client.sadd("user:#{session.hackerId}", otherId) for otherId in otherProviders
 
 
             # Merge old data into new record
-            @.merge(user.hackerId, session.hackerId)
+            @merge(user.hackerId, session.hackerId)
 
             callback userData
 
@@ -55,33 +57,34 @@ module.exports = class
 
     # Badges
 
-    @client.keys "badge:*", (err, keys) =>
-      for key in keys
-        @client.srem key, oldId, (err, result) =>
-          if result > 0
-            # User had this badge
-            @client.sadd key, newId
+    await @client.keys "badge:*", defer err, keys
+    for key in keys
+      @client.srem key, oldId, (err, result) =>
+        if result > 0
+          # User had this badge
+          @client.sadd key, newId
 
     # Category score
 
-    @client.zscore "score:overall", oldId, (err, oldScore) =>
-      @client.zincrby "score:overall", oldScore, newId if oldScore?
+    mergeByCategory = (questionCategory, questionId) =>
+      @client.sadd "score:users:#{newId}:all", questionId, (err, result) =>
+        # Update real counts only if this question wasn't answered right before
+        if result > 0
+          @client.zincrby "score:real:all", 1, newId
+          @client.zincrby "score:real:category:#{questionCategory}", 1, newId
 
-    @client.smembers "score:users:#{oldId}:all", (err, questionIds) =>
-      for questionId in questionIds
-        questionCategory = questionId.match(/question-(\w*)/)[1]
+    await @client.zscore "score:overall", oldId, defer err, oldScore
+    @client.zincrby "score:overall", oldScore, newId if oldScore?
 
-        @client.sadd "score:users:#{newId}:all", questionId, (err, result) =>
-
-          # Update real counts only if this question wasn't answered right before
-          if result > 0
-            @client.zincrby "score:real:all", 1, newId
-            @client.zincrby "score:real:category:#{questionCategory}", 1, newId
+    await @client.smembers "score:users:#{oldId}:all", defer err, questionIds
+    for questionId in questionIds
+      questionCategory = questionId.match(/question-(\w*)/)[1]
+      mergeByCategory(questionCategory, questionId)
 
     # Experience
 
-    @client.zscore "experience:all", oldId, (err, oldExperience) =>
-      @client.zincrby "experience:all", oldExperience, newId if oldExperience?
+    await @client.zscore "experience:all", oldId, defer err, oldExperience
+    @client.zincrby "experience:all", oldExperience, newId if oldExperience?
 
     # Delete old user records
 
@@ -106,6 +109,13 @@ module.exports = class
         callback err, null
       else
         @.findById provider[0], callback
+
+  findAllKeysByHackerId: (id, callback) ->
+    @client.smembers "user:#{id}", (err, providers) =>
+      unless providers?
+        callback err, null
+      else
+        callback null, providers
 
   servicesForHackerId: (id, callback) ->
     @client.smembers "user:#{id}", (err, provider) =>
