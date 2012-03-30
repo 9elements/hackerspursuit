@@ -1,53 +1,65 @@
 .view-container
-  .display.profile.listcontainer
-    - if (typeof error !== "undefined")
+  - if (typeof error !== "undefined")
+    .display
       h2 Error #{error}
-    - else
-      h2 Profile #{profileName}
-      h3 Experience: #{experience}
+  - else
+    .display.stripes
+      script(type="text/javascript", src="/pixelize.js")
+      script(type="text/javascript", src="/profile.js")
+      #view-profile.view-content
+        #left-pane
+          #canvas-container
+          h3#profile-name #{profileName}
+
+        #profile-pane
+          h3 Experience: #{experience}
       
-      ul.profile-list
-        li
-          .score #{Math.round(realScore / categoryCounts.all * 100)}% Hacker
-          .details #{realScore} / #{categoryCounts.all}
+          ul.profile-list
+            li
+              .score #{Math.round(realScore / categoryCounts.all * 100)}% Hacker
+              .details #{realScore} / #{categoryCounts.all}
 
-      h3 Hacker by category
-      ul.profile-list
-        - each category in categoryScore
-          li 
-            .score #{Math.round(category.score / categoryCounts[category.name.toLowerCase()] * 100)}% #{category.name}
-            .details #{category.score || "0"} / #{categoryCounts[category.name.toLowerCase()]}
+          h3 Hacker by category
+          ul.profile-list
+            - each category in categoryScore
+              li 
+                .score #{Math.round(category.score / categoryCounts[category.name.toLowerCase()] * 100)}% #{category.name}
+                .details.clearfix #{category.score || "0"} / #{categoryCounts[category.name.toLowerCase()]}
 
-      h3 Badges
-      ul.profile-list
-        - each badge in badges
-          li 
-            .score #{badge.toUpperCase()}
-            .details Description here
+          h3 Badges
+          ul.profile-list
+            - each badge in badges
+              li 
+                .score #{badge.toUpperCase()}
+                .details Description here
 
-      - if (badges.length == 0)
-        = "No badged earned yet"
+          - if (badges.length == 0)
+            = "No badged earned yet"
 
-      - if (currentUser)
-        h3 Social Connect
-        ul.social-connect
-          li
-            - if (proposeTwitter)
-              a.clickable(href="/auth/twitter") Connect with Twitter
-            - else
-              = "Connected with Twitter"
+        - if (currentUser)
+          #right-pane
+        
+            h3 Social Connect
+            ul.social-connect
+              li
+                - if (proposeTwitter)
+                  a.clickable(href="/auth/twitter") Connect with Twitter
+                - else
+                  = "Connected with Twitter"
 
-          li
-            - if (proposeFacebook)
-              a.clickable(href="/auth/facebook") Connect with Facebook
-            - else
-              = "Connected with Facebook"
+              li
+                - if (proposeFacebook)
+                  a.clickable(href="/auth/facebook") Connect with Facebook
+                - else
+                  = "Connected with Facebook"
 
-          li
-            - if (proposeGithub)
-              a.clickable(href="/auth/github") Connect with Github
-            - else
-              = "Connected with Github"
-      
-    .display-overlay
-    .display-gradient
+              li
+                - if (proposeGithub)
+                  a.clickable(href="/auth/github") Connect with Github
+                - else
+                  = "Connected with Github"
+
+        #profileImage(style="display: none;") #{profileImage}
+
+      .display-overlay
+      .display-gradient

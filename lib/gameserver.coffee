@@ -36,12 +36,7 @@ module.exports = class
     @removePlayersByHackerId player.user.hackerId
     @players.push player
 
-    if player.user.id.indexOf("facebook") isnt -1
-      profileImageUrl = "http://graph.facebook.com/#{player.user.username}/picture?type=normal"
-    else if player.user.id.indexOf("twitter") isnt -1
-      profileImageUrl = player.user.profile_image_url.replace(/_normal/, '_bigger')
-    else if player.user.id.indexOf("github") isnt -1
-      profileImageUrl = "http://www.gravatar.com/avatar/#{player.user.gravatar_id}"
+    profileImageUrl = @profileImageUrl player.user
 
     player.client.emit 'profile.info',
       id: player.user.id
@@ -212,7 +207,20 @@ module.exports = class
         proposeTwitter: (connectedProvider.indexOf("twitter") == -1)
         proposeFacebook: (connectedProvider.indexOf("facebook") == -1)
         proposeGithub: (connectedProvider.indexOf("github") == -1)
+        profileImage: @profileImageUrl user
       }
+
+  profileImageUrl: (user) ->
+    imageUrl = ""
+
+    if user.id.indexOf("facebook") isnt -1
+      imageUrl = "http://graph.facebook.com/#{user.username}/picture?type=normal"
+    else if user.id.indexOf("twitter") isnt -1
+      imageUrl = user.profile_image_url.replace(/_normal/, '_bigger')
+    else if user.id.indexOf("github") isnt -1
+      imageUrl = "http://www.gravatar.com/avatar/#{user.gravatar_id}"
+
+    return imageUrl
 
   sendProfilingInfo: (player) =>
     await global.store.scores.overallById player.user.hackerId, defer err, overallScore
