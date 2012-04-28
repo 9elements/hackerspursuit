@@ -18,6 +18,9 @@ role :app, domain
 role :web, domain
 role :db,  domain, :primary => true
 
+after "deploy:symlink", "deploy:refresh_symlink"
+before "deploy", "deploy:remove_node_modules"
+
 namespace :deploy do
 
   task :start, :roles => :app do
@@ -32,10 +35,12 @@ namespace :deploy do
     run "rm -rf #{current_path}/config.coffee && ln -s #{shared_path}/config.coffee #{current_path}/config.coffee"
   end
 
+  task :remove_node_modules do
+    run "rm -rf #{current_path}/node_modules"
+  end
+
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "cd #{current_path}; npm install; forever stopall; NODE_ENV=#{node_env} forever start -c ./node_modules/iced-coffee-script/bin/coffee server.coffee"
   end
 
 end
-
-after "deploy:symlink", "deploy:refresh_symlink"
