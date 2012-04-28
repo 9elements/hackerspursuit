@@ -164,10 +164,10 @@ $(document).ready ->
             keys = [1..4]
             keys.sort randOrd
 
-            $('#a1').attr("data-answer", keys[0]).removeClass("selected").text(question['a' + keys[0]])
-            $('#a2').attr("data-answer", keys[1]).removeClass("selected").text(question['a' + keys[1]])
-            $('#a3').attr("data-answer", keys[2]).removeClass("selected").text(question['a' + keys[2]])
-            $('#a4').attr("data-answer", keys[3]).removeClass("selected").text(question['a' + keys[3]])
+            $('#a1').attr("data-answer", keys[0]).removeClass("selected").html(question['a' + keys[0]].replace(/\ /, '&nbsp;'))
+            $('#a2').attr("data-answer", keys[1]).removeClass("selected").html(question['a' + keys[1]].replace(/\ /, '&nbsp;'))
+            $('#a3').attr("data-answer", keys[2]).removeClass("selected").html(question['a' + keys[2]].replace(/\ /, '&nbsp;'))
+            $('#a4').attr("data-answer", keys[3]).removeClass("selected").html(question['a' + keys[3]].replace(/\ /, '&nbsp;'))
           
           socket.on "answer.correct", (answer) ->
             console.log answer
