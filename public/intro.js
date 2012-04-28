@@ -8,7 +8,7 @@
     Intro.animationPhase = 'logo_in';
     Intro.TIME = 0;
     Intro.PARTICLES = [];
-    Intro.prototype.animationPhases = ['pause1', 'type_in', 'wave', 'pause3', 'fade_out'];
+    Intro.prototype.animationPhases = ['type_in', 'wave', 'pause3', 'fade_out'];
     Intro.animationPhaseEnd = {
       'logo_in': {
         start: -400,
@@ -58,7 +58,7 @@
       this.callback = callback;
       this.WIDTH = $(this.container).width();
       this.HEIGHT = $(this.container).height();
-      this.START = -250;
+      this.START = -150;
       this.PAUSE = 100;
       this.EXPLOSION_POWER = 7;
       Intro.CANVAS = $("<canvas id='canvas-intro' width='" + this.WIDTH + "' height='" + this.HEIGHT + "'></canvas>");

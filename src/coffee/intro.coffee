@@ -7,7 +7,7 @@ class Intro
   # @animationPhase = 'type_in'
   @TIME = 0
   @PARTICLES = []
-  animationPhases: ['pause1', 'type_in', 'wave', 'pause3', 'fade_out'] # 'out']
+  animationPhases: ['type_in', 'wave', 'pause3', 'fade_out'] # 'out']
   # animationPhases: ['wave', 'pause3', 'out']
   @animationPhaseEnd:
     'logo_in':
@@ -49,7 +49,7 @@ class Intro
     @callback = callback
     @WIDTH = $(@container).width()
     @HEIGHT = $(@container).height()
-    @START = -250
+    @START = -150
     # @START = 0
     @PAUSE = 100
     @EXPLOSION_POWER = 7
