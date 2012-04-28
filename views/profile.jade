@@ -29,11 +29,33 @@
           h3 Badges
           ul.badges-list
             - each badge in badges
-              li 
+              li('data-badge'=badge.replace(/:/, '-'))
                 img(src="/img/#{badge.replace(/badge:/, '')}.png")
           
           - if (badges.length == 0)
             = "No badged earned yet"
+
+          #badge-rampage.badge
+            b Rampage
+            p First right answer three times in a row
+          #badge-epic.badge
+            b Epic
+            p Ten right answers in a row
+          #badge-likeasir.badge
+            b Like a sir
+            p Twenty right answers in a row
+          #badge-pawned.badge
+            b Pawned
+            p First right answer to a hard question against more than 10 competitors
+          #badge-monsterpawned.badge
+            b Monsterpawned
+            p First right answer to a hard question against more than 100 competitors
+          #badge-fail.badge
+            b Fail
+            p Five wrong answers in a row
+          #badge-epicfail.badge
+            b Epic Fail
+            p Ten wrong answers in a row
 
         - if (currentUser)
           #right-pane

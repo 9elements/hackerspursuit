@@ -242,7 +242,7 @@ $(document).ready ->
 
       $('#badge-notify img').attr('src', "/img/#{badge.badge}.png")
       $('#badge-notify .name').html badge.name.substr(0, 8)
-      $('#badge-notify .description').html badge.badge.replace(/likeasir/, 'like a sir')
+      $('#badge-notify .description').html badge.badge.replace(/likeasir/, 'like a sir').replace(/epicfail/, 'epic fail')
 
       $('#badge-notify').fadeIn(300).delay(3000).fadeOut 300, ->
         processBadges()
