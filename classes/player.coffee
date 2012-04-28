@@ -41,12 +41,12 @@ module.exports = class
     newBadges = []
     newBadges.push 'rampage' if @firstInARow == 3
     newBadges.push 'epic' if @rightInARow == 10
-    newBadges.push 'godmode' if @rightInARow == 10
+    newBadges.push 'likeasir' if @rightInARow == 20
 
     newBadges.push 'pawned' if @highThree == 1
     newBadges.push 'monsterpawned' if @highThree == 3
 
-    newBadges.push 'failed' if @wrongInARow == 5
+    newBadges.push 'fail' if @wrongInARow == 5
     newBadges.push 'epicfail' if @wrongInARow == 10
 
     # TODO: TRUE CODER

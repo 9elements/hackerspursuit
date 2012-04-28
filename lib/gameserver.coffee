@@ -50,7 +50,7 @@ module.exports = class
 
     player.client.on 'answer.set', (msg) =>
       return unless player.client.authenticated
-      try 
+      try
         if not @acceptingAnswers
           player.client.emit 'answer.over', null
         else

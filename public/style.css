@@ -68,4 +68,6 @@ a{color:#566050;text-decoration:none}
 #profile-pane .profile-list{text-align:left;padding:0;margin:0;list-style:none;}
 #profile-pane .profile-list .score{width:160px;display:inline-block}
 #profile-pane .profile-list .details{padding-left:20px;display:inline-block;color:#9dad92}
+#profile-pane .badges-list{list-style:none;padding:0;margin:0;}
+#profile-pane .badges-list li{margin-right:10px;display:inline-block}
 #footer{padding-top:18px}
