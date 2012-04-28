@@ -99,13 +99,13 @@ module.exports = class
 
             @questions.push ( new Question "question-#{rawQuestion.question.category}-#{name}",
               rawQuestion.question.nerdLevel,
-              rawQuestion.question.text,
-              rawQuestion.question.category,
+              rawQuestion.question.text.replace(/ /, '&nbsp;'),
+              rawQuestion.question.category.replace(/ /, '&nbsp;'),
               rawQuestion.question.sub_category,
-              rawQuestion.question.a1,
-              rawQuestion.question.a2,
-              rawQuestion.question.a3,
-              rawQuestion.question.a4,
+              rawQuestion.question.a1.replace(/ /, '&nbsp;'),
+              rawQuestion.question.a2.replace(/ /, '&nbsp;'),
+              rawQuestion.question.a3.replace(/ /, '&nbsp;'),
+              rawQuestion.question.a4.replace(/ /, '&nbsp;'),
               rawQuestion.question.right_answer,
               rawQuestion.question.created_at,
               rawQuestion.question.creator,
@@ -265,7 +265,7 @@ module.exports = class
         newHighscore[i] = {
           score: c_scores[i]
           userName: c_users[i].name
-          userId: c_users[i].id 
+          userId: c_users[i].id
         }
 
       @highscore = newHighscore
