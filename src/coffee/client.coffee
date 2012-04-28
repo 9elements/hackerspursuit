@@ -25,6 +25,8 @@ $(document).ready ->
   progress_starter = false
   progess_dna = false
   ownUserId = null
+  badgeQueue = []
+  displayingBadge = false
 
   startGame = ->
     $('#view-login').hide()
@@ -60,20 +62,7 @@ $(document).ready ->
       listEntry result.name, result.msg
     
     socket.on "badge.new", (badge) ->
-      if badge.badge == 'rampage'
-        addAlert "#{badge.name} is on a rampage"
-      if badge.badge == 'epic'
-        addAlert "#{badge.name} knowledge is epic"
-      if badge.badge == "godmode"
-        addAlert "#{badge.name} is on godmode"
-      if badge.badge == "pawned"
-        addAlert "#{badge.name} pawned"
-      if badge.badge == "monsterpawned"
-        addAlert "#{badge.name} monsterpawned"
-      if badge.badge == "failed"
-          addAlert "#{badge.name} failed"
-      if badge.badge == "epicfail"
-        addAlert "#{badge.name} failed epic"
+      addBadge badge
 
     socket.on "progress.starter", (percent) ->
       unless progress_starter == true
@@ -241,6 +230,24 @@ $(document).ready ->
   addAlert = (msg) ->
     listEntry "System", msg
 
+  addBadge = (badge) ->
+    badgeQueue.push badge
+    processBadges() unless displayingBadge
+
+  processBadges = () ->
+    badge = badgeQueue.pop()
+    
+    if badge
+      displayingBadge = true
+
+      $('#badge-notify img').attr('src', "/img/#{badge.badge}.png")
+      $('#badge-notify .name').html badge.name.substr(0, 8)
+      $('#badge-notify .description').html badge.badge.replace(/likeasir/, 'like a sir')
+
+      $('#badge-notify').fadeIn(300).delay(3000).fadeOut 300, ->
+        processBadges()
+    else
+      displayingBadge = false
   ### Buttons ###
 
   $(document).keydown (event) ->

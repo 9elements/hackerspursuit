@@ -5,7 +5,7 @@
     return Math.round(Math.random()) - 0.5;
   };
   $(document).ready(function() {
-    var addAlert, connect, kicked, listEntry, loaded, ownUserId, progess_dna, progress_starter, sendAnswer, socket, startGame, started;
+    var addAlert, addBadge, badgeQueue, connect, displayingBadge, kicked, listEntry, loaded, ownUserId, processBadges, progess_dna, progress_starter, sendAnswer, socket, startGame, started;
     soundManager.url = "/swfs/";
     soundManager.onready(function() {
       soundManager.createSound({
@@ -27,6 +27,8 @@
     progress_starter = false;
     progess_dna = false;
     ownUserId = null;
+    badgeQueue = [];
+    displayingBadge = false;
     startGame = function() {
       $('#view-login').hide();
       return $('#view-wait').fadeIn();
@@ -62,27 +64,7 @@
         return listEntry(result.name, result.msg);
       });
       socket.on("badge.new", function(badge) {
-        if (badge.badge === 'rampage') {
-          addAlert("" + badge.name + " is on a rampage");
-        }
-        if (badge.badge === 'epic') {
-          addAlert("" + badge.name + " knowledge is epic");
-        }
-        if (badge.badge === "godmode") {
-          addAlert("" + badge.name + " is on godmode");
-        }
-        if (badge.badge === "pawned") {
-          addAlert("" + badge.name + " pawned");
-        }
-        if (badge.badge === "monsterpawned") {
-          addAlert("" + badge.name + " monsterpawned");
-        }
-        if (badge.badge === "failed") {
-          addAlert("" + badge.name + " failed");
-        }
-        if (badge.badge === "epicfail") {
-          return addAlert("" + badge.name + " failed epic");
-        }
+        return addBadge(badge);
       });
       socket.on("progress.starter", function(percent) {
         if (progress_starter !== true) {
@@ -266,6 +248,27 @@
     };
     addAlert = function(msg) {
       return listEntry("System", msg);
+    };
+    addBadge = function(badge) {
+      badgeQueue.push(badge);
+      if (!displayingBadge) {
+        return processBadges();
+      }
+    };
+    processBadges = function() {
+      var badge;
+      badge = badgeQueue.pop();
+      if (badge) {
+        displayingBadge = true;
+        $('#badge-notify img').attr('src', "/img/" + badge.badge + ".png");
+        $('#badge-notify .name').html(badge.name.substr(0, 8));
+        $('#badge-notify .description').html(badge.badge.replace(/likeasir/, 'like a sir'));
+        return $('#badge-notify').fadeIn(300).delay(3000).fadeOut(300, function() {
+          return processBadges();
+        });
+      } else {
+        return displayingBadge = false;
+      }
     };
     /* Buttons */
     $(document).keydown(function(event) {
