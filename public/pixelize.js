@@ -19,7 +19,7 @@
             size = 4;
             for (w = 0, _ref = image.width - 1, _step = size; 0 <= _ref ? w <= _ref : w >= _ref; w += _step) {
               for (h = 0, _ref2 = image.height - 1, _step2 = size; 0 <= _ref2 ? h <= _ref2 : h >= _ref2; h += _step2) {
-                average = (image_data.data[((image.height * h) + w) * 4] + image_data.data[((image.height * h) + w) * 4 + 1] + image_data.data[((image.height * h) + w) * 4 + 2]) / 3;
+                average = (image_data.data[((image.width * h) + w) * 4] + image_data.data[((image.width * h) + w) * 4 + 1] + image_data.data[((image.width * h) + w) * 4 + 2]) / 3;
                 for (i = 0, _ref3 = size - 1; 0 <= _ref3 ? i <= _ref3 : i >= _ref3; 0 <= _ref3 ? i++ : i--) {
                   for (j = 0, _ref4 = size - 1; 0 <= _ref4 ? j <= _ref4 : j >= _ref4; 0 <= _ref4 ? j++ : j--) {
                     if (!(w + j > image.width - 1 || h + i > image.height - 1)) {

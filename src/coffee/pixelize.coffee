@@ -15,7 +15,7 @@ $.fn.extend {} =
           size = 4
           for w in [0..(image.width-1)] by size
             for h in [0..(image.height-1)] by size
-              average = (image_data.data[((image.height*h)+w)*4] + image_data.data[((image.height*h)+w)*4+1] + image_data.data[((image.height*h)+w)*4+2]) / 3
+              average = (image_data.data[((image.width*h)+w)*4] + image_data.data[((image.width*h)+w)*4+1] + image_data.data[((image.width*h)+w)*4+2]) / 3
               for i in [0..(size-1)]
                 for j in [0..(size-1)]
                   unless w+j > image.width-1 or h+i > image.height-1
