@@ -39,7 +39,7 @@ module.exports = class
 
   checkBadges: ->
     newBadges = []
-    newBadges.push 'rampage' if @firstInARow == 3
+    newBadges.push 'rampage' if (@firstInARow == 3 and @wasFirst == true)
     newBadges.push 'epic' if @rightInARow == 10
     newBadges.push 'likeasir' if @rightInARow == 20
 
