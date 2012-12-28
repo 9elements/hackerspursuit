@@ -21,8 +21,8 @@ h1,h2,h3{font-weight:normal}
 #left-pane #profile-image{display:none}
 #left-pane #canvas-container{width:160px;text-align:center;display:none}
 #left-pane #progress-starter,#left-pane #progress-dna{padding:0 10px;display:block;}
-#left-pane #progress-starter .progress-background,#left-pane #progress-dna .progress-background{position:relative;width:130px;height:16px;background-color:#5b6654;-webkit-background-size:4px 20px;-moz-background-size:4px 20px;background:-webkit-gradient(linear,0 0,4 0,color-stop(0,#5b6654),color-stop(.5,#5b6654),color-stop(.5,rgba(255,255,255,0.00)),color-stop(1,rgba(255,255,255,0.00)));background:-moz-repeating-linear-gradient(top left 360deg,#5b6654,#5b6654 2px,rgba(255,255,255,0.00) 2px,rgba(255,255,255,0.00) 4px)}
-#left-pane #progress-starter .progress-bar,#left-pane #progress-dna .progress-bar{position:relative;left:0;top:0;width:0;height:16px;background-color:#dff8d0;-webkit-background-size:4px 20px;-moz-background-size:4px 20px;background:-webkit-gradient(linear,0 0,4 0,color-stop(0,#dff8d0),color-stop(.5,#dff8d0),color-stop(.5,rgba(255,255,255,0.00)),color-stop(1,rgba(255,255,255,0.00)));background:-moz-repeating-linear-gradient(top left 360deg,#dff8d0,#dff8d0 2px,rgba(255,255,255,0.00) 2px,rgba(255,255,255,0.00) 4px);-webkit-transition:width .5s ease;-moz-transition:width .5s ease;-o-transition:width .5s ease}
+#left-pane #progress-starter .progress-background,#left-pane #progress-dna .progress-background{position:relative;width:130px;height:16px;background-color:#5b6654;-webkit-background-size:4px 20px;-moz-background-size:4px 20px;background-size:4px 20px;background:-webkit-repeating-linear-gradient(left,#5b6654,#5b6654 2px,rgba(255,255,255,0.00) 2px,rgba(255,255,255,0.00) 4px);background:-moz-repeating-linear-gradient(top left 360deg,#5b6654,#5b6654 2px,rgba(255,255,255,0.00) 2px,rgba(255,255,255,0.00) 4px);background:repeating-linear-gradient(left,#5b6654,#5b6654 2px,rgba(255,255,255,0.00) 2px,rgba(255,255,255,0.00) 4px)}
+#left-pane #progress-starter .progress-bar,#left-pane #progress-dna .progress-bar{position:relative;left:0;top:0;width:0;height:16px;background-color:#dff8d0;-webkit-background-size:4px 20px;-moz-background-size:4px 20px;background-size:4px 20px;background:-webkit-repeating-linear-gradient(left,#dff8d0,#dff8d0 2px,rgba(255,255,255,0.00) 2px,rgba(255,255,255,0.00) 4px);background:-moz-repeating-linear-gradient(top left 360deg,#dff8d0,#dff8d0 2px,rgba(255,255,255,0.00) 2px,rgba(255,255,255,0.00) 4px);background:repeating-linear-gradient(left,#dff8d0,#dff8d0 2px,rgba(255,255,255,0.00) 2px,rgba(255,255,255,0.00) 4px);-webkit-transition:width .5s ease;-moz-transition:width .5s ease;-o-transition:width .5s ease}
 #prepare-pane{position:absolute;top:0;left:200px;text-align:center;padding:20px;padding-left:40px;width:430px}
 #question-pane{position:absolute;top:0;left:200px;text-align:left;padding:20px;padding-left:40px;width:430px;}
 #question-pane .countdown{margin-bottom:24px;color:#92a486;}
@@ -36,6 +36,7 @@ h1,h2,h3{font-weight:normal}
 #right-pane ul.social-connect{list-style:none;padding:0;}
 #right-pane ul.social-connect li{padding-bottom:8px;}
 #right-pane ul.social-connect li a{background-color:#566050;width:auto;padding-right:10px}
+#right-pane ul.social-connect li a:hover{background-color:#6c7565}
 #badge-notify{display:none;position:absolute;bottom:0;right:0;width:153px;height:44px;background-color:#566050;-webkit-border-bottom-right-radius:15px;-moz-border-bottom-right-radius:15px;-border-bottom-right-radius:15px;text-align:left;font-size:11px;padding:5px;}
 #badge-notify img{float:left}
 #badge-notify .name{color:#92a486;padding:10px 0 2px 54px}
@@ -64,7 +65,7 @@ ul#answers li .wrong{background-image:url("/img/wrong.png");background-repeat:no
 a{color:#566050;text-decoration:none}
 .tab_container{clear:both;float:left;width:100%}
 .clickable{padding:4px;width:400px;display:inline-block;cursor:pointer;color:#eff9d6;background-color:#9dad92}
-.clickable:hover{background-color:#6c7565;opacity:.7}
+.clickable:hover{background-color:#6c7565}
 .selected{background-color:#6c7565}
 .selected:hover{background-color:#6c7565;opacity:1}
 #profile-pane{position:absolute;top:0;left:200px;text-align:left;padding:20px;padding-left:40px;width:430px;}
