@@ -18,7 +18,7 @@ module.exports = class
     @players = []
     @clients = {}
     @highscore = []
-  
+
   getClientById: (id) ->
     if @clients.hasOwnProperty(id)
       return @clients[id]
@@ -33,7 +33,7 @@ module.exports = class
           player.client.disconnect()
       catch error
 
-  
+
   joinPlayer: (player) ->
     @removePlayersByHackerId player.user.hackerId
     @players.push player
@@ -62,7 +62,7 @@ module.exports = class
                 player.client.emit 'answer.correct', n
               else
                 player.client.emit 'answer.wrong', n
-            
+
               for badge in player.checkBadges()
                 # Broadcast badge and add it to persistent store
                 global.store.badges.addBadge(player.user.hackerId, badge)
@@ -80,7 +80,7 @@ module.exports = class
       return unless player.client.authenticated
       chatMsg = msg.content.replace(/&/g, '').replace(/</g, '').replace(/"/g, '&quot;')
       return unless chatMsg.length > 0
-      @io.sockets.in("nerds").emit('chat.msg', {name: player.user.name, msg: chatMsg})    
+      @io.sockets.in("nerds").emit('chat.msg', {name: player.user.name, msg: chatMsg})
 
   loadQuestions: (path) ->
     files = fs.readdirSync(path)
@@ -115,11 +115,11 @@ module.exports = class
             sys.puts "Warning: Could not parse question #{fileName}"
       else
         @loadQuestions fileName
-  
+
   startGame: ->
     @loadQuestions( global.config.game.questionsPath)
     @questions.sort randOrd
-    
+
     @question        = null
     @leftSeconds     = 0
     @currentQuestion = 0
@@ -138,17 +138,17 @@ module.exports = class
 
         if @clients.hasOwnProperty client.id
           delete @clients[client.id]
-    
+
     @initCycle()
-    
+
   broadcastScoreboard: =>
     scoreboard = []
     for player in @players
       scoreboard.push { name: player.user.name, points: player.points, wasRight: player.wasRight, wasFirst: player.wasFirst, userId: player.user.id }
-    
+
     scoreboard.sort (a, b) ->
       return b.points - a.points
-    
+
     @io.sockets.in("nerds").emit('scoreboard', scoreboard)
 
   getProfileData: (session, userId, callback) ->
@@ -164,7 +164,7 @@ module.exports = class
       overallScore = 0
       categoryScore = []
       userBadges = []
-      
+
       await
         global.store.scores.categoryKeys defer err, categories
         global.store.badges.badgeKeys defer err, badges
@@ -172,7 +172,7 @@ module.exports = class
         global.store.scores.expById user.hackerId, defer err, exp
 
       # Score
-      
+
       addScoreForCategory = (category, df) ->
         await global.store.scores.scoreByCategory category, user.hackerId, defer err, score
         categoryName = category.match(/(\w*)$/)[0].toUpperCase()
@@ -274,7 +274,7 @@ module.exports = class
   initCycle: =>
     for player in @players
       player.resetAnswer()
-      
+
     if @currentQuestion == @questions.length
       @currentQuestion = 0
       @questions.sort randOrd
@@ -322,11 +322,11 @@ module.exports = class
 
   endCycle: =>
     @acceptingAnswers = false
-      
+
     @io.sockets.in("nerds").emit('question.wait', {
       correct: @question.correct
       })
-    
+
     @broadcastScoreboard()
     @rebuildScoreList()
 
