@@ -158,9 +158,11 @@ h1, h2, h3
   padding 20px
   padding-left 40px
   width 430px
+  height 368px
 
   .countdown
-    margin-bottom 24px
+    position absolute
+    bottom: 52px
     color #92a486
 
     #countdown
@@ -355,8 +357,7 @@ ul#answers
   list-style none
   padding-left 0
   li
-    min-height 24px
-    padding-bottom 2px
+    padding-bottom 4px
     .correct
       background-image url(/img/correct.png)
       background-repeat no-repeat
@@ -365,6 +366,8 @@ ul#answers
       background-image url(/img/wrong.png)
       background-repeat no-repeat
       background-position 390px center
+    .clickable
+      padding 6px
 
 a
   color #566050
@@ -431,6 +434,9 @@ a
     li
       margin-right 10px
       display inline-block
+      opacity 0.8
+      &:hover
+        opacity 1
 
   .badge
     padding 4px
