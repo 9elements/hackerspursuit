@@ -6,6 +6,7 @@ util        = require 'util'
 everyauth   = require 'everyauth'
 http        = require 'http'
 url         = require 'url'
+request     = require 'request'
 parseCookie = require('connect').utils.parseCookie
 config      = global.config = require('./config')
 
@@ -34,7 +35,7 @@ arrayContainerPlayer = (a, name) ->
     if a[i].name == name
       return true
   return false
-  
+
 ### Everyauth ###
 
 configs.everyauthConfig(everyauth)
@@ -43,21 +44,21 @@ configs.everyauthConfig(everyauth)
 
 app = express.createServer()
 configs.expressConfig(express, config, app, everyauth)
-  
+
 ### Handle Connections ###
 
 scoreboard = []
 acceptingAnswers = false
 
 io = io.listen app
-  
+
 ### Error Handling ###
 
 logError = (error, socket) ->
   # sys.puts "Error: #{error}"
   throw error
 
-### Start Server ### 
+### Start Server ###
 
 gameserver = global.gameserver = new GameServer(io)
 gameserver.startGame()
@@ -71,6 +72,11 @@ app.get '/highscore', (req, res) ->
 app.get '/profile/:id', (req, res) ->
   await gameserver.getProfileData req.session, req.params.id, defer data
   res.render 'profile', data
+
+# Imagedata
+app.get '/image', (req, res) ->
+  request.get(req.param("url")).pipe(res)
+
 
 # as soon as a user authenticates himself with a get request,
 # make him join the "/nerds" room to join the game and receive

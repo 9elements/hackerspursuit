@@ -16,7 +16,7 @@ $(document).ready ->
       autoLoad: true
 
   ### Communication ###
-  
+
   socket  = null
   started = false
   loaded  = false
@@ -31,13 +31,23 @@ $(document).ready ->
   startGame = ->
     $('#view-login').hide()
     $('#view-wait').fadeIn()
-  
+
   connect = ->
     socket = io.connect(host, { 'port': parseInt(port) })
 
     socket.on "profile.info", (profile) ->
+      $('#profile-image').load ->
+        canvas_el = $("<canvas id='canvas-profile' width='#{@.width-1}' height='#{@.height-1}'></canvas>")
+        $('#canvas-container').append canvas_el
+        canvas = canvas_el.get(0).getContext('2d')
+        canvas.drawImage(@, 0, 0, @.width, @.height)
+        $(canvas_el).pixelize(@.width, @.height)
+        $('#canvas-container').fadeIn()
+
+      $('#profile-image').attr('src', "/image/?url=#{profile.profileImage}")
+
       $('#profile-name').text(profile.name.substring(0, 8))
-      $('#canvas-container').pixelize(profile.profileImage)
+      #$('#canvas-container').pixelize(profile.profileImage)
       ownUserId = profile.id
 
 
@@ -57,10 +67,10 @@ $(document).ready ->
             listEntry = $('<li>').append(
               $('<a>').attr(href: "/profile/#{entry.userId}", target: "_blank").html("#{entry.points} #{entry.name.substring(0, 8)}"))
             $('#scoreboard').append listEntry
-    
+
     socket.on "chat.msg", (result) ->
       listEntry result.name, result.msg
-    
+
     socket.on "badge.new", (badge) ->
       addBadge badge
 
@@ -143,7 +153,7 @@ $(document).ready ->
 
             $('#question-pane').hide()
             $('#prepare-pane').fadeIn()
-            
+
 
           socket.on "question.new", (question) ->
             return unless started
@@ -153,11 +163,11 @@ $(document).ready ->
 
             $('.correct').removeClass("correct")
             $('.wrong').removeClass("wrong")
-            
+
             $('.selected').removeClass('selected')
             for answer in [1..4]
               $('#a' + answer).fadeIn('fast')
-              
+
             $('#category').text("#{question.subCategory} / #{question.category}")
             $('#question').text("#{question.text}")
 
@@ -168,22 +178,22 @@ $(document).ready ->
             $('#a2').attr("data-answer", keys[1]).removeClass("selected").html(question['a' + keys[1]].replace(/\ /, '&nbsp;'))
             $('#a3').attr("data-answer", keys[2]).removeClass("selected").html(question['a' + keys[2]].replace(/\ /, '&nbsp;'))
             $('#a4').attr("data-answer", keys[3]).removeClass("selected").html(question['a' + keys[3]].replace(/\ /, '&nbsp;'))
-          
+
           socket.on "answer.correct", (answer) ->
             console.log answer
             $('ul#answers li div[data-answer=' + answer + ']').addClass("selected correct")
             soundManager.play "correct"
-          
+
           socket.on "answer.wrong", (answer) ->
             $('ul#answers li div[data-answer=' + answer + ']').addClass("selected wrong")
             soundManager.play "wrong"
-          
+
           socket.on "answer.twice", ->
             addAlert "You already selected an answer."
-          
+
           socket.on "answer.over", ->
-            addAlert "Time is over."    
-            
+            addAlert "Time is over."
+
           socket.on "question.countdown", (seconds) ->
             if started
               $('#countdown').html(seconds)
@@ -192,11 +202,11 @@ $(document).ready ->
 
           socket.on "question.wait", (result) ->
             correct = result.correct
-            
+
             if !started
               $('#countwait').html("Good luck!")
             $('#countdown').html("0")
-              
+
             for answer in [1..4]
               $('ul#answers li div[data-answer=' + answer + ']').fadeOut() unless correct is "a#{answer}"
 
@@ -208,14 +218,14 @@ $(document).ready ->
             $('.display').removeClass('stripes')
             $('#view-wait').fadeIn()
             socket.disconnect()
-          
+
         else
           alert "Could not authenticate: #{data.error}"
-      
+
   sendAnswer = (n) ->
     return unless socket?
     socket.emit('answer.set', { answer: n })
-   
+
   ### Alerts and Notices ###
 
   listEntry = (name, msg) ->
@@ -226,7 +236,7 @@ $(document).ready ->
       if $('#messages li').length > {duration: 30}
         $('#messages li:last-child').remove()
     , 1
-  
+
   addAlert = (msg) ->
     listEntry "System", msg
 
@@ -236,7 +246,7 @@ $(document).ready ->
 
   processBadges = () ->
     badge = badgeQueue.pop()
-    
+
     if badge
       displayingBadge = true
 
@@ -252,7 +262,7 @@ $(document).ready ->
 
   $(document).keydown (event) ->
     key = if event.keyCode then event.keyCode else event.which
-        
+
   $('#a1, #a2, #a3, #a4').click ->
     sendAnswer($(this).attr("data-answer"))
 
@@ -264,9 +274,9 @@ $(document).ready ->
     message = $('#chat-msg').val()
     $('#chat-msg').val("")
     socket.emit('chat.msg', { content: message })
-      
+
   ### Views ###
-  
+
   $('#view-game, #view-prepare, #header-countwait, #progress-starter, #progress-dna').hide()
 
   ### Intro ###

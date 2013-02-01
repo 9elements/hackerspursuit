@@ -1,9 +1,10 @@
 (function() {
   var randOrd;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   randOrd = function() {
     return Math.round(Math.random()) - 0.5;
   };
+
   $(document).ready(function() {
     var addAlert, addBadge, badgeQueue, connect, displayingBadge, kicked, listEntry, loaded, ownUserId, processBadges, progess_dna, progress_starter, sendAnswer, socket, startGame, started;
     soundManager.url = "/swfs/";
@@ -19,7 +20,9 @@
         autoLoad: true
       });
     });
-    /* Communication */
+    /* Communication
+    */
+
     socket = null;
     started = false;
     loaded = false;
@@ -38,8 +41,17 @@
         'port': parseInt(port)
       });
       socket.on("profile.info", function(profile) {
+        $('#profile-image').load(function() {
+          var canvas, canvas_el;
+          canvas_el = $("<canvas id='canvas-profile' width='" + (this.width - 1) + "' height='" + (this.height - 1) + "'></canvas>");
+          $('#canvas-container').append(canvas_el);
+          canvas = canvas_el.get(0).getContext('2d');
+          canvas.drawImage(this, 0, 0, this.width, this.height);
+          $(canvas_el).pixelize(this.width, this.height);
+          return $('#canvas-container').fadeIn();
+        });
+        $('#profile-image').attr('src', "/image/?url=" + profile.profileImage);
         $('#profile-name').text(profile.name.substring(0, 8));
-        $('#canvas-container').pixelize(profile.profileImage);
         return ownUserId = profile.id;
       });
       socket.on("scoreboard", function(scoreboard) {
@@ -50,13 +62,25 @@
         for (_i = 0, _len = scoreboard.length; _i < _len; _i++) {
           entry = scoreboard[_i];
           rank += 1;
-          _results.push(rank < 11 ? (listEntry = $('<li>').append($('<a>').attr({
-            href: "/profile/" + entry.userId,
-            target: "_blank"
-          }).html("" + entry.points + " " + (entry.name.substring(0, 8)))), $('#scoreboard').append(listEntry)) : entry.userId === ownUserId ? (listEntry = $('<li>').css('padding-left', '24px').css('margin', '8px 0px').html(".<br />.<br />"), $('#scoreboard').append(listEntry), listEntry = $('<li>').append($('<a>').attr({
-            href: "/profile/" + entry.userId,
-            target: "_blank"
-          }).html("" + entry.points + " " + (entry.name.substring(0, 8)))), $('#scoreboard').append(listEntry)) : void 0);
+          if (rank < 11) {
+            listEntry = $('<li>').append($('<a>').attr({
+              href: "/profile/" + entry.userId,
+              target: "_blank"
+            }).html("" + entry.points + " " + (entry.name.substring(0, 8))));
+            _results.push($('#scoreboard').append(listEntry));
+          } else {
+            if (entry.userId === ownUserId) {
+              listEntry = $('<li>').css('padding-left', '24px').css('margin', '8px 0px').html(".<br />.<br />");
+              $('#scoreboard').append(listEntry);
+              listEntry = $('<li>').append($('<a>').attr({
+                href: "/profile/" + entry.userId,
+                target: "_blank"
+              }).html("" + entry.points + " " + (entry.name.substring(0, 8))));
+              _results.push($('#scoreboard').append(listEntry));
+            } else {
+              _results.push(void 0);
+            }
+          }
         }
         return _results;
       });
@@ -105,9 +129,10 @@
         }
       });
       return socket.on("connect", function() {
-        var id;
+        var id,
+          _this = this;
         id = socket.socket.sessionid;
-        return $.getJSON("/user/auth-socket.json?id=" + id, __bind(function(data) {
+        return $.getJSON("/user/auth-socket.json?id=" + id, function(data) {
           startGame();
           if (loaded) {
             return;
@@ -153,7 +178,7 @@
               return $('#prepare-pane').fadeIn();
             });
             socket.on("question.new", function(question) {
-              var answer, keys;
+              var answer, keys, _i;
               if (!started) {
                 return;
               }
@@ -162,7 +187,7 @@
               $('.correct').removeClass("correct");
               $('.wrong').removeClass("wrong");
               $('.selected').removeClass('selected');
-              for (answer = 1; answer <= 4; answer++) {
+              for (answer = _i = 1; _i <= 4; answer = ++_i) {
                 $('#a' + answer).fadeIn('fast');
               }
               $('#category').text("" + question.subCategory + " / " + question.category);
@@ -197,15 +222,19 @@
               }
             });
             socket.on("question.wait", function(result) {
-              var answer, correct, _results;
+              var answer, correct, _i, _results;
               correct = result.correct;
               if (!started) {
                 $('#countwait').html("Good luck!");
               }
               $('#countdown').html("0");
               _results = [];
-              for (answer = 1; answer <= 4; answer++) {
-                _results.push(correct !== ("a" + answer) ? $('ul#answers li div[data-answer=' + answer + ']').fadeOut() : void 0);
+              for (answer = _i = 1; _i <= 4; answer = ++_i) {
+                if (correct !== ("a" + answer)) {
+                  _results.push($('ul#answers li div[data-answer=' + answer + ']').fadeOut());
+                } else {
+                  _results.push(void 0);
+                }
               }
               return _results;
             });
@@ -221,7 +250,7 @@
           } else {
             return alert("Could not authenticate: " + data.error);
           }
-        }, this));
+        });
       });
     };
     sendAnswer = function(n) {
@@ -232,7 +261,9 @@
         answer: n
       });
     };
-    /* Alerts and Notices */
+    /* Alerts and Notices
+    */
+
     listEntry = function(name, msg) {
       var message;
       message = $('<li>').html("<div class='message-wrapper'><span class='name'>" + name + ":</span> " + msg + "</div>");
@@ -270,7 +301,9 @@
         return displayingBadge = false;
       }
     };
-    /* Buttons */
+    /* Buttons
+    */
+
     $(document).keydown(function(event) {
       var key;
       return key = event.keyCode ? event.keyCode : event.which;
@@ -278,7 +311,9 @@
     $('#a1, #a2, #a3, #a4').click(function() {
       return sendAnswer($(this).attr("data-answer"));
     });
-    /* Chat */
+    /* Chat
+    */
+
     $('#chat-form').bind('submit', function(e) {
       var message;
       e.preventDefault();
@@ -291,11 +326,16 @@
         content: message
       });
     });
-    /* Views */
+    /* Views
+    */
+
     $('#view-game, #view-prepare, #header-countwait, #progress-starter, #progress-dna').hide();
-    /* Intro */
+    /* Intro
+    */
+
     $('.view-content .view-wait').show();
     $('#header-countwait').show();
     return connect();
   });
+
 }).call(this);
