@@ -167,7 +167,7 @@ $(document).ready ->
 
             $('.selected').removeClass('selected')
             for answer in [1..4]
-              $('#a' + answer).fadeIn('fast')
+              $('#a' + answer).animate({opacity: 1})
 
             $('#category').text("#{question.subCategory} / #{question.category}")
             $('#question').text("#{question.text}")
@@ -209,7 +209,7 @@ $(document).ready ->
             $('#countdown').html("0")
 
             for answer in [1..4]
-              $('ul#answers li div[data-answer=' + answer + ']').fadeOut() unless correct is "a#{answer}"
+              $('ul#answers li div[data-answer=' + answer + ']').animate({opacity: 0}) unless correct is "a#{answer}"
 
           socket.on "kicked", (msg) ->
             kicked = true

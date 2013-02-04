@@ -191,7 +191,9 @@
               $('.wrong').removeClass("wrong");
               $('.selected').removeClass('selected');
               for (answer = _i = 1; _i <= 4; answer = ++_i) {
-                $('#a' + answer).fadeIn('fast');
+                $('#a' + answer).animate({
+                  opacity: 1
+                });
               }
               $('#category').text("" + question.subCategory + " / " + question.category);
               $('#question').text("" + question.text);
@@ -234,7 +236,9 @@
               _results = [];
               for (answer = _i = 1; _i <= 4; answer = ++_i) {
                 if (correct !== ("a" + answer)) {
-                  _results.push($('ul#answers li div[data-answer=' + answer + ']').fadeOut());
+                  _results.push($('ul#answers li div[data-answer=' + answer + ']').animate({
+                    opacity: 0
+                  }));
                 } else {
                   _results.push(void 0);
                 }
