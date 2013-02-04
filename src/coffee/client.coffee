@@ -47,7 +47,7 @@ $(document).ready ->
       $('#profile-image').attr('src', "/image/?url=#{profile.profileImage}")
 
       $('#profile-name').text(profile.name.substring(0, 8))
-      #$('#canvas-container').pixelize(profile.profileImage)
+
       ownUserId = profile.id
 
 

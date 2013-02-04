@@ -8,12 +8,13 @@
       script(type="text/javascript", src="/profile.js")
       #view-profile.view-content
         #left-pane
+          img#profile-image
           #canvas-container
           h3#profile-name #{profileName}
 
         #profile-pane
           h3 Experience: #{experience}
-      
+
           ul.profile-list
             li
               .score #{Math.round(realScore / categoryCounts.all * 100)}% Hacker
@@ -22,7 +23,7 @@
           h3 Hacker by category
           ul.profile-list
             - each category in categoryScore
-              li 
+              li
                 .score #{Math.round(category.score / categoryCounts[category.name.toLowerCase()] * 100)}% #{category.name}
                 .details.clearfix #{category.score || "0"} / #{categoryCounts[category.name.toLowerCase()]}
 
@@ -31,7 +32,7 @@
             - each badge in badges
               li('data-badge'=badge.replace(/:/, '-'))
                 img(src="/img/#{badge.replace(/badge:/, '')}.png")
-          
+
           - if (badges.length == 0)
             = "No badged earned yet"
 
@@ -59,7 +60,7 @@
 
         - if (currentUser)
           #right-pane
-        
+
             h3 Social Connect
             ul.social-connect
               li
