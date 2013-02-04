@@ -75,7 +75,26 @@ app.get '/profile/:id', (req, res) ->
 
 # Imagedata
 app.get '/image', (req, res) ->
-  request.get(req.param("url")).pipe(res)
+  parsedUrl = url.parse req.param("url")
+
+  options =
+    host: parsedUrl.host,
+    port: 80
+    path: parsedUrl.pathname
+    method: 'GET',
+
+  creq = http.request options, (cres) ->
+    cres.setEncoding 'binary'
+
+    res.writeHead cres.statusCode, { 'content-type': cres.headers['content-type'] }
+
+    cres.on 'data', (chunk) ->
+      res.write chunk, 'binary'
+
+    cres.on 'end', ->
+      res.end()
+
+  creq.end()
 
 
 # as soon as a user authenticates himself with a get request,
