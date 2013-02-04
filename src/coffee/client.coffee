@@ -37,6 +37,7 @@ $(document).ready ->
 
     socket.on "profile.info", (profile) ->
       $('#profile-image').load ->
+        return if $('#canvas-container canvas').length > 0
         canvas_el = $("<canvas id='canvas-profile' width='#{@.width-1}' height='#{@.height-1}'></canvas>")
         $('#canvas-container').append canvas_el
         canvas = canvas_el.get(0).getContext('2d')

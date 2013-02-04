@@ -43,6 +43,9 @@
       socket.on("profile.info", function(profile) {
         $('#profile-image').load(function() {
           var canvas, canvas_el;
+          if ($('#canvas-container canvas').length > 0) {
+            return;
+          }
           canvas_el = $("<canvas id='canvas-profile' width='" + (this.width - 1) + "' height='" + (this.height - 1) + "'></canvas>");
           $('#canvas-container').append(canvas_el);
           canvas = canvas_el.get(0).getContext('2d');
