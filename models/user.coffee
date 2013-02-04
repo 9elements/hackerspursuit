@@ -1,7 +1,7 @@
 module.exports = class
   constructor: (@client) ->
     null
-  
+
   findOrCreate: (authMethod, userData, session, callback) ->
     providerId = "provider:#{authMethod}-#{userData.id}"
 
@@ -39,9 +39,14 @@ module.exports = class
             callback userData
 
         else
-          # User currently logged out, use stored data, and set hackerId
+          # User currently logged out, refresh stored data, and set hackerId
           session.hackerId = user.hackerId
-          callback user
+
+          userData.hackerId = session.hackerId
+          userData.id = providerId
+          @client.set providerId, JSON.stringify(userData)
+
+          callback userData
 
       else
         # New account, create and set hackerId
@@ -95,7 +100,7 @@ module.exports = class
     @client.keys "score:real:category:*", (err, keys) =>
       for key in keys
         @client.zrem key, oldId
-  
+
   findById: (id, callback) ->
     @client.get id, (err, user) =>
       unless user?
